@@ -11,6 +11,14 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@Table(
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name="user_like_uk",
+                        columnNames = {"following", "follower"}
+                )
+        }
+)
 public class UserLike extends BaseEntity {
 
     @Id
@@ -20,12 +28,12 @@ public class UserLike extends BaseEntity {
 
     // Like 하는 사용자
     @JoinColumn(name="following")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User fromUser;
 
     // Like 당하는 사용자
     @JoinColumn(name="follower")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User toUser;
 
     @Builder
