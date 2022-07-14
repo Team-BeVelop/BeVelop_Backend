@@ -15,6 +15,7 @@ public class UserLike extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="user_like_id")
     private Long id;
 
     // Like 하는 사용자
