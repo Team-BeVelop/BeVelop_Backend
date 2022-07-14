@@ -1,4 +1,4 @@
-package com.bevelop.devbevelop.domain.user.domain;
+package com.bevelop.devbevelop.domain.stack;
 
 public enum StackName {
     FIGMA, ZEPLIN, JAVA, NODEJS, SPRING

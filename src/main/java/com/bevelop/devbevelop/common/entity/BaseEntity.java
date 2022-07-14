@@ -1,4 +1,4 @@
-package com.bevelop.devbevelop.domain.common.entity;
+package com.bevelop.devbevelop.common.entity;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;

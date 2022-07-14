@@ -1,6 +1,6 @@
 package com.bevelop.devbevelop.domain.user.domain;
 
-import com.bevelop.devbevelop.domain.common.entity.BaseEntity;
+import com.bevelop.devbevelop.common.entity.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

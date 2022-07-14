@@ -1,5 +1,6 @@
-package com.bevelop.devbevelop.domain.user.domain;
+package com.bevelop.devbevelop.domain.stack;
 
+import com.bevelop.devbevelop.domain.user.domain.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
