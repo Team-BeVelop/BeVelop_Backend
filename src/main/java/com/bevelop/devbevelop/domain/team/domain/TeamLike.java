@@ -2,16 +2,13 @@ package com.bevelop.devbevelop.domain.team.domain;
 
 import com.bevelop.devbevelop.common.entity.BaseEntity;
 import com.bevelop.devbevelop.domain.user.domain.User;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
-
+@Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Entity
+
 public class TeamLike extends BaseEntity {
 
     @Id

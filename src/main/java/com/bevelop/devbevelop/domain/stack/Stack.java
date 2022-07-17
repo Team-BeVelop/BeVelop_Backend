@@ -1,15 +1,16 @@
 package com.bevelop.devbevelop.domain.stack;
 
 import com.bevelop.devbevelop.domain.user.domain.User;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Getter
-@Table(name = "stacks")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@Table(name = "stacks")
 public class Stack {
 
     @Id

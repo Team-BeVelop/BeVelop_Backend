@@ -1,18 +1,16 @@
 package com.bevelop.devbevelop.domain.team.domain;
 
-import com.bevelop.devbevelop.domain.model.Category;
-import com.bevelop.devbevelop.domain.model.Division;
 import com.bevelop.devbevelop.domain.model.ProjectTemplate;
-import com.bevelop.devbevelop.domain.model.Task;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import com.sun.istack.NotNull;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString
 @Table(name = "team")
-@Getter @Setter @ToString
 public class Team {
 
     @Id
@@ -20,14 +18,17 @@ public class Team {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "team_title", nullable = false, length = 50)
+    @Column(name = "team_title",length = 50)
+    @NotNull
     private String title;
 
     @Lob
-    @Column(name = "team_detail", nullable = false)
+    @Column(name = "team_detail")
+    @NotNull
     private String detail;
 
     @Embedded
-    @Column(name = "projecttmp", nullable = false)
+    @Column(name = "projecttmp")
+    @NotNull
     private ProjectTemplate projecttmp;
 }

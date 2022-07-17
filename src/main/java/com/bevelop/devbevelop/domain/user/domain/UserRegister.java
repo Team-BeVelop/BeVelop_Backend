@@ -1,16 +1,14 @@
 package com.bevelop.devbevelop.domain.user.domain;
 
 import com.bevelop.devbevelop.common.entity.BaseEntity;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@ToString
 public class UserRegister extends BaseEntity {
 
     @Id
@@ -34,16 +32,5 @@ public class UserRegister extends BaseEntity {
         this.status = status;
         this.role = role;
     }
-
-    @Override
-    public String toString() {
-        return "UserRegister{" +
-                "user=" + user +
-                ", status='" + status + '\'' +
-                ", role='" + role + '\'' +
-                '}';
-    }
-
-
 
 }

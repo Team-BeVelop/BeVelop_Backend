@@ -2,10 +2,8 @@ package com.bevelop.devbevelop.domain.user.domain;
 
 import com.bevelop.devbevelop.common.entity.BaseEntity;
 import com.bevelop.devbevelop.domain.stack.Stack;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.sun.istack.NotNull;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,6 +12,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@ToString
 @Table(name = "bevelop_user")
 public class User extends BaseEntity {
 
@@ -22,13 +21,16 @@ public class User extends BaseEntity {
     @Column(name="user_id")
     private Long id;
 
-    @Column(nullable = false)
+    @Column
+    @NotNull
     private String email;
 
-    @Column(nullable = false)
+    @Column
+    @NotNull
     private String password;
 
-    @Column(nullable = false)
+    @Column
+    @NotNull
     private String name;
 
     @Enumerated(EnumType.STRING)
@@ -47,18 +49,6 @@ public class User extends BaseEntity {
         this.name = name;
         this.job = job;
         this.interests = interests;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
-                ", job=" + job + '\'' +
-                ", interests=" + interests + '\'' +
-                '}';
     }
 
 }
