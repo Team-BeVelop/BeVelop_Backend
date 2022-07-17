@@ -3,15 +3,16 @@ package com.bevelop.devbevelop.domain.project.domain;
 import com.bevelop.devbevelop.domain.model.ProjectTemplate;
 import com.bevelop.devbevelop.domain.team.domain.Team;
 import com.bevelop.devbevelop.domain.user.domain.User;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import com.sun.istack.NotNull;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString
 @Table(name = "project")
-@Setter @Getter @ToString
 public class Project {
 
     @Id
@@ -28,10 +29,12 @@ public class Project {
     private Team team;
 
     @Embedded
-    @Column(name = "projecttmp", nullable = false)
+    @Column(name = "projecttmp")
+    @NotNull
     private ProjectTemplate projecttmp;
 
-    @Column(name = "project_title", nullable = false)
+    @Column(name = "project_title")
+    @NotNull
     private String title;
 
     @Lob
