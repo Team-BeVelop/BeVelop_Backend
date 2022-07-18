@@ -40,4 +40,13 @@ public class Project {
     @Lob
     @Column(name = "project_detail")
     private String detail;
+
+    @Builder
+    public Project(User user, Team team, ProjectTemplate projecttmp, String title, String detail) {
+        this.user = user;
+        this.team = team;
+        this.projecttmp = projecttmp;
+        this.title = title;
+        this.detail = detail;
+    }
 }

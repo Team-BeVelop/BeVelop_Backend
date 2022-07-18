@@ -31,4 +31,11 @@ public class Team {
     @Column(name = "projecttmp")
     @NotNull
     private ProjectTemplate projecttmp;
+
+    @Builder
+    public Team(String title, String detail, ProjectTemplate projecttmp) {
+        this.title = title;
+        this.detail = detail;
+        this.projecttmp = projecttmp;
+    }
 }
