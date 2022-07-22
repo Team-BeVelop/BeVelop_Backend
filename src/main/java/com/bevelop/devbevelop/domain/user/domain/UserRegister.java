@@ -24,13 +24,13 @@ public class UserRegister extends BaseEntity {
     private RegisterStatus status;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private RegisterRole registerRole;
 
     @Builder
-    public UserRegister(User user, RegisterStatus status, Role role) {
+    public UserRegister(User user, RegisterStatus status, RegisterRole registerRole) {
         this.user = user;
         this.status = status;
-        this.role = role;
+        this.registerRole = registerRole;
     }
 
 }
