@@ -4,14 +4,15 @@ import com.bevelop.devbevelop.common.entity.BaseEntity;
 import com.bevelop.devbevelop.domain.stack.Stack;
 import com.sun.istack.NotNull;
 import lombok.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Entity
 @ToString
 @Table(name = "bevelop_user")
 public class User extends BaseEntity {
@@ -34,6 +35,9 @@ public class User extends BaseEntity {
     private String name;
 
     @Enumerated(EnumType.STRING)
+    private Role role;
+
+    @Enumerated(EnumType.STRING)
     private Job job;
 
     @Enumerated(EnumType.STRING)
@@ -49,6 +53,12 @@ public class User extends BaseEntity {
         this.name = name;
         this.job = job;
         this.interests = interests;
+        this.role = Role.SLAVE;
+    }
+
+    public User hashPassword(PasswordEncoder passwordEncoder) {
+        this.password = passwordEncoder.encode(this.password);
+        return this;
     }
 
 }
