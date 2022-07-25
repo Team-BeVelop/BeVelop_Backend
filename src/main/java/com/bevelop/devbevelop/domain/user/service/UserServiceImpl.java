@@ -2,6 +2,8 @@ package com.bevelop.devbevelop.domain.user.service;
 
 import com.bevelop.devbevelop.domain.user.domain.User;
 import com.bevelop.devbevelop.domain.user.repository.UserRepository;
+import com.bevelop.devbevelop.global.error.exception.CustomException;
+import com.bevelop.devbevelop.global.error.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,9 +29,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findByName(String name) {
-        return userRepository.findByName(name);
-    }
+    public Optional<User> findByName(String name) { return userRepository.findByName(name); }
 
     @Override
     public User updateUser(User user, String newInfo) {

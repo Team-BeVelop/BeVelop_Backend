@@ -1,8 +1,9 @@
 package com.bevelop.devbevelop.domain.user.dto;
 
+import io.swagger.annotations.ApiParam;
 import lombok.*;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 
 @Getter
 @Setter
@@ -11,9 +12,14 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor(force = true)
 public class UserRes {
 
-    @NotNull
-    private final String name;
 
-    @NotNull
-    private final String email;
+    @NotBlank(message = "이름은 필수 입력 값입니다.")
+    @ApiParam(value = "이름", required = true)
+    private String name;
+
+    @NotEmpty(message = "이메일은 필수 입력 값입니다.")
+    @Email
+    @ApiParam(value = "이메일", required = true)
+    private String email;
+
 }

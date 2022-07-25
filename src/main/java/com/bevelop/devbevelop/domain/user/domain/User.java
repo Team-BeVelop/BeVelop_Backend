@@ -1,7 +1,7 @@
 package com.bevelop.devbevelop.domain.user.domain;
 
-import com.bevelop.devbevelop.common.entity.BaseEntity;
 import com.bevelop.devbevelop.domain.stack.Stack;
+import com.bevelop.devbevelop.global.entity.BaseEntity;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -10,9 +10,9 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
 @ToString
 @Table(name = "bevelop_user")
 public class User extends BaseEntity {
@@ -23,11 +23,9 @@ public class User extends BaseEntity {
     private Long id;
 
     @Column
-    @NotNull
     private String email;
 
     @Column
-    @NotNull
     private String password;
 
     @Column
@@ -46,6 +44,7 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user")
     private List<Stack> stacks = new ArrayList<>();
 
+
     @Builder
     public User(String email, String password, String name, Job job, Interests interests) {
         this.email = email;
@@ -60,5 +59,4 @@ public class User extends BaseEntity {
         this.password = passwordEncoder.encode(this.password);
         return this;
     }
-
 }

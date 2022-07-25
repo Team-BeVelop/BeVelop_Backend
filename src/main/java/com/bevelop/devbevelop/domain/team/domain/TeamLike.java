@@ -1,6 +1,6 @@
 package com.bevelop.devbevelop.domain.team.domain;
 
-import com.bevelop.devbevelop.common.entity.BaseEntity;
+import com.bevelop.devbevelop.global.entity.BaseEntity;
 import com.bevelop.devbevelop.domain.user.domain.User;
 import lombok.*;
 

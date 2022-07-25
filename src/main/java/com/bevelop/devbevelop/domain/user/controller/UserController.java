@@ -2,8 +2,11 @@ package com.bevelop.devbevelop.domain.user.controller;
 
 import com.bevelop.devbevelop.domain.user.domain.User;
 import com.bevelop.devbevelop.domain.user.dto.UserRes;
-import com.bevelop.devbevelop.domain.user.exception.UserNotFoundException;
-import com.bevelop.devbevelop.domain.user.service.UserService;
+import com.bevelop.devbevelop.domain.user.service.UserServiceImpl;
+import com.bevelop.devbevelop.global.error.exception.CustomException;
+import com.bevelop.devbevelop.global.error.ErrorCode;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,17 +17,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Api(tags = {"User"})
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
+    @ApiOperation(value = "현재 유저 프로필", notes = "현재 로그인된 유저의 UserRes")
     @GetMapping("/profile")
-    public UserRes profile(@AuthenticationPrincipal UserDetails userDetails) throws UserNotFoundException {
+    public UserRes profile(@AuthenticationPrincipal UserDetails userDetails) throws CustomException {
         System.out.println("userDetails = " + userDetails);
         User userDetail = userService.findByEmail(userDetails.getUsername())
-                .orElseThrow(() -> new UserNotFoundException());
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         return UserRes.builder()
                 .email(userDetail.getEmail())
@@ -32,10 +37,11 @@ public class UserController {
                 .build();
     }
 
+    @ApiOperation(value = "유저 프로필 찾기", notes = "PathVariable로 주어진 username을 가진 유저의 UserRes")
     @GetMapping("/profile/view/{username}")
-    public UserRes userProfile(@PathVariable String username) throws UserNotFoundException {
+    public UserRes userProfile(@PathVariable String username) throws CustomException {
         User user = userService.findByName(username)
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(()->new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         return UserRes.builder()
                 .email(user.getEmail())
@@ -43,6 +49,7 @@ public class UserController {
                 .build();
     }
 
+    @ApiOperation(value = "모든 유저", notes = "모든 유저의 리스트")
     @GetMapping("/userList")
     public List<User> showUserList() {
         return userService.findAll();

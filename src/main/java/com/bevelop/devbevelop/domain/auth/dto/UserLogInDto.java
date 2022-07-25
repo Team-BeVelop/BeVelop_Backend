@@ -1,16 +1,15 @@
-package com.bevelop.devbevelop.domain.user.dto;
+package com.bevelop.devbevelop.domain.auth.dto;
 
 import io.swagger.annotations.ApiParam;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 
-@Getter
-@Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor(force = true)
-public class UserReq {
+@Getter @Setter
+public class UserLogInDto {
     @NotEmpty(message = "이메일은 필수 입력 값입니다.")
     @Email
     @ApiParam(value = "이메일", required = true)
@@ -21,9 +20,4 @@ public class UserReq {
             message = "비밀번호는 하나 이상의 대문자, 소문자, 숫자 및 특수 문자로 이루어진 6 ~ 10자이여야 합니다.")
     @ApiParam(value = "비밀번호", required = true)
     private String password;
-
-    @NotBlank(message = "이름은 필수 입력 값입니다.")
-    @ApiParam(value = "이름", required = true)
-    private String name;
-
 }
