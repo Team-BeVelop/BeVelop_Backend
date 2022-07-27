@@ -1,7 +1,9 @@
 package com.bevelop.devbevelop.global.config.security.jwt;
 
 
+import com.bevelop.devbevelop.global.error.ErrorCode;
 import com.bevelop.devbevelop.global.error.exception.BaseException;
+import com.bevelop.devbevelop.global.error.exception.CustomException;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -122,6 +124,7 @@ public class JwtTokenProvider {
         } catch (JwtException e) {
             // MalformedJwtException | ExpiredJwtException | IllegalArgumentException
             throw new BaseException("Error on Access Token", HttpStatus.INTERNAL_SERVER_ERROR);
+//            throw new CustomException(ErrorCode.INVALID_AUTH_TOKEN);
         }
     }
 
@@ -137,6 +140,7 @@ public class JwtTokenProvider {
         } catch (JwtException e) {
             // MalformedJwtException | ExpiredJwtException | IllegalArgumentException
             throw new BaseException("Error on Refresh Token", HttpStatus.INTERNAL_SERVER_ERROR);
+//            throw new CustomException(ErrorCode.INVALID_AUTH_REFRESH_TOKEN);
         }
     }
 
