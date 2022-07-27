@@ -31,6 +31,12 @@ public class KakaoService {
     @Value("${spring.social.kakao.redirect}")
     private String kakaoRedirect;
 
+    public KakaoProfile execKakaoLogin(String code) {
+        String accesesToken = getKakaoTokenInfo(code).getAccess_token();
+        KakaoProfile kakaoProfile = getKakaoProfile(accesesToken);
+        return kakaoProfile;
+    }
+
     public KakaoProfile getKakaoProfile(String accessToken) {
         // Set header : Content-type: application/x-www-form-urlencoded
         HttpHeaders headers = new HttpHeaders();

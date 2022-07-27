@@ -23,6 +23,9 @@ public class User extends BaseEntity {
     private Long id;
 
     @Column
+    private Long socialId;
+
+    @Column
     private String email;
 
     @Column
@@ -44,15 +47,19 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user")
     private List<Stack> stacks = new ArrayList<>();
 
+    private String provider;
+
 
     @Builder
-    public User(String email, String password, String name, Job job, Interests interests) {
+    public User(String email, String password, String name, Job job, Interests interests, String provider, Long socialId) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.job = job;
         this.interests = interests;
         this.role = Role.SLAVE;
+        this.provider = provider;
+        this.socialId = socialId;
     }
 
     public User hashPassword(PasswordEncoder passwordEncoder) {

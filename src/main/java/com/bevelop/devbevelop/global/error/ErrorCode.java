@@ -27,8 +27,9 @@ public enum ErrorCode {
 
 
     // Member
-    MEMBER_NOT_FOUND(NOT_FOUND,"MEMBER-0001", "Member not found"),
-    MEMBER_EXISTS(CONFLICT, "MEMBER-0002", "Member that already exists"),
+    MEMBER_NOT_FOUND(NOT_FOUND,"MEMBER-0001", "일치하는 회원 정보를 찾을 수 없습니다"),
+    MEMBER_EXISTS(CONFLICT, "MEMBER-0002", "이미 존재하는 회원 정보입니다"),
+    MEMBER_SIGNUP_FAIL(BAD_REQUEST, "MEMBER-0003", "가입 실패"),
 
     //Communication
     COMMUNICATION_ERROR(BAD_REQUEST, "COMM-0001", "Communication error"),
