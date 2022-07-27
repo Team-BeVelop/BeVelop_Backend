@@ -1,8 +1,7 @@
 package com.bevelop.devbevelop.global.config.security.jwt;
 
-import com.bevelop.devbevelop.global.common.response.ResponseVO;
 import com.bevelop.devbevelop.global.error.ErrorCode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.bevelop.devbevelop.global.error.exception.CustomException;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -41,15 +40,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
 
         } catch (ExpiredJwtException e) {
-            ResponseVO responseVO = ResponseVO.builder()
-                    .status(ErrorCode.JWT_ACCESS_TOKEN_EXPIRED.getHttpStatus())
-                    .message(ErrorCode.JWT_ACCESS_TOKEN_EXPIRED.getMessage())
-                    .code(ErrorCode.JWT_ACCESS_TOKEN_EXPIRED.getCode())
-                    .build();
-
-            response.setStatus(ErrorCode.JWT_ACCESS_TOKEN_EXPIRED.getHttpStatus().value());
-            response.getWriter().write(new ObjectMapper().writeValueAsString(responseVO));
-            response.getWriter().flush();
+            throw new CustomException(ErrorCode.JWT_ACCESS_TOKEN_EXPIRED);
+//            ResponseVO responseVO = ResponseVO.builder()
+//                    .status(ErrorCode.JWT_ACCESS_TOKEN_EXPIRED.getHttpStatus())
+//                    .message(ErrorCode.JWT_ACCESS_TOKEN_EXPIRED.getMessage())
+//                    .code(ErrorCode.JWT_ACCESS_TOKEN_EXPIRED.getCode())
+//                    .build();
+//
+//            response.setStatus(ErrorCode.JWT_ACCESS_TOKEN_EXPIRED.getHttpStatus().value());
+//            response.getWriter().write(new ObjectMapper().writeValueAsString(responseVO));
+//            response.getWriter().flush();
         }
     }
 

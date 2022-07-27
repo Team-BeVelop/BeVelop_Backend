@@ -17,31 +17,38 @@ public enum ErrorCode {
     * 409 CONFLICT : Resource 의 현재 상태와 충돌. 보통 중복된 데이터 존재
     */
 
-    //JWT
-    JWT_ACCESS_TOKEN_EXPIRED(UNAUTHORIZED, "TOKEN-0001", "엑세스 토큰이 유효하지 않습니다"),
-    JWT_REFRESH_TOKEN_EXPIRED(BAD_REQUEST, "TOKEN-0002", "리프레시 토큰이 유효하지 않습니다"),
+    /* 유효기간이 지난 경우*/
+    JWT_ACCESS_TOKEN_EXPIRED(BAD_REQUEST, "TOKEN-0001", "엑세스 토큰이 유효 기간이 지났습니다"),
+    JWT_REFRESH_TOKEN_EXPIRED(BAD_REQUEST, "TOKEN-0002", "리프레시 토큰이 유효 기간이 지났습니다"),
+
+    /* 401 UNAUTHORIZED : 인증되지 않은 사용자 */
+    INVALID_AUTH_TOKEN(UNAUTHORIZED, "TOKEN-0003","권한 정보가 없는 토큰입니다"),
+    INVALID_AUTH_REFRESH_TOKEN(UNAUTHORIZED, "TOKEN-0004","권한 정보가 없는 리프레시 토큰입니다"),
+
 
     // Member
     MEMBER_NOT_FOUND(NOT_FOUND,"MEMBER-0001", "Member not found"),
     MEMBER_EXISTS(CONFLICT, "MEMBER-0002", "Member that already exists"),
 
     //Communication
-    COMMUNICATION_ERROR(BAD_REQUEST, "COMM-0001", "Communication error")
-    ;
+    COMMUNICATION_ERROR(BAD_REQUEST, "COMM-0001", "Communication error"),
+
+    /* 400 BAD_REQUEST : 잘못된 요청 */
+//    INVALID_REFRESH_TOKEN(BAD_REQUEST, "REFRESH-TOKEN-001","리프레시 토큰이 유효하지 않습니다"),
+    MISMATCH_REFRESH_TOKEN(BAD_REQUEST,"REFRESH-TOKEN-002", "리프레시 토큰의 유저 정보가 일치하지 않습니다"),
+    CANNOT_FOLLOW_MYSELF(BAD_REQUEST, "REFRESH-TOKEN-003","자기 자신은 팔로우 할 수 없습니다"),
+
+    // Login
+    LOGIN_ERROR(BAD_REQUEST, "LOGIN-001" , "Invalid Credentials Supplied");
 
     private final HttpStatus httpStatus;
     private final String code;
     private final String message;
 }
 //
-//    /* 400 BAD_REQUEST : 잘못된 요청 */
-//    INVALID_REFRESH_TOKEN(BAD_REQUEST, "리프레시 토큰이 유효하지 않습니다"),
-//    MISMATCH_REFRESH_TOKEN(BAD_REQUEST, "리프레시 토큰의 유저 정보가 일치하지 않습니다"),
-//    CANNOT_FOLLOW_MYSELF(BAD_REQUEST, "자기 자신은 팔로우 할 수 없습니다"),
-//
-//    /* 401 UNAUTHORIZED : 인증되지 않은 사용자 */
-//    INVALID_AUTH_TOKEN(UNAUTHORIZED, "권한 정보가 없는 토큰입니다"),
+
 //    UNAUTHORIZED_MEMBER(UNAUTHORIZED, "현재 내 계정 정보가 존재하지 않습니다"),
+
 //
 //    /* 404 NOT_FOUND : Resource 를 찾을 수 없음 */
 //    MEMBER_NOT_FOUND(NOT_FOUND, "해당 유저 정보를 찾을 수 없습니다"),

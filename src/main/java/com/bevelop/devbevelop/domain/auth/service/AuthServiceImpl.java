@@ -9,7 +9,6 @@ import com.bevelop.devbevelop.global.config.security.jwt.dto.TokenDto;
 import com.bevelop.devbevelop.domain.auth.dto.UserSignUpDto;
 import com.bevelop.devbevelop.domain.user.domain.User;
 import com.bevelop.devbevelop.domain.user.repository.UserRepository;
-import com.bevelop.devbevelop.global.error.exception.BaseException;
 import com.bevelop.devbevelop.global.error.exception.CustomException;
 import com.bevelop.devbevelop.global.error.ErrorCode;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -96,7 +95,8 @@ public class AuthServiceImpl implements AuthService {
             httpHeaders.add("Authorization", "Bearer " + tokenDto.getAccess_token());
             return new ResponseEntity<>(tokenDto, httpHeaders, HttpStatus.OK);
         } catch (AuthenticationException e) {
-            throw new BaseException("Invalid credentials supplied", HttpStatus.BAD_REQUEST);
+//            throw new BaseException("Invalid credentials supplied", HttpStatus.BAD_REQUEST);
+            throw new CustomException(ErrorCode.LOGIN_ERROR);
         }
     }
 
@@ -106,7 +106,7 @@ public class AuthServiceImpl implements AuthService {
         try {
             // Refresh Token 검증
             if (!jwtTokenProvider.validateRefreshToken(refresh_token)) {
-                throw new BaseException("Invalid refresh token supplied", HttpStatus.BAD_REQUEST);
+                throw new CustomException(ErrorCode.JWT_REFRESH_TOKEN_EXPIRED);
             }
 
             // Access Token 에서 User email를 가져온다.
@@ -115,7 +115,7 @@ public class AuthServiceImpl implements AuthService {
             // Redis에서 저장된 Refresh Token 값을 가져온다.
             String refreshToken = redisTemplate.opsForValue().get(authentication.getName());
             if(!refreshToken.equals(refresh_token)) {
-                throw new BaseException("Refresh Token doesn't match.", HttpStatus.BAD_REQUEST);
+                throw new CustomException(ErrorCode.MISMATCH_REFRESH_TOKEN);
             }
 
             // 토큰 재발행
