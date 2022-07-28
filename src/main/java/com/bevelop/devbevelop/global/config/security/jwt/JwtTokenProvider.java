@@ -5,6 +5,7 @@ import com.bevelop.devbevelop.global.error.ErrorCode;
 import com.bevelop.devbevelop.global.error.exception.BaseException;
 import com.bevelop.devbevelop.global.error.exception.CustomException;
 import io.jsonwebtoken.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -15,7 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
-
+@Slf4j
 @Component
 public class JwtTokenProvider {
 
@@ -117,14 +118,19 @@ public class JwtTokenProvider {
      * @param token
      * @return
      */
-    public boolean validateAccessToken(String token) {
+    public boolean validateAccessToken(String token, HttpServletRequest request) {
         try {
             Jwts.parser().setSigningKey(access_token_secret_key).parseClaimsJws(token);
             return true;
-        } catch (JwtException e) {
-            // MalformedJwtException | ExpiredJwtException | IllegalArgumentException
-            throw new BaseException("Error on Access Token", HttpStatus.INTERNAL_SERVER_ERROR);
-//            throw new CustomException(ErrorCode.INVALID_AUTH_TOKEN);
+        } catch(SecurityException | MalformedJwtException e) {
+            log.error("Invalid JWT signature");
+            return false;
+        } catch(UnsupportedJwtException e) {
+            log.error("Unsupported JWT token");
+            return false;
+        } catch(IllegalArgumentException e) {
+            log.error("JWT token is invalid");
+            return false;
         }
     }
 

@@ -1,7 +1,10 @@
 package com.bevelop.devbevelop.global.config.security.jwt;
 
 import com.bevelop.devbevelop.global.error.ErrorCode;
-import com.bevelop.devbevelop.global.error.exception.CustomException;
+import com.bevelop.devbevelop.global.error.ErrorResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,25 +36,36 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 filterChain.doFilter(request, response);
             } else {
                 String token = jwtTokenProvider.resolveToken(request);
-                if (token != null && jwtTokenProvider.validateAccessToken(token)) {
+                if (token != null && jwtTokenProvider.validateAccessToken(token, request)) {
                     this.setAuthentication(token);
                 }
                 filterChain.doFilter(request, response);
             }
 
         } catch (ExpiredJwtException e) {
-            throw new CustomException(ErrorCode.JWT_ACCESS_TOKEN_EXPIRED);
-//            ResponseVO responseVO = ResponseVO.builder()
-//                    .status(ErrorCode.JWT_ACCESS_TOKEN_EXPIRED.getHttpStatus())
-//                    .message(ErrorCode.JWT_ACCESS_TOKEN_EXPIRED.getMessage())
-//                    .code(ErrorCode.JWT_ACCESS_TOKEN_EXPIRED.getCode())
-//                    .build();
-//
-//            response.setStatus(ErrorCode.JWT_ACCESS_TOKEN_EXPIRED.getHttpStatus().value());
-//            response.getWriter().write(new ObjectMapper().writeValueAsString(responseVO));
-//            response.getWriter().flush();
+            ErrorResponse errorResponse = ErrorResponse.builder()
+                    .message(ErrorCode.JWT_ACCESS_TOKEN_EXPIRED.getMessage())
+                            .code(ErrorCode.JWT_ACCESS_TOKEN_EXPIRED.getCode())
+                                    .status(ErrorCode.JWT_ACCESS_TOKEN_EXPIRED.getHttpStatus().value())
+                                            .build();
+            response.setStatus(ErrorCode.JWT_ACCESS_TOKEN_EXPIRED.getHttpStatus().value());
+            response.getWriter().write(convertObjectToJson(errorResponse));
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().flush();
         }
     }
+
+    public String convertObjectToJson(Object object) throws JsonProcessingException {
+        if (object == null) {
+            return null;
+        }
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        return mapper.writeValueAsString(object);
+    }
+
+
 
     // SecurityContext에 Authentication 저장
     private void setAuthentication(String token) {

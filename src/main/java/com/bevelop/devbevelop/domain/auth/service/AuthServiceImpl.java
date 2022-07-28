@@ -9,6 +9,7 @@ import com.bevelop.devbevelop.global.config.security.jwt.dto.TokenDto;
 import com.bevelop.devbevelop.domain.auth.dto.UserSignUpDto;
 import com.bevelop.devbevelop.domain.user.domain.User;
 import com.bevelop.devbevelop.domain.user.repository.UserRepository;
+import com.bevelop.devbevelop.global.error.exception.BaseException;
 import com.bevelop.devbevelop.global.error.exception.CustomException;
 import com.bevelop.devbevelop.global.error.ErrorCode;
 import io.jsonwebtoken.ExpiredJwtException;
