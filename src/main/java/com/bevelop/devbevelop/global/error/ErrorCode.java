@@ -18,7 +18,7 @@ public enum ErrorCode {
     */
 
     /* 유효기간이 지난 경우*/
-    JWT_ACCESS_TOKEN_EXPIRED(BAD_REQUEST, "TOKEN-0001", "엑세스 토큰이 유효 기간이 지났습니다"),
+    JWT_ACCESS_TOKEN_EXPIRED(BAD_REQUEST, "TOKEN-0001", "Access Token Expired"),
     JWT_REFRESH_TOKEN_EXPIRED(BAD_REQUEST, "TOKEN-0002", "리프레시 토큰이 유효 기간이 지났습니다"),
 
     /* 401 UNAUTHORIZED : 인증되지 않은 사용자 */
