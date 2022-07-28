@@ -19,15 +19,17 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@Api(value = "Auth")
+@Api(tags = {"1. Auth Controller"})
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/auth")
+@Controller
 public class AuthController {
 
     private final AuthService authService;
@@ -77,7 +79,7 @@ public class AuthController {
         User user = userRepository.findBySocialIdAndProvider(profile.getId(), provider).orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
         return authService.login(user);
 //        return responseService.getSingleResult(jwtTokenProvider.createToken(user.getId(), user.getRole()));
-//        return "redirect:webauthcallback://success?customToken="+jwtTokenProvider.createToken(user.getId(), user.getRole());
+//        return "redirect:webauthcallback://success?customToken="+jwtTokenProvider.createToken(user.ge tId(), user.getRole());
     }
 
 }
