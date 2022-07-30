@@ -39,4 +39,3 @@ server:
     include-message: always       # Response 에 Exception Message 를 표시할지 (never | always | on_param)
     include-stacktrace: on_param  # Response 에 Stack Trace 를 표시할지 (never | always | on_param) on_trace_params 은 deprecated
     whitelabel.enabled: true      # 에러 발생 시 Spring 기본 에러 페이지 노출 여부
-  port: 8080
