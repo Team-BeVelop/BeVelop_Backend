@@ -24,6 +24,11 @@ import java.util.List;
 public class UserController {
     private final UserServiceImpl userService;
 
+    @GetMapping("/hello")
+    public String hello() {
+        return "testing Docker...";
+    }
+
     @ApiOperation(value = "현재 유저 프로필", notes = "현재 로그인된 유저의 UserRes")
     @GetMapping("/profile")
     public UserRes profile(@AuthenticationPrincipal UserDetails userDetails) throws CustomException {
