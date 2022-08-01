@@ -3,6 +3,8 @@ FROM openjdk:11-jdk
 
 VOLUME /tmp
 
+EXPOSE 8080
+
 # JAR_FILE 변수에 값을 저장
 ARG JAR_FILE=./build/libs/dev-bevelop-0.0.1-SNAPSHOT.jar
 
