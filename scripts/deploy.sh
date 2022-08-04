@@ -1,4 +1,4 @@
-# 가동중인 awsstudy 도커 중단 및 삭제
+# 가동중인 bevelop 도커 중단 및 삭제
 sudo docker ps -a -q --filter "name=bevelop" | grep -q . && docker stop bevelop && docker rm bevelop | true
 
 # 기존 이미지 삭제
