@@ -1,10 +1,7 @@
 package com.bevelop.devbevelop.domain.auth.controller;
 
 
-import com.bevelop.devbevelop.domain.auth.dto.KakaoProfile;
-import com.bevelop.devbevelop.domain.auth.dto.KakaoSignUpDto;
-import com.bevelop.devbevelop.domain.auth.dto.UserLogInDto;
-import com.bevelop.devbevelop.domain.auth.dto.UserSignUpDto;
+import com.bevelop.devbevelop.domain.auth.dto.*;
 import com.bevelop.devbevelop.domain.auth.service.KakaoService;
 import com.bevelop.devbevelop.domain.user.domain.User;
 import com.bevelop.devbevelop.domain.user.repository.UserRepository;
@@ -43,6 +40,10 @@ public class AuthController {
     @ApiOperation(value = "로그인", notes = "회원 로그인")
     @PostMapping("/login")
     public ResponseEntity<TokenDto> login(@Validated UserLogInDto userLoginDto) { return authService.login(userLoginDto); }
+
+    @ApiOperation(value="로그아웃", notes= "회원 로그아웃")
+    @PostMapping("/logout")
+    public ResponseEntity<TokenDto> logOut(@Validated UserLogOutDto userLogOutDto) { return authService.logout(userLogOutDto); }
 
     @ApiOperation(value = "토큰 재발급", notes = "회원 토큰 재발급")
     @PostMapping("/regenerateToken")
