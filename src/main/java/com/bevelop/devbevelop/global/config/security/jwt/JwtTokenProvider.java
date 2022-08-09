@@ -118,7 +118,7 @@ public class JwtTokenProvider {
      * @param token
      * @return
      */
-    public boolean validateAccessToken(String token, HttpServletRequest request) {
+    public boolean validateAccessToken(String token) {
         try {
             Jwts.parser().setSigningKey(access_token_secret_key).parseClaimsJws(token);
             return true;
@@ -148,6 +148,12 @@ public class JwtTokenProvider {
             throw new BaseException("Error on Refresh Token", HttpStatus.INTERNAL_SERVER_ERROR);
 //            throw new CustomException(ErrorCode.INVALID_AUTH_REFRESH_TOKEN);
         }
+    }
+
+    public Long getExpiration(String token) {
+        Date expiration = Jwts.parser().setSigningKey(access_token_secret_key).parseClaimsJws(token).getBody().getExpiration();
+        Long now = new Date().getTime();
+        return (expiration.getTime() - now);
     }
 
 

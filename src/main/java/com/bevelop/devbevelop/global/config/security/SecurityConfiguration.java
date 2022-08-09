@@ -87,6 +87,7 @@ import com.bevelop.devbevelop.global.config.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -104,6 +105,7 @@ public class SecurityConfiguration {
 
     private final JwtTokenProvider jwtTokenProvider;
 
+    private final RedisTemplate redisTemplate;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception    {
@@ -119,7 +121,7 @@ public class SecurityConfiguration {
 //                .anyRequest().hasRole("SLAVE") // 그외 나머지 요청은 모두 인증된 회원만 접근 가능
                 .anyRequest().permitAll()
                 .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class); // jwt token 필터를 id/password 인증 필터 전에 넣어라.
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, redisTemplate), UsernamePasswordAuthenticationFilter.class); // jwt token 필터를 id/password 인증 필터 전에 넣어라.
 
         return http.build();
     }

@@ -6,8 +6,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.jsonwebtoken.ExpiredJwtException;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -16,14 +23,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-
+@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider) {
+    private final RedisTemplate redisTemplate;
+
+    public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider, RedisTemplate redisTemplate) {
         this.jwtTokenProvider = jwtTokenProvider;
+        this.redisTemplate = redisTemplate;
     }
+
+
 
 
     @Override
@@ -36,8 +49,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 filterChain.doFilter(request, response);
             } else {
                 String token = jwtTokenProvider.resolveToken(request);
-                if (token != null && jwtTokenProvider.validateAccessToken(token, request)) {
-                    this.setAuthentication(token);
+                if (token != null && jwtTokenProvider.validateAccessToken(token)) {
+                    String isLogout = (String)redisTemplate.opsForValue().get(token);
+                    if (ObjectUtils.isEmpty(isLogout)) {
+                        this.setAuthentication(token);
+                    }
                 }
                 filterChain.doFilter(request, response);
             }

@@ -1,6 +1,7 @@
 package com.bevelop.devbevelop.domain.auth.service;
 
 import com.bevelop.devbevelop.domain.auth.dto.UserLogInDto;
+import com.bevelop.devbevelop.domain.auth.dto.UserLogOutDto;
 import com.bevelop.devbevelop.global.common.response.CommonResult;
 import com.bevelop.devbevelop.global.common.response.ResponseService;
 import com.bevelop.devbevelop.global.config.security.jwt.JwtTokenProvider;
@@ -27,6 +28,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -162,6 +164,9 @@ public class AuthServiceImpl implements AuthService {
 
             // Redis에서 저장된 Refresh Token 값을 가져온다.
             String refreshToken = redisTemplate.opsForValue().get(authentication.getName());
+            if(ObjectUtils.isEmpty(refreshToken)) {
+                throw new CustomException(ErrorCode.LOGOUT_ERROR);
+            }
             if(!refreshToken.equals(refresh_token)) {
                 throw new CustomException(ErrorCode.MISMATCH_REFRESH_TOKEN);
             }
@@ -189,6 +194,30 @@ public class AuthServiceImpl implements AuthService {
         } catch (ExpiredJwtException e) {
             throw new CustomException(ErrorCode.JWT_REFRESH_TOKEN_EXPIRED);
         }
+    }
+
+    @Override
+    public ResponseEntity<TokenDto> logout(UserLogOutDto userLogOutDto) {
+        // 1. Access Token 검증
+        if (!jwtTokenProvider.validateAccessToken(userLogOutDto.getAccessToken())) {
+            throw new CustomException(ErrorCode.LOGOUT_ERROR);
+        }
+
+        // 2. Access Token에서 user email을 가져온다
+        Authentication authentication = jwtTokenProvider.getAuthenticationByAccessToken(userLogOutDto.getAccessToken());
+
+        // 3. Redis에서 해당 USER email로 저장된 Refresh Token이 있는지 여부를 확인 있을 경우 삭제
+        if (redisTemplate.opsForValue().get(authentication.getName()) != null) {
+            // Refresh Token 삭제
+            redisTemplate.delete(authentication.getName());
+        }
+
+        // 4. 해당 Access Token 유효시간 가지고 와서 BlackList로 저장
+        Long expiration = jwtTokenProvider.getExpiration(userLogOutDto.getAccessToken());
+        redisTemplate.opsForValue()
+                .set(userLogOutDto.getAccessToken(), "logout", expiration, TimeUnit.MILLISECONDS);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
 
