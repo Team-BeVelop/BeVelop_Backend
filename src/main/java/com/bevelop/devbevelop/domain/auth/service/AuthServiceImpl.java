@@ -197,14 +197,14 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public ResponseEntity<TokenDto> logout(UserLogOutDto userLogOutDto) {
+    public CommonResult logout(UserLogOutDto userLogOutDto) {
         // 1. Access Token 검증
-        if (!jwtTokenProvider.validateAccessToken(userLogOutDto.getAccessToken())) {
+        if (!jwtTokenProvider.validateAccessToken(userLogOutDto.getAccess_token())) {
             throw new CustomException(ErrorCode.LOGOUT_ERROR);
         }
 
         // 2. Access Token에서 user email을 가져온다
-        Authentication authentication = jwtTokenProvider.getAuthenticationByAccessToken(userLogOutDto.getAccessToken());
+        Authentication authentication = jwtTokenProvider.getAuthenticationByAccessToken(userLogOutDto.getAccess_token());
 
         // 3. Redis에서 해당 USER email로 저장된 Refresh Token이 있는지 여부를 확인 있을 경우 삭제
         if (redisTemplate.opsForValue().get(authentication.getName()) != null) {
@@ -213,11 +213,11 @@ public class AuthServiceImpl implements AuthService {
         }
 
         // 4. 해당 Access Token 유효시간 가지고 와서 BlackList로 저장
-        Long expiration = jwtTokenProvider.getExpiration(userLogOutDto.getAccessToken());
+        Long expiration = jwtTokenProvider.getExpiration(userLogOutDto.getAccess_token());
         redisTemplate.opsForValue()
-                .set(userLogOutDto.getAccessToken(), "logout", expiration, TimeUnit.MILLISECONDS);
+                .set(userLogOutDto.getAccess_token(), "logout", expiration, TimeUnit.MILLISECONDS);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return responseService.getSuccessResult();
     }
 }
 
