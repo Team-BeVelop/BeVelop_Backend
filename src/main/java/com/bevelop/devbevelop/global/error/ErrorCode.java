@@ -43,7 +43,9 @@ public enum ErrorCode {
     LOGIN_ERROR(BAD_REQUEST, "LOGIN-001" , "Invalid Credentials Supplied"),
 
     // Logout
-    LOGOUT_ERROR(BAD_REQUEST, "LOGOUT-001", "잘못된 요청입니다");
+    LOGOUT_ERROR(BAD_REQUEST, "LOGOUT-001", "잘못된 요청입니다"),
+
+    WRONG_PASSWORD(BAD_REQUEST, "PASS-001", "비밀번호가 잘못되었습니다");
 
     private final HttpStatus httpStatus;
     private final String code;

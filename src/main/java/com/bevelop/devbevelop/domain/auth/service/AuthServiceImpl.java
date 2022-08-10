@@ -2,6 +2,8 @@ package com.bevelop.devbevelop.domain.auth.service;
 
 import com.bevelop.devbevelop.domain.auth.dto.UserLogInDto;
 import com.bevelop.devbevelop.domain.auth.dto.UserLogOutDto;
+import com.bevelop.devbevelop.domain.auth.dto.UserWithdrawalDto;
+import com.bevelop.devbevelop.domain.user.service.UserServiceImpl;
 import com.bevelop.devbevelop.global.common.response.CommonResult;
 import com.bevelop.devbevelop.global.common.response.ResponseService;
 import com.bevelop.devbevelop.global.config.security.jwt.JwtTokenProvider;
@@ -25,6 +27,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +42,8 @@ import java.util.concurrent.TimeUnit;
 public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
+    private final UserServiceImpl userService;
+    private final PasswordEncoder passwordEncoder;
     private final ResponseService responseService;
     private final PasswordEncoder bCryptPasswordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
@@ -219,5 +224,20 @@ public class AuthServiceImpl implements AuthService {
 
         return responseService.getSuccessResult();
     }
-}
 
+    @Override
+    public CommonResult remove(UserDetails userDetails, UserWithdrawalDto userWithdrawalDto) {
+        // 1.비밀번호 체크
+        User userDetail = userService.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+
+        if(!userDetail.matchPassword(passwordEncoder, userWithdrawalDto.getCheck_password())) {
+            throw new CustomException(ErrorCode.WRONG_PASSWORD);
+        }
+        // 2. DB에서 해당 아이디 정보 삭제
+        userRepository.delete(userDetail);
+        // 3. 로그아웃 처리
+        return responseService.getSuccessResult();
+    }
+}

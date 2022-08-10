@@ -1,6 +1,7 @@
 package com.bevelop.devbevelop.domain.auth.service;
 
 import com.bevelop.devbevelop.domain.auth.dto.UserLogOutDto;
+import com.bevelop.devbevelop.domain.auth.dto.UserWithdrawalDto;
 import com.bevelop.devbevelop.domain.user.domain.User;
 import com.bevelop.devbevelop.global.common.response.CommonResult;
 import com.bevelop.devbevelop.global.config.security.jwt.dto.RegenerateTokenDto;
@@ -9,6 +10,7 @@ import com.bevelop.devbevelop.domain.auth.dto.UserSignUpDto;
 import com.bevelop.devbevelop.domain.auth.dto.UserLogInDto;
 import io.swagger.models.Response;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 
 
 public interface AuthService {
@@ -32,6 +34,8 @@ public interface AuthService {
     ResponseEntity<TokenDto> login(User user);
 
     CommonResult logout(UserLogOutDto userLogOutDto);
+
+    CommonResult remove(UserDetails userDetails, UserWithdrawalDto userWithdrawalDto);
 
     ResponseEntity<TokenDto> regenerateToken(RegenerateTokenDto refreshTokenDto);
 
