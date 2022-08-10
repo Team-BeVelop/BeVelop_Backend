@@ -43,7 +43,7 @@ public class AuthController {
 
     @ApiOperation(value="로그아웃", notes= "회원 로그아웃")
     @PostMapping("/logout")
-    public ResponseEntity<TokenDto> logOut(@Validated UserLogOutDto userLogOutDto) { return authService.logout(userLogOutDto); }
+    public CommonResult logOut(@Validated UserLogOutDto userLogOutDto) { return authService.logout(userLogOutDto); }
 
     @ApiOperation(value = "토큰 재발급", notes = "회원 토큰 재발급")
     @PostMapping("/regenerateToken")

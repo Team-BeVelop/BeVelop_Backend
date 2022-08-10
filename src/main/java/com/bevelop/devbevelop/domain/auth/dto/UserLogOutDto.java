@@ -10,8 +10,8 @@ import javax.validation.constraints.NotEmpty;
 public class UserLogOutDto {
 
     @NotEmpty(message = "잘못된 요청입니다.")
-    private String accessToken;
+    private String access_token;
 
     @NotEmpty(message = "잘못된 요청입니다.")
-    private String refreshToken;
+    private String refresh_token;
 }
