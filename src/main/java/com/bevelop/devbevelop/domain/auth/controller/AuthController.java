@@ -16,6 +16,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +46,10 @@ public class AuthController {
     @ApiOperation(value="로그아웃", notes= "회원 로그아웃")
     @PostMapping("/logout")
     public CommonResult logOut(@Validated UserLogOutDto userLogOutDto) { return authService.logout(userLogOutDto); }
+
+    @ApiOperation(value="회원탈퇴", notes= "회원 탈퇴")
+    @PostMapping("/remove")
+    public CommonResult remove(@AuthenticationPrincipal UserDetails userDetails, @Validated UserWithdrawalDto withdrawalDto ) { return authService.remove(userDetails, withdrawalDto);}
 
     @ApiOperation(value = "토큰 재발급", notes = "회원 토큰 재발급")
     @PostMapping("/regenerateToken")

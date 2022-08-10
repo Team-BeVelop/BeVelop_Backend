@@ -66,4 +66,8 @@ public class User extends BaseEntity {
         this.password = passwordEncoder.encode(this.password);
         return this;
     }
+
+    public boolean matchPassword(PasswordEncoder passwordEncoder, String checkPassword) {
+        return passwordEncoder.matches(checkPassword, getPassword());
+    }
 }
