@@ -31,6 +31,14 @@ public enum ErrorCode {
     MEMBER_EXISTS(CONFLICT, "MEMBER-0002", "이미 존재하는 회원 정보입니다"),
     MEMBER_SIGNUP_FAIL(BAD_REQUEST, "MEMBER-0003", "가입 실패"),
 
+    //Project
+    PROJECT_NOT_FOUND(NOT_FOUND, "PROJECT-0001", "존재하지 않는 프로젝트입니다"),
+    PROJECT_EXISTS(CONFLICT, "PROJECT-0002", "이미 존재하는 프로젝트입니다"),
+
+    //Team
+    TEAM_NOT_FOUND(NOT_FOUND, "TEAM-0001", "존재하지 않는 팀입니다"),
+    TEAM_EXISTS(CONFLICT, "TEAM-0002", "이미 존재하는 팀입니다."),
+
     //Communication
     COMMUNICATION_ERROR(BAD_REQUEST, "COMM-0001", "Communication error"),
 

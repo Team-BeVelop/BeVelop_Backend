@@ -1,9 +1,10 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: admin
-    url: jdbc:mysql://bevelop-rds-instance.c6qpo4nr80mp.ap-northeast-2.rds.amazonaws.com:3306/bevelop?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    password: wlghd6438!
+    username: root
+#    url: jdbc:mysql://bevelop-rds-instance.c6qpo4nr80mp.ap-northeast-2.rds.amazonaws.com:3306/bevelop?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/bevelop?serverTimezone=UTC
+    password: 1234
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
@@ -16,13 +17,24 @@ spring:
         login: https://kauth.kakao.com/oauth/authorize
         token: https://kauth.kakao.com/oauth/token
         profile: https://kapi.kakao.com/v2/user/me
+    github:
+      client_id: d8fb40fbac72e115be1c
+      client_secret: 6dc402a91ae9a613e01a1a50e49278b0f4a0948a
+      redirect: /social/login/github
+#      redirect: login/oauth2/code/github
+      url:
+        login: https://github.com/login/oauth/authorize
+        token: https://github.com/login/oauth/access_token
+        profile: https://api.github.com/user
+
+
   url:
-    base: http://localhost
+    base: http://localhost:8080
   mvc:
     pathmatch:
       matching-strategy: ant-path-matcher
   redis:
-    host: redis-test.30belf.ng.0001.apn2.cache.amazonaws.com
+    host: localhost
     port: 6379
 
 jwt:

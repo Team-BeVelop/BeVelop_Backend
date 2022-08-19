@@ -23,7 +23,7 @@ public class User extends BaseEntity {
     private Long id;
 
     @Column
-    private Long socialId;
+    private String socialId;
 
     @Column
     private String email;
@@ -51,7 +51,7 @@ public class User extends BaseEntity {
 
 
     @Builder
-    public User(String email, String password, String name, Job job, Interests interests, String provider, Long socialId) {
+    public User(String email, String password, String name, Job job, Interests interests, String provider, String socialId) {
         this.email = email;
         this.password = password;
         this.name = name;
@@ -64,6 +64,11 @@ public class User extends BaseEntity {
 
     public User hashPassword(PasswordEncoder passwordEncoder) {
         this.password = passwordEncoder.encode(this.password);
+        return this;
+    }
+
+    public User hashProvider(PasswordEncoder passwordEncoder) {
+        this.password = passwordEncoder.encode(this.provider);
         return this;
     }
 

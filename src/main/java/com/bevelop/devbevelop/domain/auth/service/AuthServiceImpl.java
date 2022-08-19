@@ -76,9 +76,9 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public CommonResult join(User user) throws CustomException{
 
-        validateDuplicateMember(user);
+//        validateDuplicateMember(user, user.getProvider());
 
-        User neswUser = userRepository.save(user);
+        User neswUser = userRepository.save(user.hashProvider(bCryptPasswordEncoder));
         if(Objects.isNull(user)) throw new CustomException(ErrorCode.MEMBER_SIGNUP_FAIL);
 
         // 성공할때도 200을 보낼수도있고 201을 보낼수도 있어서 나중에 변경 필요

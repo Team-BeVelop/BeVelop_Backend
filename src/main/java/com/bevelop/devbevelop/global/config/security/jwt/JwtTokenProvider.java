@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 @Slf4j
 @Component
-public class JwtTokenProvider {
+public class  JwtTokenProvider {
 
     @Value("${jwt.token.access-token-secret-key}")
     private String access_token_secret_key;
@@ -105,11 +105,12 @@ public class JwtTokenProvider {
      * @return
      */
     public String resolveToken(HttpServletRequest req) {
-        String bearerToken = req.getHeader("Authorization");
-        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
-        }
-        return null;
+//        String bearerToken = req.getHeader("Authorization");
+//        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+//            return bearerToken.substring(7);
+//        }
+//        return null;
+        return req.getHeader("AUTH-TOKEN");
     }
 
 

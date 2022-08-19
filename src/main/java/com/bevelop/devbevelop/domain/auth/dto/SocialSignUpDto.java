@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class KakaoSignUpDto {
+public class SocialSignUpDto {
 
     //이름
     @ApiParam(value = "이름", required = true)
