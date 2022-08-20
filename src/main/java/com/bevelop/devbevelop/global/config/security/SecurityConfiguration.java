@@ -120,20 +120,21 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .authorizeRequests()
+                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+                .and()
+                .cors().configurationSource(corsConfigurationSource())
+                .and()
                 .httpBasic().disable() // rest api 이므로 기본설정 사용안함. 기본설정은 비인증시 로그인폼 화면으로 리다이렉트 된다.
                 .csrf().disable() // rest api이므로 csrf 보안이 필요없으므로 disable처리.
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // jwt token으로 인증할것이므로 세션필요없으므로 생성안함.
                 .and()
-                .cors().configurationSource(corsConfigurationSource())
-                .and()
-                .authorizeRequests() // 다음 리퀘스트에 대한 사용권한 체크
-                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                .mvcMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-//                .antMatchers(("/user/hello")).permitAll()
-//                .antMatchers("/*/login", "/*/signup").permitAll() // 가입 및 인증 주소는 누구나 접근가능
+                .authorizeRequests()
+                .antMatchers(HttpMethod.OPTIONS, "/**/*").permitAll()
+//                .mvcMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .antMatchers("/auth/login", "/auth/signup").permitAll() // 가입 및 인증 주소는 누구나 접근가능
 //                .antMatchers("/*/users").hasRole("MASTER")
 //                .anyRequest().hasRole("SLAVE") // 그외 나머지 요청은 모두 인증된 회원만 접근 가능
-                .anyRequest().permitAll()
 //                .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, redisTemplate), UsernamePasswordAuthenticationFilter.class); // jwt token 필터를 id/password 인증 필터 전에 넣어라.
@@ -158,10 +159,12 @@ public class SecurityConfiguration {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.addAllowedOrigin("http://localhost:8080");
-        configuration.addAllowedOrigin("https://team-bevelop.github.io/BeVelop_Frontend");
+        configuration.addAllowedOrigin("http://localhost:3000");
+        configuration.addAllowedOrigin("https://team-bevelop.github.io/BeVelop_Frontend/");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
+        configuration.addExposedHeader("*");
+        configuration.setMaxAge(3600L);
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

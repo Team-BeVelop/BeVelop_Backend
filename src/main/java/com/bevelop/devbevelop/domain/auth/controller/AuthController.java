@@ -41,7 +41,7 @@ public class AuthController {
 
     @ApiOperation(value = "로그인", notes = "회원 로그인")
     @PostMapping("/login")
-    public ResponseEntity<TokenDto> login(@Validated UserLogInDto userLoginDto) { return authService.login(userLoginDto); }
+    public ResponseEntity<?> login(@RequestBody @Validated UserLogInDto userLoginDto) { return authService.login(userLoginDto); }
 
     @ApiOperation(value = "토큰 재발급", notes = "회원 토큰 재발급")
     @PostMapping("/regenerateToken")

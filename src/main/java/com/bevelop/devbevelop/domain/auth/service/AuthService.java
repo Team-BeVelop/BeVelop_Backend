@@ -29,7 +29,7 @@ public interface AuthService {
      * @param userLoginDto 유저의 이메일과 비밀번호
      * @return json web token
      */
-    ResponseEntity<TokenDto> login(UserLogInDto userLoginDto);
+    ResponseEntity<?> login(UserLogInDto userLoginDto);
 
     ResponseEntity<TokenDto> login(User user);
 
