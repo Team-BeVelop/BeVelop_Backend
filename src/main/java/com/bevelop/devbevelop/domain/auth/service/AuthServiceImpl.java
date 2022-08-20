@@ -1,23 +1,22 @@
 package com.bevelop.devbevelop.domain.auth.service;
 
-import com.bevelop.devbevelop.domain.auth.dto.UserLogInDto;
-import com.bevelop.devbevelop.domain.auth.dto.UserLogOutDto;
-import com.bevelop.devbevelop.domain.auth.dto.UserWithdrawalDto;
+import com.bevelop.devbevelop.domain.auth.dto.*;
 import com.bevelop.devbevelop.domain.user.service.UserServiceImpl;
 import com.bevelop.devbevelop.global.common.response.CommonResult;
 import com.bevelop.devbevelop.global.common.response.ResponseService;
 import com.bevelop.devbevelop.global.config.security.jwt.JwtTokenProvider;
 import com.bevelop.devbevelop.global.config.security.jwt.dto.RegenerateTokenDto;
 import com.bevelop.devbevelop.global.config.security.jwt.dto.TokenDto;
-import com.bevelop.devbevelop.domain.auth.dto.UserSignUpDto;
 import com.bevelop.devbevelop.domain.user.domain.User;
 import com.bevelop.devbevelop.domain.user.repository.UserRepository;
 import com.bevelop.devbevelop.global.error.exception.BaseException;
 import com.bevelop.devbevelop.global.error.exception.CustomException;
 import com.bevelop.devbevelop.global.error.ErrorCode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
@@ -28,6 +27,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,6 +49,8 @@ public class AuthServiceImpl implements AuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManager authenticationManager;
     private final RedisTemplate<String, String> redisTemplate;
+
+    private final UserDetailsService userDetailsService;
 
     @Value("${jwt.token.refresh-token-expire-length}")
     private long refresh_token_expire_time;
@@ -76,9 +78,9 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public CommonResult join(User user) throws CustomException{
 
-//        validateDuplicateMember(user, user.getProvider());
+        validateDuplicateMember(user);
 
-        User neswUser = userRepository.save(user.hashProvider(bCryptPasswordEncoder));
+        User neswUser = userRepository.save(user);
         if(Objects.isNull(user)) throw new CustomException(ErrorCode.MEMBER_SIGNUP_FAIL);
 
         // 성공할때도 200을 보낼수도있고 201을 보낼수도 있어서 나중에 변경 필요
@@ -94,7 +96,7 @@ public class AuthServiceImpl implements AuthService {
 
 
     @Override
-    public ResponseEntity<TokenDto> login(UserLogInDto userLoginDto) {
+    public ResponseEntity<JSONObject> login(UserLogInDto userLoginDto) {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -105,7 +107,19 @@ public class AuthServiceImpl implements AuthService {
 
             String refresh_token = jwtTokenProvider.generateRefreshToken(authentication);
 
+            UserDetails userDetails = userDetailsService.loadUserByUsername(userLoginDto.getEmail());
+
+            User userDetail = userService.findByEmail(userDetails.getUsername())
+                    .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+            UserDtos.UserLogInRes userLogInRes = new UserDtos.UserLogInRes(userDetail);
+
             TokenDto tokenDto = new TokenDto(jwtTokenProvider.generateAccessToken(authentication), refresh_token);
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("user", userLogInRes);
+            jsonObject.put("token", tokenDto);
+
 
             // Redis에 저장 - 만료 시간 설정을 통해 자동 삭제 처리
             redisTemplate.opsForValue().set(
@@ -117,7 +131,7 @@ public class AuthServiceImpl implements AuthService {
 
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.add("Authorization", "Bearer " + tokenDto.getAccess_token());
-            return new ResponseEntity<>(tokenDto, httpHeaders, HttpStatus.OK);
+            return new ResponseEntity<>(jsonObject, httpHeaders, HttpStatus.OK);
         } catch (AuthenticationException e) {
 //            throw new BaseException("Invalid credentials supplied", HttpStatus.BAD_REQUEST);
             throw new CustomException(ErrorCode.LOGIN_ERROR);
