@@ -17,6 +17,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -48,6 +50,14 @@ public class AuthController {
     public ResponseEntity<TokenDto> regenerateToken(@Validated RegenerateTokenDto refreshTokenDto) {
         return authService.regenerateToken(refreshTokenDto);
     }
+
+    @ApiOperation(value="로그아웃", notes= "회원 로그아웃")
+    @PostMapping("/logout")
+    public CommonResult logOut(@Validated UserLogOutDto userLogOutDto) { return authService.logout(userLogOutDto); }
+
+    @ApiOperation(value="회원탈퇴", notes= "회원 탈퇴")
+    @PostMapping("/remove")
+    public CommonResult remove(@AuthenticationPrincipal UserDetails userDetails, @Validated UserWithdrawalDto withdrawalDto ) { return authService.remove(userDetails, withdrawalDto);}
 
     @ApiOperation(value = "소셜 카카오 계정 가입", notes = "소셜 계정(카카오)을(를) 이용하여 회원가입을 한다.")
     @PostMapping(value = "/signup/kakao")
