@@ -39,7 +39,7 @@ public class AuthController {
 
     @ApiOperation(value = "가입", notes = "회원 가입")
     @PostMapping("/signup")
-    public CommonResult signUp(@Validated UserSignUpDto userSignUpDto) { return authService.join(userSignUpDto);}
+    public CommonResult signUp(@RequestBody @Validated UserSignUpDto userSignUpDto) { return authService.join(userSignUpDto);}
 
     @ApiOperation(value = "로그인", notes = "회원 로그인")
     @PostMapping("/login")
@@ -47,17 +47,17 @@ public class AuthController {
 
     @ApiOperation(value = "토큰 재발급", notes = "회원 토큰 재발급")
     @PostMapping("/regenerateToken")
-    public ResponseEntity<TokenDto> regenerateToken(@Validated RegenerateTokenDto refreshTokenDto) {
+    public ResponseEntity<TokenDto> regenerateToken(@RequestBody @Validated RegenerateTokenDto refreshTokenDto) {
         return authService.regenerateToken(refreshTokenDto);
     }
 
     @ApiOperation(value="로그아웃", notes= "회원 로그아웃")
     @PostMapping("/logout")
-    public CommonResult logOut(@Validated UserLogOutDto userLogOutDto) { return authService.logout(userLogOutDto); }
+    public CommonResult logOut(@RequestBody @Validated UserLogOutDto userLogOutDto) { return authService.logout(userLogOutDto); }
 
     @ApiOperation(value="회원탈퇴", notes= "회원 탈퇴")
     @PostMapping("/remove")
-    public CommonResult remove(@AuthenticationPrincipal UserDetails userDetails, @Validated UserWithdrawalDto withdrawalDto ) { return authService.remove(userDetails, withdrawalDto);}
+    public CommonResult remove(@AuthenticationPrincipal UserDetails userDetails,@RequestBody @Validated UserWithdrawalDto withdrawalDto ) { return authService.remove(userDetails, withdrawalDto);}
 
     @ApiOperation(value = "소셜 카카오 계정 가입", notes = "소셜 계정(카카오)을(를) 이용하여 회원가입을 한다.")
     @PostMapping(value = "/signup/kakao")
