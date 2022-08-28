@@ -53,7 +53,15 @@ public enum ErrorCode {
     // Logout
     LOGOUT_ERROR(BAD_REQUEST, "LOGOUT-001", "잘못된 요청입니다"),
 
-    WRONG_PASSWORD(BAD_REQUEST, "PASS-001", "비밀번호가 잘못되었습니다");
+    WRONG_PASSWORD(BAD_REQUEST, "PASS-001", "비밀번호가 잘못되었습니다"),
+
+    OWNER_CANT_LEAVE(BAD_REQUEST, "STUDY-001", "스터디장은 스터디를 탈퇴할 수 없습니다"),
+
+    USER_NOT_IN_STUDY(BAD_REQUEST, "STUDY-002", "스터디에 참여하지 않는 회원입니다"),
+
+    OWNER_AUTH(BAD_REQUEST, "STUDY-003", "스터디 방장만이 스터디를 수정할 수 있습니다."),
+
+    STUDY_NOT_FOUND(BAD_REQUEST, "STUDY-004", "존재하지 않는 스터디입니다");
 
     private final HttpStatus httpStatus;
     private final String code;
