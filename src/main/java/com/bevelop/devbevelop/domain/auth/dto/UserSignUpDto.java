@@ -1,17 +1,23 @@
 package com.bevelop.devbevelop.domain.auth.dto;
 
+import com.bevelop.devbevelop.domain.study.domain.AttachedStack;
+import com.bevelop.devbevelop.domain.study.domain.AttachedStacks;
 import com.bevelop.devbevelop.domain.user.domain.Interests;
 import com.bevelop.devbevelop.domain.user.domain.Job;
 import com.bevelop.devbevelop.domain.user.domain.User;
 import io.swagger.annotations.ApiParam;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.Singular;
 import lombok.ToString;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -38,6 +44,21 @@ public class UserSignUpDto {
     @ApiParam(value = "관심 직군")
     private Interests interests;
 
+    @ApiParam(value = "기술 스택")
+    private Set<String> stackName;
+
+
+    public Set<String> getStackName() {
+        return stackName == null ? Set.of() : stackName;
+    }
+
+    public AttachedStacks mapToAttachedStacks() {
+        final Set<AttachedStack> attachedStacks = getStackName().stream()
+                .map(AttachedStack::new)
+                .collect(Collectors.toSet());
+        return new AttachedStacks(attachedStacks);
+    }
+
 
     /**
      * Transform to User Entity
@@ -50,6 +71,7 @@ public class UserSignUpDto {
                 .name(this.getName())
                 .job(this.getJob())
                 .interests(this.getInterests())
+                .attachedStacks(mapToAttachedStacks())
                 .build();
     }
 }

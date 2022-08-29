@@ -1,14 +1,14 @@
 package com.bevelop.devbevelop.domain.user.domain;
 
-import com.bevelop.devbevelop.domain.stack.Stack;
+import com.bevelop.devbevelop.domain.study.domain.AttachedStacks;
 import com.bevelop.devbevelop.global.entity.BaseEntity;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -44,14 +44,23 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Interests interests;
 
-    @OneToMany(mappedBy = "user")
-    private List<Stack> stacks = new ArrayList<>();
+    @Embedded
+    private AttachedStacks attachedStacks;
+
+//    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+//    @JoinColumn(name = "user_id")
+//    private Set<Stack> stacks = new HashSet<>();
+
+//    @ElementCollection
+//    @CollectionTable(name = "stack_list", joinColumns = @JoinColumn(name = "user_id"))
+//    private Set<Stack> stackSet = new HashSet<>();
+
 
     private String provider;
 
 
     @Builder
-    public User(String email, String password, String name, Job job, Interests interests, String provider, String socialId) {
+    public User(String email, String password, String name, Job job, Interests interests, String provider, String socialId, AttachedStacks attachedStacks) {
         this.email = email;
         this.password = password;
         this.name = name;
@@ -60,6 +69,7 @@ public class User extends BaseEntity {
         this.role = Role.SLAVE;
         this.provider = provider;
         this.socialId = socialId;
+        this.attachedStacks = attachedStacks;
     }
 
     public User hashPassword(PasswordEncoder passwordEncoder) {
