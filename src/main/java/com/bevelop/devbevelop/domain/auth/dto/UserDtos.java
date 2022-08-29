@@ -1,5 +1,6 @@
 package com.bevelop.devbevelop.domain.auth.dto;
 
+import com.bevelop.devbevelop.domain.study.domain.AttachedStacks;
 import com.bevelop.devbevelop.domain.user.domain.Interests;
 import com.bevelop.devbevelop.domain.user.domain.Job;
 import com.bevelop.devbevelop.domain.user.domain.Role;
@@ -9,6 +10,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Set;
 
 @Getter
 @NoArgsConstructor
@@ -25,6 +28,10 @@ public class UserDtos {
         private Interests interests;
         private Job job;
 
+        private Set<?> stackName;
+
+
+
 
         public UserLogInRes(User user) {
             this.id = user.getId();
@@ -33,6 +40,7 @@ public class UserDtos {
             this.role = user.getRole();
             this.interests = user.getInterests();
             this.job = user.getJob();
+            this.stackName = user.getAttachedStacks().getValue();
         }
     }
 
