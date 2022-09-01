@@ -43,6 +43,7 @@ public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
     private final UserServiceImpl userService;
+
     private final PasswordEncoder passwordEncoder;
     private final ResponseService responseService;
     private final PasswordEncoder bCryptPasswordEncoder;
@@ -61,6 +62,7 @@ public class AuthServiceImpl implements AuthService {
         System.out.println("signUpReq = " + userSignUpDto.toString());
 
         User newUser = userSignUpDto.toUserEntity();
+
         newUser.hashPassword(bCryptPasswordEncoder);
 
         validateDuplicateMember(newUser);
@@ -252,6 +254,25 @@ public class AuthServiceImpl implements AuthService {
         // 2. DB에서 해당 아이디 정보 삭제
         userRepository.delete(userDetail);
         // 3. 로그아웃 처리
+        return responseService.getSuccessResult();
+    }
+
+    @Override
+    @Transactional
+    public CommonResult update(Long userId, UserDetails userDetails, UserUpdateDto userUpdateDto) {
+
+        Optional<User> findUser = userRepository.findByEmail(userDetails.getUsername());
+
+        System.out.println(findUser.toString());
+
+        if(userId != findUser.get().getId()) {
+            throw new CustomException(ErrorCode.MEMBER_NOT_FOUND);
+        }
+
+        findUser.get().update(userUpdateDto.getName(),userUpdateDto.getJob(), userUpdateDto.getInterests(),userUpdateDto.mapToAttachedStacks());
+
+
+        // 성공할때도 200을 보낼수도있고 201을 보낼수도 있어서 나중에 변경 필요
         return responseService.getSuccessResult();
     }
 }

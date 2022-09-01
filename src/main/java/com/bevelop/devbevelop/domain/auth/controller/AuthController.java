@@ -12,9 +12,7 @@ import com.bevelop.devbevelop.global.config.security.jwt.dto.TokenDto;
 import com.bevelop.devbevelop.domain.auth.service.AuthService;
 import com.bevelop.devbevelop.global.error.ErrorCode;
 import com.bevelop.devbevelop.global.error.exception.CustomException;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -55,9 +53,16 @@ public class AuthController {
     @PostMapping("/logout")
     public CommonResult logOut(@RequestBody @Validated UserLogOutDto userLogOutDto) { return authService.logout(userLogOutDto); }
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @ApiOperation(value= "회원수정", notes = "회원 수정")
+    @PutMapping("/edit/{id}")
+    public CommonResult updateUser(@PathVariable("id") Long id, @AuthenticationPrincipal UserDetails userDetails, @RequestBody @Validated UserUpdateDto userUpdateDto) { return authService.update(id, userDetails, userUpdateDto);}
+
     @ApiOperation(value="회원탈퇴", notes= "회원 탈퇴")
     @PostMapping("/remove")
-    public CommonResult remove(@AuthenticationPrincipal UserDetails userDetails,@RequestBody @Validated UserWithdrawalDto withdrawalDto ) { return authService.remove(userDetails, withdrawalDto);}
+    public CommonResult remove(@AuthenticationPrincipal UserDetails userDetails, @RequestBody @Validated UserWithdrawalDto withdrawalDto ) { return authService.remove(userDetails, withdrawalDto);}
 
     @ApiOperation(value = "소셜 카카오 계정 가입", notes = "소셜 계정(카카오)을(를) 이용하여 회원가입을 한다.")
     @PostMapping(value = "/signup/kakao")
