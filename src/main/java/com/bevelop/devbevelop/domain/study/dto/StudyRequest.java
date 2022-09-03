@@ -2,6 +2,8 @@ package com.bevelop.devbevelop.domain.study.dto;
 
 import com.bevelop.devbevelop.domain.model.Division;
 import com.bevelop.devbevelop.domain.study.domain.*;
+import com.bevelop.devbevelop.domain.user.domain.RecruitJob;
+import com.bevelop.devbevelop.domain.user.domain.RecruitJobs;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
@@ -30,6 +32,9 @@ public class StudyRequest {
 
     @ApiParam(value = "연관분야")
     private List<String> relatedFieldList;
+
+    @ApiParam(value = "모집직무")
+    private List<String> recruitJobList;
 
     @NotBlank
     @ApiParam(value ="제목")
@@ -89,6 +94,16 @@ public class StudyRequest {
                 .collect(Collectors.toList());
 
         return new RelatedFields(relatedFields);
+    }
+
+    public List<String> getRecruitJobList() { return recruitJobList == null ? List.of() : recruitJobList;}
+
+    public RecruitJobs mapToRecruitJobs() {
+        final List<RecruitJob> recruitJobs = getRecruitJobList().stream()
+                .map(RecruitJob::new)
+                .collect(Collectors.toList());
+
+        return new RecruitJobs(recruitJobs);
     }
 
 }
