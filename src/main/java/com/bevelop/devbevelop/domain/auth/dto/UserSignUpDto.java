@@ -1,21 +1,19 @@
 package com.bevelop.devbevelop.domain.auth.dto;
 
-import com.bevelop.devbevelop.domain.study.domain.AttachedStack;
-import com.bevelop.devbevelop.domain.study.domain.AttachedStacks;
+import com.bevelop.devbevelop.domain.user.domain.AttachedStack;
+import com.bevelop.devbevelop.domain.user.domain.AttachedStacks;
 import com.bevelop.devbevelop.domain.user.domain.Interests;
 import com.bevelop.devbevelop.domain.user.domain.Job;
 import com.bevelop.devbevelop.domain.user.domain.User;
 import io.swagger.annotations.ApiParam;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.Singular;
 import lombok.ToString;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
