@@ -23,7 +23,10 @@ public class Content {
     private String shortTitle;
 
     @Column
-    private String url;
+    private String emailUrl;
+
+    @Column
+    private String kakaoUrl;
 
     @Column(nullable = false)
     private String description;
@@ -34,11 +37,12 @@ public class Content {
     @Column
     private LocalDate endDate;
 
-    public Content(final Division division, final String title, final String shortTitle, final String url, String description, LocalDate startDate, LocalDate endDate) {
+    public Content(final Division division, final String title, final String shortTitle, final String emailUrl, final String kakaoUrl, String description, LocalDate startDate, LocalDate endDate) {
         this.division = division;
         this.title = title;
         this.shortTitle = shortTitle;
-        this.url = url;
+        this.emailUrl = emailUrl;
+        this.kakaoUrl = kakaoUrl;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -50,7 +54,9 @@ public class Content {
 
     public String getShortTitle() { return shortTitle;}
 
-    public String getUrl() { return url;}
+    public String getEmailUrl() { return emailUrl;}
+
+    public String getKakaoUrl() { return  kakaoUrl;}
 
     public String getDescription() { return description;}
 
@@ -63,11 +69,11 @@ public class Content {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Content content = (Content) o;
-        return division == content.division && Objects.equals(title, content.title) && Objects.equals(shortTitle, content.shortTitle) && Objects.equals(url, content.url) && Objects.equals(description, content.description) && Objects.equals(startDate, content.startDate) && Objects.equals(endDate, content.endDate);
+        return division == content.division && Objects.equals(title, content.title) && Objects.equals(shortTitle, content.shortTitle) && Objects.equals(emailUrl, content.emailUrl) && Objects.equals(kakaoUrl, content.kakaoUrl) && Objects.equals(description, content.description) && Objects.equals(startDate, content.startDate) && Objects.equals(endDate, content.endDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(division, title, shortTitle, url, description, startDate, endDate);
+        return Objects.hash(division, title, shortTitle, emailUrl, kakaoUrl, description, startDate, endDate);
     }
 }

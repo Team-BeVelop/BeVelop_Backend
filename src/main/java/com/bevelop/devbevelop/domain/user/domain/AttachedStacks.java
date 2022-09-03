@@ -1,4 +1,4 @@
-package com.bevelop.devbevelop.domain.study.domain;
+package com.bevelop.devbevelop.domain.user.domain;
 
 import lombok.Getter;
 
@@ -6,7 +6,6 @@ import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;

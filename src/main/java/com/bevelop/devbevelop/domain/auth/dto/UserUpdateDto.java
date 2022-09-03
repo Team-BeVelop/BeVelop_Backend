@@ -1,7 +1,7 @@
 package com.bevelop.devbevelop.domain.auth.dto;
 
-import com.bevelop.devbevelop.domain.study.domain.AttachedStack;
-import com.bevelop.devbevelop.domain.study.domain.AttachedStacks;
+import com.bevelop.devbevelop.domain.user.domain.AttachedStack;
+import com.bevelop.devbevelop.domain.user.domain.AttachedStacks;
 import com.bevelop.devbevelop.domain.user.domain.Interests;
 import com.bevelop.devbevelop.domain.user.domain.Job;
 import com.bevelop.devbevelop.domain.user.domain.User;

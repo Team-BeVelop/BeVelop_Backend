@@ -1,4 +1,4 @@
-package com.bevelop.devbevelop.domain.study.domain;
+package com.bevelop.devbevelop.domain.user.domain;
 
 import lombok.*;
 

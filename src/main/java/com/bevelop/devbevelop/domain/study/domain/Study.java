@@ -1,6 +1,7 @@
 package com.bevelop.devbevelop.domain.study.domain;
 
 import com.bevelop.devbevelop.domain.model.Division;
+import com.bevelop.devbevelop.domain.user.domain.AttachedStacks;
 import com.bevelop.devbevelop.global.error.ErrorCode;
 import com.bevelop.devbevelop.global.error.exception.BaseException;
 import com.bevelop.devbevelop.global.error.exception.CustomException;
@@ -12,6 +13,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -26,6 +29,9 @@ public class Study {
     private Content content;
 
     @Embedded
+    private RelatedFields relatedFields;
+
+    @Embedded
     private Participants participants;
 
     @Embedded
@@ -36,18 +42,19 @@ public class Study {
     private LocalDateTime createdAt;
 
     public Study (
-            final Content content, final Participants participants, final RecruitPlanner recruitPlanner,
+            final Content content, final RelatedFields relatedFields, final Participants participants, final RecruitPlanner recruitPlanner,
             LocalDateTime createdAt
     ) {
-        this(null, content, participants, recruitPlanner, createdAt);
+        this(null, content, relatedFields, participants, recruitPlanner, createdAt);
     }
 
     public Study (
-            final Long id, final Content content, final Participants participants, final RecruitPlanner recruitPlanner,
+            final Long id, final Content content, final RelatedFields relatedFields, final Participants participants, final RecruitPlanner recruitPlanner,
             LocalDateTime createdAt
     ) {
         this.id = id;
         this.content = content;
+        this.relatedFields = relatedFields;
         this.participants = participants;
         this.recruitPlanner = recruitPlanner;
         this.createdAt = createdAt;

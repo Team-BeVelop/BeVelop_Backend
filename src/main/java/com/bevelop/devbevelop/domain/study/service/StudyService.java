@@ -1,9 +1,6 @@
 package com.bevelop.devbevelop.domain.study.service;
 
-import com.bevelop.devbevelop.domain.study.domain.Content;
-import com.bevelop.devbevelop.domain.study.domain.Participants;
-import com.bevelop.devbevelop.domain.study.domain.RecruitPlanner;
-import com.bevelop.devbevelop.domain.study.domain.Study;
+import com.bevelop.devbevelop.domain.study.domain.*;
 import com.bevelop.devbevelop.domain.study.dto.StudyRequest;
 import com.bevelop.devbevelop.domain.study.repository.StudyRepository;
 import com.bevelop.devbevelop.domain.user.domain.User;
@@ -23,7 +20,6 @@ import java.time.LocalDateTime;
 public class StudyService {
 
     private final StudyRepository studyRepository;
-
     private final UserRepository userRepository;
     private final UserService userService;
 
@@ -49,9 +45,10 @@ public class StudyService {
         final RecruitPlanner recruitPlanner = studyRequest.mapToRecruitPlan();
 
         final Content content = studyRequest.mapToContent();
+        final RelatedFields relatedFields = studyRequest.mapToRelatedFields();
 
         return studyRepository.save(
-                new Study(content, participants, recruitPlanner, createdAt)
+                new Study(content, relatedFields, participants, recruitPlanner, createdAt)
         );
     }
 
