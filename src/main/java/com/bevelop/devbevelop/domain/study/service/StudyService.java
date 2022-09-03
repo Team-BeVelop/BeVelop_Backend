@@ -3,6 +3,7 @@ package com.bevelop.devbevelop.domain.study.service;
 import com.bevelop.devbevelop.domain.study.domain.*;
 import com.bevelop.devbevelop.domain.study.dto.StudyRequest;
 import com.bevelop.devbevelop.domain.study.repository.StudyRepository;
+import com.bevelop.devbevelop.domain.user.domain.RecruitJobs;
 import com.bevelop.devbevelop.domain.user.domain.User;
 import com.bevelop.devbevelop.domain.user.repository.UserRepository;
 import com.bevelop.devbevelop.domain.user.service.UserService;
@@ -46,9 +47,10 @@ public class StudyService {
 
         final Content content = studyRequest.mapToContent();
         final RelatedFields relatedFields = studyRequest.mapToRelatedFields();
+        final RecruitJobs recruitJobs = studyRequest.mapToRecruitJobs();
 
         return studyRepository.save(
-                new Study(content, relatedFields, participants, recruitPlanner, createdAt)
+                new Study(content, relatedFields, recruitJobs, participants, recruitPlanner, createdAt)
         );
     }
 

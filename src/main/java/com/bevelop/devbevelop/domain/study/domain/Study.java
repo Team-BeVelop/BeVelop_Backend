@@ -2,6 +2,7 @@ package com.bevelop.devbevelop.domain.study.domain;
 
 import com.bevelop.devbevelop.domain.model.Division;
 import com.bevelop.devbevelop.domain.user.domain.AttachedStacks;
+import com.bevelop.devbevelop.domain.user.domain.RecruitJobs;
 import com.bevelop.devbevelop.global.error.ErrorCode;
 import com.bevelop.devbevelop.global.error.exception.BaseException;
 import com.bevelop.devbevelop.global.error.exception.CustomException;
@@ -32,6 +33,9 @@ public class Study {
     private RelatedFields relatedFields;
 
     @Embedded
+    private RecruitJobs recruitJobs;
+
+    @Embedded
     private Participants participants;
 
     @Embedded
@@ -42,19 +46,20 @@ public class Study {
     private LocalDateTime createdAt;
 
     public Study (
-            final Content content, final RelatedFields relatedFields, final Participants participants, final RecruitPlanner recruitPlanner,
+            final Content content, final RelatedFields relatedFields, final RecruitJobs recruitJobs, final Participants participants, final RecruitPlanner recruitPlanner,
             LocalDateTime createdAt
     ) {
-        this(null, content, relatedFields, participants, recruitPlanner, createdAt);
+        this(null, content, relatedFields, recruitJobs, participants, recruitPlanner, createdAt);
     }
 
     public Study (
-            final Long id, final Content content, final RelatedFields relatedFields, final Participants participants, final RecruitPlanner recruitPlanner,
+            final Long id, final Content content, final RelatedFields relatedFields, final RecruitJobs recruitJobs, final Participants participants, final RecruitPlanner recruitPlanner,
             LocalDateTime createdAt
     ) {
         this.id = id;
         this.content = content;
         this.relatedFields = relatedFields;
+        this.recruitJobs = recruitJobs;
         this.participants = participants;
         this.recruitPlanner = recruitPlanner;
         this.createdAt = createdAt;
