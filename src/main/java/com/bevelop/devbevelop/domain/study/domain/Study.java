@@ -114,10 +114,12 @@ public class Study {
         return UserRole.NON_USER;
     }
 
-    public void update(Long userId, Content content, RecruitPlanner recruitPlanner) {
+    public void update(Long userId, Content content, RecruitPlanner recruitPlanner, RelatedFields relatedFields, RecruitJobs recruitJobs) {
         checkOwner(userId);
         this.content = content;
         this.recruitPlanner = recruitPlanner;
+        this.relatedFields = relatedFields;
+        this.recruitJobs = recruitJobs;
     }
 
     private void checkOwner(Long userId) {

@@ -62,6 +62,6 @@ public class StudyService {
         User owner = userService.findByEmail(userDetails.getUsername())
                 .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
-        study.update(owner.getId(), studyRequest.mapToContent(), studyRequest.mapToRecruitPlan());
+        study.update(owner.getId(), studyRequest.mapToContent(), studyRequest.mapToRecruitPlan(), studyRequest.mapToRelatedFields(), studyRequest.mapToRecruitJobs());
     }
 }
