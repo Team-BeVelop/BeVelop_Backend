@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 
-@Api(tags = {"Study Controller"})
+@Api(tags = {"4. Study Controller"})
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/studies")
