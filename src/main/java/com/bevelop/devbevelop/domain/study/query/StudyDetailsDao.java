@@ -3,6 +3,7 @@ package com.bevelop.devbevelop.domain.study.query;
 import com.bevelop.devbevelop.domain.model.Division;
 import com.bevelop.devbevelop.domain.study.query.data.StudyDetailsData;
 import com.bevelop.devbevelop.domain.study.query.data.StudyDetailsDataBuilder;
+import com.bevelop.devbevelop.domain.user.query.data.OwnerData;
 import com.bevelop.devbevelop.global.error.ErrorCode;
 import com.bevelop.devbevelop.global.error.exception.CustomException;
 import lombok.RequiredArgsConstructor;
@@ -26,9 +27,11 @@ public class StudyDetailsDao {
     public Optional<StudyDetailsData> findBy(Long studyId) {
         try {
             String sql =
-                    "SELECT study.id, division, title, short_title, email_url, kakao_url, description, recruitment_status, "
-                    + "current_member_count, max_member_count, created_at, enrollment_end_date, start_date, end_date "
-                    + "FROM study WHERE study.id = ?";
+                    "SELECT study.id, owner_id, division, title, short_title, email_url, kakao_url, description, recruitment_status, "
+                    + "current_member_count, max_member_count, created_at, enrollment_end_date, start_date, end_date, "
+                            + "bevelop_user.email as owner_email, bevelop_user.name as owner_name "
+                    + "FROM study JOIN bevelop_user ON study.owner_id = bevelop_user.user_id "
+                            +"WHERE study.id = ?";
 
             final StudyDetailsData data = jdbcTemplate.query(sql, new StudyDetailsDataExtractor(), studyId);
             return Optional.of(data);
@@ -46,6 +49,7 @@ public class StudyDetailsDao {
         public StudyDetailsData extractData(final ResultSet resultSet) throws SQLException, DataAccessException {
             if (resultSet.next()) {
                 appendStudyContent(resultSet);
+                appendParticipants(resultSet);
                 return builder.build();
             }
             throw new CustomException(ErrorCode.STUDY_NOT_FOUND);
@@ -69,6 +73,14 @@ public class StudyDetailsDao {
                     .description(description).recruitmentStatus(recruitmentStatus)
                     .createdDate(createdDate).enrollmentEndDate(enrollmentEndDate)
                     .startDate(startDate).endDate(endDate);
+        }
+
+        private void appendParticipants(final ResultSet rs) throws SQLException {
+            Long userId = rs.getLong("owner_id");
+            String email = rs.getString("owner_email");
+            String username = rs.getString("owner_name");
+
+            builder.owner(new OwnerData(userId, email, username));
         }
     }
 

@@ -1,6 +1,7 @@
 package com.bevelop.devbevelop.domain.study.query.data;
 
 import com.bevelop.devbevelop.domain.model.Division;
+import com.bevelop.devbevelop.domain.user.query.data.OwnerData;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 public class StudyDetailsData {
 
     private final Long id;
+    private final OwnerData owner;
     private final String division;
     private final String title;
     private final String shortTitle;

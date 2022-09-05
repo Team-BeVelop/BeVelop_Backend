@@ -2,6 +2,7 @@ package com.bevelop.devbevelop.domain.study.service.response;
 
 import com.bevelop.devbevelop.domain.model.Division;
 import com.bevelop.devbevelop.domain.study.query.data.StudyDetailsData;
+import com.bevelop.devbevelop.domain.user.query.data.OwnerData;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,7 @@ import java.time.LocalDate;
 public class StudyDetailResponse {
 
     private Long id;
+    private OwnerData owner;
     private String division;
     private String title;
     private String shortTitle;
@@ -32,6 +34,7 @@ public class StudyDetailResponse {
 
     public StudyDetailResponse(final StudyDetailsData study) {
         this.id = study.getId();
+        this.owner = study.getOwner();
         this.division = study.getDivision();
         this.title = study.getTitle();
         this.shortTitle = study.getShortTitle();
