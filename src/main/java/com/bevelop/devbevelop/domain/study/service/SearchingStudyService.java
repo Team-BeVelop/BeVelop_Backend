@@ -1,7 +1,9 @@
 package com.bevelop.devbevelop.domain.study.service;
 
+import com.bevelop.devbevelop.domain.study.query.RecruitJobDao;
 import com.bevelop.devbevelop.domain.study.query.RelatedFieldDao;
 import com.bevelop.devbevelop.domain.study.query.StudyDetailsDao;
+import com.bevelop.devbevelop.domain.study.query.data.RecruitJobData;
 import com.bevelop.devbevelop.domain.study.query.data.RelatedFieldData;
 import com.bevelop.devbevelop.domain.study.query.data.StudyDetailsData;
 import com.bevelop.devbevelop.domain.study.service.response.StudyDetailResponse;
@@ -19,12 +21,15 @@ public class SearchingStudyService {
     private final StudyDetailsDao studyDetailsDao;
 
     private final RelatedFieldDao relatedFieldDao;
+    private final RecruitJobDao recruitJobDao;
 
     public SearchingStudyService(
             final StudyDetailsDao studyDetailsDao,
-            RelatedFieldDao relatedFieldDao) {
+            final RelatedFieldDao relatedFieldDao,
+            final RecruitJobDao recruitJobDao) {
         this.studyDetailsDao = studyDetailsDao;
         this.relatedFieldDao = relatedFieldDao;
+        this.recruitJobDao = recruitJobDao;
     }
 
     public StudyDetailResponse getStudyDetails(final Long studyId) {
@@ -33,7 +38,9 @@ public class SearchingStudyService {
 
         final List<RelatedFieldData> relatedFieldDataList = relatedFieldDao.findFieldByStudyId(studyId);
 
+        final List<RecruitJobData> recruitJobDataList = recruitJobDao.findRecruitJobByStudyId(studyId);
 
-        return new StudyDetailResponse(content, relatedFieldDataList);
+
+        return new StudyDetailResponse(content, relatedFieldDataList, recruitJobDataList);
     }
 }

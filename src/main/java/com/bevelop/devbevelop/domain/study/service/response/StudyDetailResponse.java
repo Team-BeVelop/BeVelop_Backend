@@ -1,6 +1,7 @@
 package com.bevelop.devbevelop.domain.study.service.response;
 
 import com.bevelop.devbevelop.domain.model.Division;
+import com.bevelop.devbevelop.domain.study.query.data.RecruitJobData;
 import com.bevelop.devbevelop.domain.study.query.data.RelatedFieldData;
 import com.bevelop.devbevelop.domain.study.query.data.StudyDetailsData;
 import com.bevelop.devbevelop.domain.user.query.data.OwnerData;
@@ -33,11 +34,13 @@ public class StudyDetailResponse {
     private LocalDate enrollmentEndDate;
     private LocalDate startDate;
     private LocalDate endDate;
-
     private List<RelatedFieldData> fieldList;
 
+    private List<RecruitJobData> jobList;
+
     public StudyDetailResponse(final StudyDetailsData study,
-                               final List<RelatedFieldData> fieldList) {
+                               final List<RelatedFieldData> fieldList,
+                               final List<RecruitJobData> jobList) {
         this.id = study.getId();
         this.owner = study.getOwner();
         this.division = study.getDivision();
@@ -54,6 +57,7 @@ public class StudyDetailResponse {
         this.startDate = study.getStartDate();
         this.endDate = study.getEndDate();
         this.fieldList = fieldList;
+        this.jobList = jobList;
     }
 
 }
