@@ -1,6 +1,7 @@
 package com.bevelop.devbevelop.domain.study.query.data;
 
 import com.bevelop.devbevelop.domain.model.Division;
+import com.bevelop.devbevelop.domain.user.query.data.OwnerData;
 
 import java.time.LocalDate;
 
@@ -9,6 +10,7 @@ import static java.util.Objects.requireNonNull;
 public class StudyDetailsDataBuilder {
 
     private Long id;
+    private OwnerData owner;
     private String division;
     private String title;
     private String shortTitle;
@@ -28,6 +30,11 @@ public class StudyDetailsDataBuilder {
 
     public StudyDetailsDataBuilder id(Long id) {
         this.id = id;
+        return this;
+    }
+
+    public StudyDetailsDataBuilder owner(OwnerData owner) {
+        this.owner = owner;
         return this;
     }
 
@@ -98,7 +105,7 @@ public class StudyDetailsDataBuilder {
 
     public StudyDetailsData build() {
         return new StudyDetailsData(
-                id, division, title, shortTitle, emailUrl, kakaoUrl, description, recruitmentStatus, currentMemberCount, maxMemberCount, createdDate, enrollmentEndDate,
+                id, owner, division, title, shortTitle, emailUrl, kakaoUrl, description, recruitmentStatus, currentMemberCount, maxMemberCount, createdDate, enrollmentEndDate,
                 startDate, endDate
         );
     }
