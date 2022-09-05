@@ -1,6 +1,7 @@
 package com.bevelop.devbevelop.domain.study.service.response;
 
 import com.bevelop.devbevelop.domain.model.Division;
+import com.bevelop.devbevelop.domain.study.query.data.RelatedFieldData;
 import com.bevelop.devbevelop.domain.study.query.data.StudyDetailsData;
 import com.bevelop.devbevelop.domain.user.query.data.OwnerData;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @AllArgsConstructor
 @Getter
@@ -32,7 +34,10 @@ public class StudyDetailResponse {
     private LocalDate startDate;
     private LocalDate endDate;
 
-    public StudyDetailResponse(final StudyDetailsData study) {
+    private List<RelatedFieldData> fieldList;
+
+    public StudyDetailResponse(final StudyDetailsData study,
+                               final List<RelatedFieldData> fieldList) {
         this.id = study.getId();
         this.owner = study.getOwner();
         this.division = study.getDivision();
@@ -48,6 +53,7 @@ public class StudyDetailResponse {
         this.enrollmentEndDate = study.getEnrollmentEndDate();
         this.startDate = study.getStartDate();
         this.endDate = study.getEndDate();
+        this.fieldList = fieldList;
     }
 
 }
