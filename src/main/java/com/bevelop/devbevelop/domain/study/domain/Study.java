@@ -87,13 +87,15 @@ public class Study {
         }
     }
 
-    public void participate(final Long memberId) {
+
+    // controller to
+    public void initParticipate(final Long memberId, final String message) {
         if (recruitPlanner.isCloseEnrollment()) {
             throw new FailureParticipationException();
         }
 
-        final Participant participant = new Participant(memberId);
-        participants.participate(participant.getUserId());
+        final Participant participant = new Participant(memberId, ParticipateStatus.STAND_BY, message);
+        participants.initParticipate(participant.getUserId(), message);
 
         if (isFullOfCapacity()) {
             recruitPlanner.closeRecruiting();

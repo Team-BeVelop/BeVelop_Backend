@@ -40,12 +40,12 @@ public class Participants {
         return new Participants(ownerId, new HashSet<>());
     }
 
-    void participate(Long memberId) {
+    void initParticipate(Long memberId, String message) {
         if (isParticipation(memberId)) {
             throw new FailureParticipationException();
         }
 
-        participants.add(new Participant(memberId));
+        participants.add(new Participant(memberId, ParticipateStatus.STAND_BY, message));
         size++;
     }
 
@@ -64,12 +64,12 @@ public class Participants {
         return size;
     }
 
-    private Set<Participant> getParticipants() {
-        Set<Participant> totalParticipants = new HashSet<>();
-        totalParticipants.add(new Participant(ownerId));
-        totalParticipants.addAll(this.participants);
-        return totalParticipants;
-    }
+//    private Set<Participant> getParticipants() {
+//        Set<Participant> totalParticipants = new HashSet<>();
+//        totalParticipants.add(new Participant(ownerId, ParticipateStatus.ACCEPT));
+//        totalParticipants.addAll(this.participants);
+//        return totalParticipants;
+//    }
 
     @Override
     public boolean equals(Object o) {
