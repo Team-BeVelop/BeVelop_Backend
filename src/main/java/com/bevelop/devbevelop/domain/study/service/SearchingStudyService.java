@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class SearchingStudyService {
 
     private final StudyDetailsDao studyDetailsDao;
