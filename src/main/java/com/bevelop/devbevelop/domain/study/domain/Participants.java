@@ -44,18 +44,16 @@ public class Participants {
         if (isParticipation(memberId)) {
             throw new FailureParticipationException();
         }
-
         participants.add(new Participant(memberId, ParticipateStatus.STAND_BY, message));
         size++;
     }
 
     public void leave(final Participant participant) {
         participants.remove(participant);
-        size--;
     }
 
     boolean isParticipation(final Long userId) {
-        return participants.contains(new Participant(userId)) || isOwner(userId);
+        return participants.contains(new Participant(userId, ParticipateStatus.STAND_BY, "")) || isOwner(userId);
     }
 
     boolean isOwner(Long userId) { return ownerId.equals(userId);}
@@ -83,4 +81,5 @@ public class Participants {
     public int hashCode() {
         return Objects.hash(size, ownerId, participants);
     }
+
 }

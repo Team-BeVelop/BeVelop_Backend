@@ -32,5 +32,18 @@ public class StudyParticipantController {
         return ResponseEntity.noContent().build();
     }
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @DeleteMapping
+    public ResponseEntity<Void> leaveStudy(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @PathVariable("study-id") final Long studyId
+    ) {
+        studyParticipantService.leaveStudy(userDetails, studyId);
+        return ResponseEntity.noContent().build();
+    }
+
+
 
 }

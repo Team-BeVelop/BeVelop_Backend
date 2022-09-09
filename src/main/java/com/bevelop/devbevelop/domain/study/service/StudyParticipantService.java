@@ -1,5 +1,7 @@
 package com.bevelop.devbevelop.domain.study.service;
 
+import com.bevelop.devbevelop.domain.study.domain.Participant;
+import com.bevelop.devbevelop.domain.study.domain.ParticipateStatus;
 import com.bevelop.devbevelop.domain.study.domain.Study;
 import com.bevelop.devbevelop.domain.study.dto.ParticipateStudyDto;
 import com.bevelop.devbevelop.domain.study.repository.StudyRepository;
@@ -22,6 +24,7 @@ public class StudyParticipantService {
 
     private final StudyRepository studyRepository;
 
+
     public StudyParticipantService(final UserService userService,
                                    final StudyRepository studyRepository) {
         this.userService = userService;
@@ -34,5 +37,15 @@ public class StudyParticipantService {
                 .orElseThrow(() -> new CustomException(ErrorCode.STUDY_NOT_FOUND));
 
         study.initParticipate(user.getId(), message.getMessage());
+    }
+
+    public void leaveStudy(UserDetails userDetails, Long studyId) {
+        User user = userService.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+        final Study study = studyRepository.findById(studyId)
+                .orElseThrow(() -> new CustomException(ErrorCode.STUDY_NOT_FOUND));
+
+        study.leave(new Participant(user.getId(), ParticipateStatus.STAND_BY, ""));
+
     }
 }
