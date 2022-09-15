@@ -48,4 +48,25 @@ public class StudyParticipantService {
         study.leave(new Participant(user.getId(), ParticipateStatus.STAND_BY, ""));
 
     }
+
+    public void acceptStudy(UserDetails userDetails, Long studyId, Long userId) {
+        User owner = userService.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+        final Study study = studyRepository.findById(studyId)
+                .orElseThrow(() -> new CustomException(ErrorCode.STUDY_NOT_FOUND));
+
+        study.accept(new Participant(userId, ParticipateStatus.STAND_BY), userId, owner.getId());
+    }
+
+
+    public void refuseStudy(UserDetails userDetails, Long studyId, Long userId) {
+        User owner = userService.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+        final Study study = studyRepository.findById(studyId)
+                .orElseThrow(() -> new CustomException(ErrorCode.STUDY_NOT_FOUND));
+
+        study.refuse(new Participant(userId, ParticipateStatus.REFUSE), userId, owner.getId());
+    }
 }

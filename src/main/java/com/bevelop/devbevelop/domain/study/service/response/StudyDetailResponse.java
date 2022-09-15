@@ -1,6 +1,7 @@
 package com.bevelop.devbevelop.domain.study.service.response;
 
 import com.bevelop.devbevelop.domain.model.Division;
+import com.bevelop.devbevelop.domain.study.query.data.ParticipatingMemberData;
 import com.bevelop.devbevelop.domain.study.query.data.RecruitJobData;
 import com.bevelop.devbevelop.domain.study.query.data.RelatedFieldData;
 import com.bevelop.devbevelop.domain.study.query.data.StudyDetailsData;
@@ -35,12 +36,37 @@ public class StudyDetailResponse {
     private LocalDate startDate;
     private LocalDate endDate;
     private List<RelatedFieldData> fieldList;
-
     private List<RecruitJobData> jobList;
+    private List<ParticipatingMemberData> members;
 
     public StudyDetailResponse(final StudyDetailsData study,
                                final List<RelatedFieldData> fieldList,
-                               final List<RecruitJobData> jobList) {
+                               final List<RecruitJobData> jobList,
+                               final List<ParticipatingMemberData> participants) {
+        this.id = study.getId();
+        this.owner = study.getOwner();
+        this.division = study.getDivision();
+        this.title = study.getTitle();
+        this.shortTitle = study.getShortTitle();
+        this.emailUrl = study.getEmailUrl();
+        this.kakaoUrl = study.getKakaoUrl();
+        this.description = study.getDescription();
+        this.recruitmentStatus = study.getRecruitmentStatus();
+        this.currentMemberCount = study.getCurrentMemberCount();
+        this.maxMemberCount = study.getMaxMemberCount();
+        this.createdDate = study.getCreatedDate();
+        this.enrollmentEndDate = study.getEnrollmentEndDate();
+        this.startDate = study.getStartDate();
+        this.endDate = study.getEndDate();
+        this.fieldList = fieldList;
+        this.jobList = jobList;
+        this.members = participants;
+    }
+
+    public StudyDetailResponse(final StudyDetailsData study,
+                               final List<RelatedFieldData> fieldList,
+                               final List<RecruitJobData> jobList
+    ) {
         this.id = study.getId();
         this.owner = study.getOwner();
         this.division = study.getDivision();

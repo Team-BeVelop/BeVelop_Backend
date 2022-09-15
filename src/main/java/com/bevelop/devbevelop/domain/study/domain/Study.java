@@ -78,6 +78,16 @@ public class Study {
         participants.leave(participant);
     }
 
+    public void accept(final Participant participant, Long userId, Long ownerId) {
+        checkOwner(ownerId);
+        participants.accept(participant, userId);
+    }
+
+    public void refuse(final Participant participant, Long userId, Long ownerId) {
+        checkOwner(ownerId);
+        participants.refuse(participant, userId);
+    }
+
     private void verifyCanLeave(final Participant participant) {
         if (participants.isOwner(participant.getUserId())) {
             throw new CustomException(ErrorCode.OWNER_CANT_LEAVE);
@@ -129,7 +139,6 @@ public class Study {
             throw new CustomException(ErrorCode.OWNER_AUTH);
         }
     }
-
 
 
 }
