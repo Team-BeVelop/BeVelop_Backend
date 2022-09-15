@@ -3,8 +3,12 @@ package com.bevelop.devbevelop.domain.study.controller;
 import com.bevelop.devbevelop.domain.study.service.SearchingStudyService;
 import com.bevelop.devbevelop.domain.study.service.response.StudyDetailResponse;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @Api(tags = {"5. Study Search Controller"})
@@ -28,9 +32,14 @@ public class SearchingStudyController {
 //        return ResponseEntity.ok().body(studiesResponse);
 //    }
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
     @GetMapping("/{study-id}")
-    public ResponseEntity<StudyDetailResponse> getStudyDetails(@PathVariable(name = "study-id") Long studyId) {
-        final StudyDetailResponse response = searchingStudyService.getStudyDetails(studyId);
+    public ResponseEntity<StudyDetailResponse> getStudyDetails(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @PathVariable(name = "study-id") Long studyId) {
+        final StudyDetailResponse response = searchingStudyService.getStudyDetails(userDetails, studyId);
         return ResponseEntity.ok().body(response);
     }
 

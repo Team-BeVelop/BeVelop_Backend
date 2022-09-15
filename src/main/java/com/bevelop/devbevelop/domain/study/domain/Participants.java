@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Embeddable
@@ -50,6 +48,18 @@ public class Participants {
 
     public void leave(final Participant participant) {
         participants.remove(participant);
+    }
+
+    public void accept(final Participant participant, final Long userId) {
+        String message = participant.getMessage();
+        participants.remove(participant);
+        participants.add(new Participant(userId, ParticipateStatus.ACCEPT, message));
+    }
+
+    public void refuse(final Participant participant, final Long userId) {
+        String message = participant.getMessage();
+        participants.remove(participant);
+        participants.add(new Participant(userId, ParticipateStatus.REFUSE, message));
     }
 
     boolean isParticipation(final Long userId) {

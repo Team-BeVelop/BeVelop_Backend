@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 @Getter
+@Setter
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -34,11 +35,21 @@ public class Participant {
         this.participationDate = LocalDate.now();
     }
 
+    public Participant(final Long userId, final ParticipateStatus status) {
+        this.userId = userId;
+        this.participationDate = LocalDate.now();
+        this.status = status;
+    }
+
     public Participant(final Long userId, final ParticipateStatus status, final String message) {
         this.userId = userId;
         this.participationDate = LocalDate.now();
         this.status = status;
         this.message = message;
+    }
+
+    public void accept(final Participant participant) {
+        participant.setStatus(ParticipateStatus.ACCEPT);
     }
 
     @Override
