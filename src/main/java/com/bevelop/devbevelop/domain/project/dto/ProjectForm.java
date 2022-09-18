@@ -2,7 +2,7 @@ package com.bevelop.devbevelop.domain.project.dto;
 
 import com.bevelop.devbevelop.domain.model.ProjectTemplate;
 import com.bevelop.devbevelop.domain.project.domain.Project;
-import com.bevelop.devbevelop.domain.team.domain.Team;
+//import com.bevelop.devbevelop.domain.team.domain.Team;
 import com.bevelop.devbevelop.domain.user.domain.User;
 import io.swagger.annotations.ApiParam;
 import lombok.*;
@@ -26,19 +26,12 @@ public class ProjectForm {
     @ApiParam(value = "프로젝트 디테일")
     private String projectDetail;
 
-//    @ApiParam(value = "유저 정보", required = true)
-//    private User user;
-//
-//    @ApiParam(value = "팀 정보", required = true)
-//    private Team team;
 
     public Project toEntity() {
         return Project.builder()
                 .title(title)
                 .projecttmp(projectTemplate)
                 .detail(projectDetail)
-//                .user(user)
-//                .team(team)
                 .build();
     }
 }

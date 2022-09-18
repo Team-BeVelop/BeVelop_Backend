@@ -7,6 +7,7 @@ import com.bevelop.devbevelop.domain.project.service.ProjectService;
 import com.bevelop.devbevelop.domain.user.domain.User;
 import com.bevelop.devbevelop.domain.user.dto.UserRes;
 import com.bevelop.devbevelop.domain.user.service.UserServiceImpl;
+import com.bevelop.devbevelop.global.common.response.ListResult;
 import com.bevelop.devbevelop.global.error.exception.CustomException;
 import com.bevelop.devbevelop.global.error.ErrorCode;
 import io.swagger.annotations.Api;
@@ -24,7 +25,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
-@Api(tags = {"4. Project Controller"})
+@Api(tags = {"3. Project Controller"})
 @RestController
 @RequestMapping("/project")
 @RequiredArgsConstructor
@@ -48,20 +49,20 @@ public class ProjectController {
             @ApiImplicitParam(name = "AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ApiOperation(value = "새로운 프로젝트 생성")
-    @PostMapping("/new")
-    public Project createProject(@Valid ProjectForm projectFormDto) throws CustomException {
+    @PutMapping("/new")
+    public Project createProject(@Valid @RequestBody ProjectForm projectFormDto) throws CustomException {
         Project project = projectFormDto.toEntity();
         return projectService.create(project);
     }
-    @ApiOperation(value = "프로젝트 수정")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
-    })
-    @PutMapping("/edit/{title}")
-    public Project updateProject(@PathVariable("title") String title, @Valid ProjectUpdate projectUpdateDto) {
-        Project project = projectService.updateProject(title, projectUpdateDto);
-        return project;
-    }
+//    @ApiOperation(value = "프로젝트 수정")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+//    })
+//    @PutMapping("/edit/{title}")
+//    public Project updateProject(@PathVariable("title") String title, @Valid @RequestBody ProjectUpdate projectUpdateDto) {
+//        Project project = projectService.updateProject(title, projectUpdateDto);
+//        return project;
+//    }
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
@@ -71,4 +72,5 @@ public class ProjectController {
     public void deleteProject(@PathVariable("title") String title) {
         projectService.deleteProject(title);
     }
+
 }

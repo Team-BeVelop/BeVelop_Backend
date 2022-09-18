@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import java.util.Set;
 
 @Embeddable
 @Getter
@@ -27,7 +28,7 @@ public class ProjectTemplate {
     @Enumerated(EnumType.STRING)
     @Column(name = "team_task")
     @NotNull
-    private Task task;
+    private Set<Task> task;
 
     @Enumerated(EnumType.STRING)
     @Column (name = "team_category")

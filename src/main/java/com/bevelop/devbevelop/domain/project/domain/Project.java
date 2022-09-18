@@ -1,12 +1,13 @@
 package com.bevelop.devbevelop.domain.project.domain;
 
 import com.bevelop.devbevelop.domain.model.ProjectTemplate;
-import com.bevelop.devbevelop.domain.team.domain.Team;
+//import com.bevelop.devbevelop.domain.team.domain.Team;
 import com.bevelop.devbevelop.domain.user.domain.User;
 import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -21,12 +22,12 @@ public class Project {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "main_user_id")
     private User user;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_id")
-    private Team team;
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "team_id")
+//    private Team team;
 
     @Embedded
     @Column(name = "projecttmp")
@@ -42,9 +43,8 @@ public class Project {
     private String detail;
 
     @Builder
-    public Project(User user, Team team, ProjectTemplate projecttmp, String title, String detail) {
+    public Project(User user, ProjectTemplate projecttmp, String title, String detail) {
         this.user = user;
-        this.team = team;
         this.projecttmp = projecttmp;
         this.title = title;
         this.detail = detail;
