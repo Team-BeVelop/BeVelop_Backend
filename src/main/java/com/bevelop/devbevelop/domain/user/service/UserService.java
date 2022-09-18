@@ -40,4 +40,7 @@ public interface UserService {
      * @return 수정된 User
      */
     User updateUser(User user, String newInfo);
+
+    Optional<User> findById(Long id);
+    Optional<User> findBySocialId(String id);
 }

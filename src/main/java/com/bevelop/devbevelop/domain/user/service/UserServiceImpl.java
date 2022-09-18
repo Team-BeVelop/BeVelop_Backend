@@ -35,4 +35,14 @@ public class UserServiceImpl implements UserService {
     public User updateUser(User user, String newInfo) {
         return null;
     }
+
+    @Override
+    public Optional<User> findById(Long id) {
+        return userRepository.findById(id);
+    }
+
+    @Override
+    public Optional<User> findBySocialId(String id) {
+        return userRepository.findBySocialId(id);
+    }
 }

@@ -42,7 +42,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         if(email.contains("@")) {
 
-
             User user = userRepository.findByEmail(email).orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
             return org.springframework.security.core.userdetails.User.builder()
