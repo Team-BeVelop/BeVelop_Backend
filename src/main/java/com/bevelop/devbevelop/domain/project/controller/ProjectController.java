@@ -32,9 +32,9 @@ import java.util.Optional;
 public class ProjectController {
     private final ProjectService projectService;
 
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "jwt", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
-    })
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "jwt", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+//    })
     @ApiOperation(value = "프로젝트 찾기", notes = "PathVariable로 주어진 title을 가진 프로젝트의 정보")
     @GetMapping("/view/{title}")
     public Project findProject(@PathVariable String title) throws CustomException {
@@ -44,10 +44,10 @@ public class ProjectController {
         return project;
     }
 
-    @Transactional
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "jwt", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
-    })
+//    @Transactional
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "jwt", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+//    })
     @ApiOperation(value = "새로운 프로젝트 생성")
     @PutMapping("/new")
     public Project createProject(@Valid @RequestBody ProjectForm projectFormDto) throws CustomException {
@@ -64,9 +64,9 @@ public class ProjectController {
 //        return project;
 //    }
 
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "jwt", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
-    })
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "jwt", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+//    })
     @ApiOperation(value = "프로젝트 삭제")
     @DeleteMapping(value = "/delete/{title}")
     public void deleteProject(@PathVariable("title") String title) {

@@ -23,9 +23,6 @@ public class Project {
     @JoinColumn(name = "main_user_id")
     private User user;
 
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "team_id")
-//    private Team team;
 
     @Embedded
     @Column(name = "projecttmp")
