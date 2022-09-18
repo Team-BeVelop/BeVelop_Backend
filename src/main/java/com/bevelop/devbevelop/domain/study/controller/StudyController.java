@@ -29,7 +29,7 @@ public class StudyController {
 
 
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+            @ApiImplicitParam(name = "jwt", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ApiOperation(value = "스터디 생성", notes = "스터디 생성")
     @PostMapping
@@ -42,7 +42,7 @@ public class StudyController {
     }
 
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+            @ApiImplicitParam(name = "jwt", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ApiOperation(value = "스터디 수정", notes = "스터디 수정")
     @PutMapping("/{study-id}")

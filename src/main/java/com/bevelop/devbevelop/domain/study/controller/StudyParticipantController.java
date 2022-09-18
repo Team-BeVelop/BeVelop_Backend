@@ -20,7 +20,7 @@ public class StudyParticipantController {
     private final StudyParticipantService studyParticipantService;
 
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+            @ApiImplicitParam(name = "jwt", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @PostMapping
     public ResponseEntity<Void> participateStudy(
@@ -33,7 +33,7 @@ public class StudyParticipantController {
     }
 
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+            @ApiImplicitParam(name = "jwt", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @DeleteMapping
     public ResponseEntity<Void> leaveStudy(

@@ -1,6 +1,5 @@
 package com.bevelop.devbevelop.domain.study.query.data;
 
-import com.bevelop.devbevelop.domain.model.Division;
 import com.bevelop.devbevelop.domain.user.query.data.OwnerData;
 
 import java.time.LocalDate;

@@ -33,7 +33,7 @@ public class SearchingStudyController {
 //    }
 
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+            @ApiImplicitParam(name = "jwt", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @GetMapping("/{study-id}")
     public ResponseEntity<StudyDetailResponse> getStudyDetails(

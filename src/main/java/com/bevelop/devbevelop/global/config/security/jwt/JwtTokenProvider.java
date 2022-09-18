@@ -110,7 +110,7 @@ public class  JwtTokenProvider {
 //            return bearerToken.substring(7);
 //        }
 //        return null;
-        return req.getHeader("AUTH-TOKEN");
+        return req.getHeader("jwt");
     }
 
 

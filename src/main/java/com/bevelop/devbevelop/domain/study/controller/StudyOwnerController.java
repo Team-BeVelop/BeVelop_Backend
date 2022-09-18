@@ -21,7 +21,7 @@ public class StudyOwnerController {
     private final StudyParticipantService studyParticipantService;
 
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+            @ApiImplicitParam(name = "jwt", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @PutMapping("/accept/{user-id}")
     public ResponseEntity<Void> acceptStudy(
@@ -34,7 +34,7 @@ public class StudyOwnerController {
     }
 
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+            @ApiImplicitParam(name = "jwt", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @PutMapping("/refuse/{user-id}")
     public ResponseEntity<Void> refuseStudy(

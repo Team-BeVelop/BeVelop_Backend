@@ -54,7 +54,7 @@ public class AuthController {
     public CommonResult logOut(@Valid @RequestBody UserLogOutDto userLogOutDto) { return authService.logout(userLogOutDto); }
 
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+            @ApiImplicitParam(name = "jwt", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ApiOperation(value= "회원수정", notes = "회원 수정")
     @PutMapping("/edit/{id}")

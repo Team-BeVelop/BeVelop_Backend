@@ -1,10 +1,9 @@
 package com.bevelop.devbevelop.domain.study.dto;
 
-import com.bevelop.devbevelop.domain.model.Division;
+import com.bevelop.devbevelop.domain.project.domain.Division;
 import com.bevelop.devbevelop.domain.study.domain.*;
 import com.bevelop.devbevelop.domain.user.domain.RecruitJob;
 import com.bevelop.devbevelop.domain.user.domain.RecruitJobs;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

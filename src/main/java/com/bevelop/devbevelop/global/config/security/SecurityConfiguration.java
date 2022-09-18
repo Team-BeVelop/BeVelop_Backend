@@ -130,6 +130,7 @@ public class SecurityConfiguration {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // jwt token으로 인증할것이므로 세션필요없으므로 생성안함.
                 .and()
                 .authorizeRequests()
+                .antMatchers("/swagger-resources/**").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**/*").permitAll()
 //                .mvcMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers("/auth/login", "/auth/signup").permitAll() // 가입 및 인증 주소는 누구나 접근가능

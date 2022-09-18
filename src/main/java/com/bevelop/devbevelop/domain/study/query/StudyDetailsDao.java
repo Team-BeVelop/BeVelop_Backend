@@ -1,6 +1,5 @@
 package com.bevelop.devbevelop.domain.study.query;
 
-import com.bevelop.devbevelop.domain.model.Division;
 import com.bevelop.devbevelop.domain.study.query.data.StudyDetailsData;
 import com.bevelop.devbevelop.domain.study.query.data.StudyDetailsDataBuilder;
 import com.bevelop.devbevelop.domain.user.query.data.OwnerData;

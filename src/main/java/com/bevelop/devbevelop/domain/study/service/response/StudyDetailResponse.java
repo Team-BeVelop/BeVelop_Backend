@@ -1,6 +1,5 @@
 package com.bevelop.devbevelop.domain.study.service.response;
 
-import com.bevelop.devbevelop.domain.model.Division;
 import com.bevelop.devbevelop.domain.study.query.data.ParticipatingMemberData;
 import com.bevelop.devbevelop.domain.study.query.data.RecruitJobData;
 import com.bevelop.devbevelop.domain.study.query.data.RelatedFieldData;

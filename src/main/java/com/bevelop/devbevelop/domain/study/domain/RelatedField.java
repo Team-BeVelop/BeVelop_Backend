@@ -1,6 +1,5 @@
 package com.bevelop.devbevelop.domain.study.domain;
 
-import com.bevelop.devbevelop.domain.model.Category;
 import lombok.*;
 
 import javax.persistence.*;

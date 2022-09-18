@@ -1,10 +1,7 @@
 package com.bevelop.devbevelop.domain.study.domain;
 
-import com.bevelop.devbevelop.domain.model.Division;
-import com.bevelop.devbevelop.domain.user.domain.AttachedStacks;
 import com.bevelop.devbevelop.domain.user.domain.RecruitJobs;
 import com.bevelop.devbevelop.global.error.ErrorCode;
-import com.bevelop.devbevelop.global.error.exception.BaseException;
 import com.bevelop.devbevelop.global.error.exception.CustomException;
 import com.bevelop.devbevelop.global.error.exception.FailureParticipationException;
 import lombok.AccessLevel;
@@ -14,8 +11,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
