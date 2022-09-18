@@ -37,37 +37,37 @@ public class AuthController {
 
     @ApiOperation(value = "가입", notes = "회원 가입")
     @PostMapping("/signup")
-    public CommonResult signUp(@RequestBody @Validated UserSignUpDto userSignUpDto) { return authService.join(userSignUpDto);}
+    public CommonResult signUp(@Valid @RequestBody UserSignUpDto userSignUpDto) { return authService.join(userSignUpDto);}
 
     @ApiOperation(value = "로그인", notes = "회원 로그인")
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody @Validated UserLogInDto userLoginDto) { return authService.login(userLoginDto); }
+    public ResponseEntity<?> login(@Valid @RequestBody UserLogInDto userLoginDto) { return authService.login(userLoginDto); }
 
     @ApiOperation(value = "토큰 재발급", notes = "회원 토큰 재발급")
     @PostMapping("/regenerateToken")
-    public ResponseEntity<TokenDto> regenerateToken(@RequestBody @Validated RegenerateTokenDto refreshTokenDto) {
+    public ResponseEntity<TokenDto> regenerateToken(@Valid @RequestBody RegenerateTokenDto refreshTokenDto) {
         return authService.regenerateToken(refreshTokenDto);
     }
 
     @ApiOperation(value="로그아웃", notes= "회원 로그아웃")
     @PostMapping("/logout")
-    public CommonResult logOut(@RequestBody @Validated UserLogOutDto userLogOutDto) { return authService.logout(userLogOutDto); }
+    public CommonResult logOut(@Valid @RequestBody UserLogOutDto userLogOutDto) { return authService.logout(userLogOutDto); }
 
     @ApiImplicitParams({
             @ApiImplicitParam(name = "AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ApiOperation(value= "회원수정", notes = "회원 수정")
     @PutMapping("/edit/{id}")
-    public CommonResult updateUser(@PathVariable("id") Long id, @AuthenticationPrincipal UserDetails userDetails, @RequestBody @Validated UserUpdateDto userUpdateDto) { return authService.update(id, userDetails, userUpdateDto);}
+    public CommonResult updateUser(@PathVariable("id") Long id, @AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody UserUpdateDto userUpdateDto) { return authService.update(id, userDetails, userUpdateDto);}
 
     @ApiOperation(value="회원탈퇴", notes= "회원 탈퇴")
     @PostMapping("/remove")
-    public CommonResult remove(@AuthenticationPrincipal UserDetails userDetails, @RequestBody @Validated UserWithdrawalDto withdrawalDto ) { return authService.remove(userDetails, withdrawalDto);}
+    public CommonResult remove(@AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody UserWithdrawalDto withdrawalDto ) { return authService.remove(userDetails, withdrawalDto);}
 
     @ApiOperation(value = "소셜 카카오 계정 가입", notes = "소셜 계정(카카오)을(를) 이용하여 회원가입을 한다.")
     @PostMapping(value = "/signup/kakao")
     public CommonResult signupKakao(@ApiParam(value = "소셜 authentication code", required = true) @RequestParam String code,
-                                 @Valid SocialSignUpDto socialSignUpDto) {
+                                    @Valid @RequestBody SocialSignUpDto socialSignUpDto) {
         KakaoProfile kakaoProfile = kakaoService.execKakaoLogin(code);
         User user = User.builder()
                 .name(socialSignUpDto.getName())
@@ -85,7 +85,7 @@ public class AuthController {
     @ApiOperation(value = "소셜 깃허브 계정 가입", notes = "소셜 계정(깃허브)을(를) 이용하여 회원가입을 한다.")
     @PostMapping(value = "/signup/github")
     public CommonResult signupGithub(@ApiParam(value = "소셜 authentication code", required = true) @RequestParam String code,
-                                       @Valid SocialSignUpDto socialSignUpDto) {
+                                       @Valid @RequestBody SocialSignUpDto socialSignUpDto) {
         GithubProfile githubProfile = githubService.execGithubLogin(code);
         User user = User.builder()
                 .name(socialSignUpDto.getName())
@@ -122,5 +122,12 @@ public class AuthController {
 //        return responseService.getSingleResult(jwtTokenProvider.createToken(user.getId(), user.getRole()));
 //        return "redirect:webauthcallback://success?customToken="+jwtTokenProvider.createToken(user.ge tId(), user.getRole());
     }
+
+    @ApiOperation(value = "email 중복 검사", notes = "회원가입 시 email 중복 검사")
+    @PostMapping(value = "signup/duplicate")
+    public CommonResult validateDuplicateEmail(@ApiParam(value = "email", required = true) @RequestParam String email) {
+        return authService.validateDuplicateMember(email);
+    }
+
 
 }

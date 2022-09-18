@@ -39,5 +39,5 @@ public interface AuthService {
 
     ResponseEntity<TokenDto> regenerateToken(RegenerateTokenDto refreshTokenDto);
 
-
+    CommonResult validateDuplicateMember(String email);
 }

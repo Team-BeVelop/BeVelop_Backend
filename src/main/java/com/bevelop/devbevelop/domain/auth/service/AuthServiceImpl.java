@@ -65,7 +65,7 @@ public class AuthServiceImpl implements AuthService {
 
         newUser.hashPassword(bCryptPasswordEncoder);
 
-        validateDuplicateMember(newUser);
+        validateDuplicateMember(newUser.getEmail());
 
         User user = userRepository.save(newUser);
         if(Objects.isNull(user)) throw new CustomException(ErrorCode.MEMBER_SIGNUP_FAIL);
@@ -80,7 +80,7 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public CommonResult join(User user) throws CustomException{
 
-        validateDuplicateMember(user);
+        validateDuplicateMember(user.getEmail());
 
         User neswUser = userRepository.save(user);
         if(Objects.isNull(user)) throw new CustomException(ErrorCode.MEMBER_SIGNUP_FAIL);
@@ -91,9 +91,12 @@ public class AuthServiceImpl implements AuthService {
 //        return responseService.getFailResult(400,"Fail to Sign up");
     }
 
-    private void validateDuplicateMember(User user) {
-        Optional<User> findUser = userRepository.findByEmail(user.getEmail());
+    @Override
+    @Transactional
+    public CommonResult validateDuplicateMember(String email) {
+        Optional<User> findUser = userRepository.findByEmail(email);
         if(findUser.isPresent()) throw new CustomException(ErrorCode.MEMBER_EXISTS);
+        return responseService.getSuccessResult();
     }
 
 

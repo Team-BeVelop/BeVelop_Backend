@@ -1,6 +1,5 @@
 package com.bevelop.devbevelop.domain.user.domain;
 
-import com.bevelop.devbevelop.domain.study.domain.AttachedStacks;
 import com.bevelop.devbevelop.global.entity.BaseEntity;
 import com.sun.istack.NotNull;
 import lombok.*;
