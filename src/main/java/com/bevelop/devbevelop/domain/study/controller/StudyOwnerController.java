@@ -2,6 +2,7 @@ package com.bevelop.devbevelop.domain.study.controller;
 
 
 import com.bevelop.devbevelop.domain.study.service.StudyParticipantService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Api(tags = {"7. Study Accept Refuse Controller"})
 @RestController
 @RequestMapping("/studies/{study-id}/owner")
 @RequiredArgsConstructor

@@ -2,6 +2,7 @@ package com.bevelop.devbevelop.domain.study.controller;
 
 import com.bevelop.devbevelop.domain.study.dto.ParticipateStudyDto;
 import com.bevelop.devbevelop.domain.study.service.StudyParticipantService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@Api(tags = {"6. Study Participate Controller"})
 @RestController
 @RequestMapping("/studies/{study-id}/user")
 @RequiredArgsConstructor
