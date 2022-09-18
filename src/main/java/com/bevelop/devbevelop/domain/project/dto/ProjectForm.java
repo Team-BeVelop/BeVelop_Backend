@@ -1,15 +1,10 @@
 package com.bevelop.devbevelop.domain.project.dto;
 
-import com.bevelop.devbevelop.domain.model.ProjectTemplate;
+import com.bevelop.devbevelop.domain.project.domain.ProjectTemplate;
 import com.bevelop.devbevelop.domain.project.domain.Project;
 //import com.bevelop.devbevelop.domain.team.domain.Team;
-import com.bevelop.devbevelop.domain.user.domain.User;
 import io.swagger.annotations.ApiParam;
 import lombok.*;
-
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 
 @Getter
 @Setter

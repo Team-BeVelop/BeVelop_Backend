@@ -1,6 +1,6 @@
 package com.bevelop.devbevelop.domain.study.domain;
 
-import com.bevelop.devbevelop.domain.model.Division;
+import com.bevelop.devbevelop.domain.project.domain.Division;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

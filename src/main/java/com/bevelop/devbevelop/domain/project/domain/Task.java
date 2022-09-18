@@ -1,4 +1,4 @@
-package com.bevelop.devbevelop.domain.model;
+package com.bevelop.devbevelop.domain.project.domain;
 
 public enum Task {
     DESIGNER, FRONTEND, BACKEND, DATA, PRODUCER

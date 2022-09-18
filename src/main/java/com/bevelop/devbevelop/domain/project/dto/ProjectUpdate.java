@@ -1,17 +1,11 @@
 package com.bevelop.devbevelop.domain.project.dto;
 
-import com.bevelop.devbevelop.domain.model.ProjectTemplate;
+import com.bevelop.devbevelop.domain.project.domain.ProjectTemplate;
 //import com.bevelop.devbevelop.domain.team.domain.Team;
 import com.bevelop.devbevelop.domain.user.domain.User;
 import io.swagger.annotations.ApiParam;
 import lombok.*;
-import org.mapstruct.BeanMapping;
-import org.mapstruct.NullValuePropertyMappingStrategy;
 
-import javax.persistence.Column;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Getter

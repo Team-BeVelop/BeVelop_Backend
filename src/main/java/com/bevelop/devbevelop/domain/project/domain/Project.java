@@ -1,13 +1,11 @@
 package com.bevelop.devbevelop.domain.project.domain;
 
-import com.bevelop.devbevelop.domain.model.ProjectTemplate;
 //import com.bevelop.devbevelop.domain.team.domain.Team;
 import com.bevelop.devbevelop.domain.user.domain.User;
 import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Getter

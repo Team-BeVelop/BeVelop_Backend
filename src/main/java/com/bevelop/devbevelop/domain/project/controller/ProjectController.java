@@ -5,7 +5,7 @@ import com.bevelop.devbevelop.domain.project.dto.ProjectForm;
 import com.bevelop.devbevelop.domain.project.dto.ProjectUpdate;
 import com.bevelop.devbevelop.domain.project.service.ProjectService;
 import com.bevelop.devbevelop.domain.user.domain.User;
-import com.bevelop.devbevelop.domain.user.dto.UserRes;
+//import com.bevelop.devbevelop.domain.user.dto.UserRes;
 import com.bevelop.devbevelop.domain.user.service.UserServiceImpl;
 import com.bevelop.devbevelop.global.common.response.ListResult;
 import com.bevelop.devbevelop.global.error.exception.CustomException;
@@ -33,9 +33,9 @@ public class ProjectController {
     private final ProjectService projectService;
 
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+            @ApiImplicitParam(name = "jwt", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
-    @ApiOperation(value = "프로젝트 찾기", notes = "PathVariable로 주어진 title을 가진 유저의 UserRes")
+    @ApiOperation(value = "프로젝트 찾기", notes = "PathVariable로 주어진 title을 가진 프로젝트의 정보")
     @GetMapping("/view/{title}")
     public Project findProject(@PathVariable String title) throws CustomException {
         Project project = projectService.findByTitle(title)
@@ -46,7 +46,7 @@ public class ProjectController {
 
     @Transactional
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+            @ApiImplicitParam(name = "jwt", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ApiOperation(value = "새로운 프로젝트 생성")
     @PutMapping("/new")
@@ -56,7 +56,7 @@ public class ProjectController {
     }
 //    @ApiOperation(value = "프로젝트 수정")
 //    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+//            @ApiImplicitParam(name = "jwt", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
 //    })
 //    @PutMapping("/edit/{title}")
 //    public Project updateProject(@PathVariable("title") String title, @Valid @RequestBody ProjectUpdate projectUpdateDto) {
@@ -65,7 +65,7 @@ public class ProjectController {
 //    }
 
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "AUTH-TOKEN", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+            @ApiImplicitParam(name = "jwt", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ApiOperation(value = "프로젝트 삭제")
     @DeleteMapping(value = "/delete/{title}")
