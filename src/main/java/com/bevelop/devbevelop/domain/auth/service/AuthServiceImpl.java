@@ -174,9 +174,54 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
+//    @Override
+//    public ResponseEntity<TokenDto> regenerateToken(RegenerateTokenDto refreshTokenDto) {
+//        String refresh_token = refreshTokenDto.getRefresh_token();
+//        try {
+//            // Refresh Token 검증
+//            if (!jwtTokenProvider.validateRefreshToken(refresh_token)) {
+//                throw new CustomException(ErrorCode.JWT_REFRESH_TOKEN_EXPIRED);
+//            }
+//
+//            // Access Token 에서 User email를 가져온다.
+//            Authentication authentication = jwtTokenProvider.getAuthenticationByRefreshToken(refresh_token);
+//
+//            // Redis에서 저장된 Refresh Token 값을 가져온다.
+//            String refreshToken = redisTemplate.opsForValue().get(authentication.getName());
+//            if(ObjectUtils.isEmpty(refreshToken)) {
+//                throw new CustomException(ErrorCode.LOGOUT_ERROR);
+//            }
+//            if(!refreshToken.equals(refresh_token)) {
+//                throw new CustomException(ErrorCode.MISMATCH_REFRESH_TOKEN);
+//            }
+//
+//            // 토큰 재발행
+//            String new_refresh_token = jwtTokenProvider.generateRefreshToken(authentication);
+//            String new_access_token = jwtTokenProvider.generateAccessToken(authentication);
+//            TokenDto tokenDto = new TokenDto(
+//                    new_access_token,
+//                    new_refresh_token
+//            );
+//
+//            // RefreshToken Redis에 업데이트
+//            redisTemplate.opsForValue().set(
+//                    authentication.getName(),
+//                    new_refresh_token,
+//                    refresh_token_expire_time,
+//                    TimeUnit.MILLISECONDS
+//            );
+//
+//            HttpHeaders httpHeaders = new HttpHeaders();
+//            httpHeaders.add("Authorization", "Bearer " + tokenDto.getAccess_token());
+//
+//            return new ResponseEntity<>(tokenDto, httpHeaders, HttpStatus.OK);
+//        } catch (ExpiredJwtException e) {
+//            throw new CustomException(ErrorCode.JWT_REFRESH_TOKEN_EXPIRED);
+//        }
+//    }
+
     @Override
-    public ResponseEntity<TokenDto> regenerateToken(RegenerateTokenDto refreshTokenDto) {
-        String refresh_token = refreshTokenDto.getRefresh_token();
+    public ResponseEntity<TokenDto> regenerateToken(String refresh_token) {
         try {
             // Refresh Token 검증
             if (!jwtTokenProvider.validateRefreshToken(refresh_token)) {

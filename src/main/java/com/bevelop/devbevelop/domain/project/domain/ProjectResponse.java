@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class ProjectLike extends BaseEntity {
+public class ProjectResponse extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,17 +20,23 @@ public class ProjectLike extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id")
+//    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="user")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="project_id")
+//    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="project")
     private Project project;
 
+    @Enumerated(EnumType.STRING)
+    private Responses response;
+
     @Builder
-    public ProjectLike(User user, Project project) {
+    public ProjectResponse(User user, Project project, Responses response) {
         this.user = user;
         this.project = project;
+        this.response = response;
     }
 
 }

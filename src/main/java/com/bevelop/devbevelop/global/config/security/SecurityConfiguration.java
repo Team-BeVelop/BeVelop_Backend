@@ -131,12 +131,13 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/swagger-resources/**").permitAll()
-                .antMatchers(HttpMethod.OPTIONS, "/**/*").permitAll()
+//                .antMatchers(HttpMethod.OPTIONS, "/**/*").permitAll()
 //                .mvcMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .antMatchers("/auth/login", "/auth/signup").permitAll() // 가입 및 인증 주소는 누구나 접근가능
+//                .antMatchers("**/login", "**/signup").permitAll() // 가입 및 인증 주소는 누구나 접근가능
 //                .antMatchers("/*/users").hasRole("MASTER")
 //                .anyRequest().hasRole("SLAVE") // 그외 나머지 요청은 모두 인증된 회원만 접근 가능
 //                .anyRequest().authenticated()
+                .anyRequest().permitAll()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, redisTemplate), UsernamePasswordAuthenticationFilter.class); // jwt token 필터를 id/password 인증 필터 전에 넣어라.
 

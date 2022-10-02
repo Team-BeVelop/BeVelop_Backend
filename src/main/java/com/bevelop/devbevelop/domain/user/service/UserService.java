@@ -43,4 +43,5 @@ public interface UserService {
 
     Optional<User> findById(Long id);
     Optional<User> findBySocialId(String id);
+    Optional<User> findBySocialIdOrEmail(String id);
 }

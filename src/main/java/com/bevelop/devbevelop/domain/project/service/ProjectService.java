@@ -1,17 +1,18 @@
 package com.bevelop.devbevelop.domain.project.service;
 
+import org.springframework.util.StringUtils;
 import com.bevelop.devbevelop.domain.project.domain.Project;
+import com.bevelop.devbevelop.domain.project.dto.ProjectRes;
 import com.bevelop.devbevelop.domain.project.dto.ProjectUpdate;
 import com.bevelop.devbevelop.domain.project.repository.ProjectRepository;
 import com.bevelop.devbevelop.domain.user.domain.User;
-import com.bevelop.devbevelop.domain.user.repository.UserRepository;
-import com.bevelop.devbevelop.global.common.response.ListResult;
 import com.bevelop.devbevelop.global.error.ErrorCode;
 import com.bevelop.devbevelop.global.error.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -21,12 +22,6 @@ public class ProjectService {
 
     private final ProjectRepository projectRepository;
 
-    //프로젝트 생성
-    public Project create(Project project) {
-        validateDuplicateTitle(project);
-        return projectRepository.save(project);
-    }
-
     //중복 제목 체크
     private void validateDuplicateTitle(Project project) {
         Optional<Project> findProject = projectRepository.findByTitle(project.getTitle());
@@ -34,23 +29,27 @@ public class ProjectService {
     }
 
     //title로 프로젝트 찾기
-    public Optional<Project> findByTitle(String title) {
+    public ProjectRes findByTitle(String title) {
         Optional<Project> findProject = projectRepository.findByTitle(title);
-        if(findProject.isEmpty()) throw new CustomException(ErrorCode.PROJECT_NOT_FOUND);
-        return findProject;
+        return new ProjectRes(findProject.orElseThrow(()->new CustomException(ErrorCode.PROJECT_NOT_FOUND)));
+    }
+
+    public ProjectRes findById(Long id) {
+        Optional<Project> findProject = projectRepository.findById(id);
+        return new ProjectRes(findProject.orElseThrow(()->new CustomException(ErrorCode.PROJECT_NOT_FOUND)));
     }
 
     //update project
-//    public Project updateProject(String title, ProjectUpdate projectForm) {
-//        Project original = findByTitle(title).get();
-//        projectMapper.updateProjectFromDto(projectForm, original);
-//        return projectRepository.save(original);
-//    }
-
-    //delete project
-    public void deleteProject(String title) {
-        projectRepository.deleteById(findByTitle(title).get().getId());
+    public Project save(Project project) {
+        return projectRepository.save(project);
     }
 
+                          //delete project
+    public void deleteProject(Long id) {
+        projectRepository.deleteById(id);
+    }
 
+    public List<Project> findAll() {
+        return projectRepository.findAll();
+    }
 }

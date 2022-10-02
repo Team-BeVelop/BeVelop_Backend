@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(force = true)
 public class UserUpdateDto {
 
-    @NotBlank(message = "이름은 필수 입력 값입니다.")
-    @ApiParam(value = "이름", required = true)
+
+    @ApiParam(value = "이름")
     private String name;
 
     @ApiParam(value = "직업")

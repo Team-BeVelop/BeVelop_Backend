@@ -34,6 +34,7 @@ public enum ErrorCode {
     //Project
     PROJECT_NOT_FOUND(NOT_FOUND, "PROJECT-0001", "존재하지 않는 프로젝트입니다"),
     PROJECT_EXISTS(CONFLICT, "PROJECT-0002", "이미 존재하는 프로젝트입니다"),
+    NOT_OWNER(BAD_REQUEST, "PROJECT-0003", "프로젝트의 owner만 프로젝트를 수정할 수 있습니다"),
 
     //Team
     TEAM_NOT_FOUND(NOT_FOUND, "TEAM-0001", "존재하지 않는 팀입니다"),

@@ -43,10 +43,16 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody UserLogInDto userLoginDto) { return authService.login(userLoginDto); }
 
+//    @ApiOperation(value = "토큰 재발급", notes = "회원 토큰 재발급")
+//    @PostMapping("/regenerateToken")
+//    public ResponseEntity<TokenDto> regenerateToken(@Valid @RequestBody RegenerateTokenDto refreshTokenDto) {
+//        return authService.regenerateToken(refreshTokenDto);
+//    }
+
     @ApiOperation(value = "토큰 재발급", notes = "회원 토큰 재발급")
     @PostMapping("/regenerateToken")
-    public ResponseEntity<TokenDto> regenerateToken(@Valid @RequestBody RegenerateTokenDto refreshTokenDto) {
-        return authService.regenerateToken(refreshTokenDto);
+    public ResponseEntity<TokenDto> regenerateToken(@Valid @RequestBody String refreshToken) {
+        return authService.regenerateToken(refreshToken);
     }
 
     @ApiOperation(value="로그아웃", notes= "회원 로그아웃")

@@ -6,9 +6,11 @@ import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.*;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
 @Table(name = "project")
@@ -19,15 +21,8 @@ public class Project {
     @Column(name = "project_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "main_user_id")
-    private User user;
-
-
-    @Embedded
-    @Column(name = "projecttmp")
-    @NotNull
-    private ProjectTemplate projecttmp;
+    @JoinColumn(name = "owner_id")
+    private Long userId;
 
     @Column(name = "project_title")
     @NotNull
@@ -37,11 +32,53 @@ public class Project {
     @Column(name = "project_detail")
     private String detail;
 
+    @Column(name = "period")
+    @NotNull
+    private int period;
+
+    //기술스택
+    @Convert(converter = SetTechniqueConverter.class)
+    @Column(name = "techniques")
+    @NotNull
+    private EnumSet<Technique> techniques;
+
+    //연관분야
+    @NotNull
+    private String category;
+
+    @ElementCollection
+    private Set<Website> sites;
+
+    @OneToMany(targetEntity=ProjectResponse.class, mappedBy = "project", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<ProjectResponse> responses;
+
+    @OneToMany(targetEntity=Comment.class, mappedBy = "project", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private Set<Comment> comments;
+
     @Builder
-    public Project(User user, ProjectTemplate projecttmp, String title, String detail) {
-        this.user = user;
-        this.projecttmp = projecttmp;
+    public Project(Long userId, String title, String detail, int period, EnumSet<Technique> techniques, String category, Set<Website> sites) {
+        this.userId = userId;
         this.title = title;
         this.detail = detail;
+        this.period = period;
+        this.techniques = techniques;
+        this.category = category;
+        this.sites = sites;
+
+        responses = new ArrayList<>();
+        comments = new HashSet<>();
+    }
+    @Builder
+    public Project(Long userId, String title, String detail, int period, EnumSet<Technique> techniques, String category) {
+        this.userId = userId;
+        this.title = title;
+        this.detail = detail;
+        this.period = period;
+        this.techniques = techniques;
+        this.category = category;
+        this.sites = new HashSet<>();
+
+        responses = new ArrayList<>();
+        comments = new HashSet<>();
     }
 }

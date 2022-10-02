@@ -1,33 +1,34 @@
-package com.bevelop.devbevelop.domain.project.domain;
-
-import com.sun.istack.NotNull;
-import lombok.*;
-
-import javax.persistence.*;
-import java.util.EnumSet;
-@Embeddable
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString
-public class ProjectTemplate {
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "division")
-    @NotNull
-    private Division division;
-
-    //by month?
-    @Column(name = "period")
-    @NotNull
-    private int period;
-
-    @Convert(converter = SetTaskConverter.class)
-    @Column(name = "tasks")
-    @NotNull
-    private EnumSet<Task> tasks;
-
-    @Enumerated(EnumType.STRING)
-    @Column (name = "category")
-    @NotNull
-    private Category category;
-}
+//package com.bevelop.devbevelop.domain.project.domain;
+//
+//import com.sun.istack.NotNull;
+//import lombok.*;
+//
+//import javax.persistence.*;
+//import java.util.EnumSet;
+//import java.util.List;
+//import java.util.Map;
+//
+//@Embeddable
+//@Getter @Setter
+//@NoArgsConstructor(access = AccessLevel.PROTECTED)
+//@ToString
+//public class ProjectTemplate {
+//
+//    //by month?
+//    @Column(name = "period")
+//    @NotNull
+//    private int period;
+//
+//    //기술스택
+//    @Convert(converter = SetTechniqueConverter.class)
+//    @Column(name = "techniques")
+//    @NotNull
+//    private EnumSet<Technique> techniques;
+//
+//    //연관분야
+//    @NotNull
+//    private String category;
+//
+//    @NotNull
+//    private List<Website> sites;
+//}
