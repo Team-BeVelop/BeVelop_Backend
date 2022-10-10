@@ -25,7 +25,7 @@ public class ProjectResponseService {
 
         //중복 좋아요 방지
         if(isNotAlreadyLike(user, project)) {
-            likeRepository.save(new ProjectResponse(user, project, response));
+            likeRepository.save(new ProjectResponse(user.getId(), projectId, response));
             return true;
         }
 

@@ -22,20 +22,20 @@ public class ProjectResponse extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
 //    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="user")
-    private User user;
+    private Long user_id;
 
     @ManyToOne(fetch = FetchType.LAZY)
 //    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="project")
-    private Project project;
+    private Long project_id;
 
     @Enumerated(EnumType.STRING)
     private Responses response;
 
     @Builder
-    public ProjectResponse(User user, Project project, Responses response) {
-        this.user = user;
-        this.project = project;
+    public ProjectResponse(Long user_id, Long project_id, Responses response) {
+        this.user_id = user_id;
+        this.project_id = project_id;
         this.response = response;
     }
 
