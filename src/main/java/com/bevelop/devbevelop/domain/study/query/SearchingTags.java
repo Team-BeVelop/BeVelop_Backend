@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @EqualsAndHashCode
@@ -23,5 +24,5 @@ public class SearchingTags {
 
     public String getTagIdsBy(CategoryName name) { return tags.get(name);}
 
-    public static SearchingTags emptyTags() { return new SearchingTags(null, null, null);}
+    public static SearchingTags emptyTags() { return new SearchingTags("","","");}
 }

@@ -1,6 +1,7 @@
 package com.bevelop.devbevelop.global.config.security.jwt;
 
 
+//import com.bevelop.devbevelop.global.config.security.UserDetailsServiceImpl;
 import com.bevelop.devbevelop.global.error.ErrorCode;
 import com.bevelop.devbevelop.global.error.exception.BaseException;
 import com.bevelop.devbevelop.global.error.exception.CustomException;
@@ -105,12 +106,12 @@ public class  JwtTokenProvider {
      * @return
      */
     public String resolveToken(HttpServletRequest req) {
-//        String bearerToken = req.getHeader("Authorization");
-//        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-//            return bearerToken.substring(7);
-//        }
-//        return null;
-        return req.getHeader("jwt");
+        String bearerToken = req.getHeader("Authorization");
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+        return null;
+//        return req.getHeader("jwt");
     }
 
 
