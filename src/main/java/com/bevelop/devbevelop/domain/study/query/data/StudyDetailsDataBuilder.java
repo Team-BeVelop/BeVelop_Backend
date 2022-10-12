@@ -104,14 +104,10 @@ public class StudyDetailsDataBuilder {
 
     public StudyDetailsData build() {
         return new StudyDetailsData(
-                id, owner, division, title, shortTitle, emailUrl, kakaoUrl, description, recruitmentStatus, currentMemberCount, maxMemberCount, createdDate, enrollmentEndDate,
-                startDate, endDate
+                requireNonNull(id), requireNonNull(owner), requireNonNull(division), requireNonNull(title),
+                requireNonNull(shortTitle), requireNonNull(emailUrl), requireNonNull(kakaoUrl), requireNonNull(description),
+                requireNonNull(recruitmentStatus), requireNonNull(currentMemberCount), requireNonNull(maxMemberCount),
+                requireNonNull(createdDate), requireNonNull(enrollmentEndDate), requireNonNull(startDate), requireNonNull(endDate)
         );
     }
-
-
-
-
-
-
 }

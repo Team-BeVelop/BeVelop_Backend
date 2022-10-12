@@ -47,4 +47,16 @@ public class StudyOwnerController {
         studyParticipantService.refuseStudy(userDetails, studyId, userId);
         return ResponseEntity.noContent().build();
     }
+
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jwt", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @PutMapping("/end")
+    public ResponseEntity<Void> recruitEnd(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @PathVariable("study-id") final Long studyId
+    ) {
+        studyParticipantService.recruitEnd(userDetails, studyId);
+        return ResponseEntity.noContent().build();
+    }
 }

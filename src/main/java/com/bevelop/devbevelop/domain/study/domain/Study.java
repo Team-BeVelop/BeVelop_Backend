@@ -129,6 +129,11 @@ public class Study {
         this.recruitJobs = recruitJobs;
     }
 
+    public void endStudy(Long userId, RecruitPlanner recruitPlanner) {
+        checkOwner(userId);
+        recruitPlanner.closeRecruiting();
+    }
+
     private void checkOwner(Long userId) {
         if (!participants.isOwner(userId)) {
             throw new CustomException(ErrorCode.OWNER_AUTH);
