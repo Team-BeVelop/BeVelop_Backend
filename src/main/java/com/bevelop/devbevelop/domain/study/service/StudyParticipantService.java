@@ -69,4 +69,20 @@ public class StudyParticipantService {
 
         study.refuse(new Participant(userId, ParticipateStatus.REFUSE), userId, owner.getId());
     }
+
+    public void recruitEnd(UserDetails userDetails, Long studyId) {
+        Study study = studyRepository.findById(studyId)
+                .orElseThrow(() -> new CustomException(ErrorCode.STUDY_NOT_FOUND));
+
+        User owner = userService.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+
+        if (study.getParticipants().getOwnerId() != owner.getId()) {
+            throw new CustomException(ErrorCode.OWNER_AUTH);
+        }
+
+        study.endStudy(owner.getId(), study.getRecruitPlanner());
+
+    }
 }

@@ -27,9 +27,9 @@ public class StudyDetailsDao {
         try {
             String sql =
                     "SELECT study.id, owner_id, division, title, short_title, email_url, kakao_url, description, recruitment_status, "
-                    + "current_member_count, max_member_count, created_at, enrollment_end_date, start_date, end_date, "
+                            + "current_member_count, max_member_count, created_at, enrollment_end_date, start_date, end_date, "
                             + "bevelop_user.email as owner_email, bevelop_user.name as owner_name "
-                    + "FROM study JOIN bevelop_user ON study.owner_id = bevelop_user.user_id "
+                            + "FROM study JOIN bevelop_user ON study.owner_id = bevelop_user.user_id "
                             +"WHERE study.id = ?";
 
             final StudyDetailsData data = jdbcTemplate.query(sql, new StudyDetailsDataExtractor(), studyId);
@@ -63,12 +63,15 @@ public class StudyDetailsDao {
             String kakaoUrl = rs.getString("kakao_url");
             String description = rs.getString("description");
             String recruitmentStatus = rs.getString("recruitment_status");
+            Integer currentMemberCount = rs.getObject("current_member_count", Integer.class);
+            Integer maxMemberCount = rs.getObject("max_member_count", Integer.class);
             LocalDate createdDate = rs.getObject("created_at", LocalDate.class);
             LocalDate enrollmentEndDate = rs.getObject("enrollment_end_date", LocalDate.class);
             LocalDate startDate = rs.getObject("start_date", LocalDate.class);
             LocalDate endDate = rs.getObject("end_date", LocalDate.class);
 
             builder.id(id).division(division).title(title).shortTitle(shortTitle).emailUrl(emailUrl).kakaoUrl(kakaoUrl)
+                    .currentMemberCount(currentMemberCount).maxMemberCount(maxMemberCount)
                     .description(description).recruitmentStatus(recruitmentStatus)
                     .createdDate(createdDate).enrollmentEndDate(enrollmentEndDate)
                     .startDate(startDate).endDate(endDate);
