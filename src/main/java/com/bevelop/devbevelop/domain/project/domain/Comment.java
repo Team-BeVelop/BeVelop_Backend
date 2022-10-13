@@ -22,10 +22,10 @@ public class Comment extends BaseEntity {
     private String comment; // 댓글 내용
 
     @ManyToOne
-    @JoinColumn(name = "project")
+//    @JoinColumn(name = "project_id")
     private Project project;
 
     @ManyToOne
-    @JoinColumn(name = "user")
+//    @JoinColumn(name = "user_id")
     private User user; // 작성자
 }

@@ -38,7 +38,8 @@ public class CommentService {
     }
 
     @Transactional
-    public Set<Comment> findAll(Long projectId) {
-        return projectRepository.findById(projectId).get().getComments();
+    public List<Comment> findAll(Long projectId) {
+        return commentRepository.findByProjectId(projectId);
+//        return projectRepository.findById(projectId).get().getComments();
     }
 }

@@ -19,23 +19,23 @@ public class ProjectResponse extends BaseEntity {
     @Column(name="project_like_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
 //    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="user")
-    private Long user_id;
+//    @JoinColumn(name="user_id")
+    private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Project.class, fetch = FetchType.LAZY)
 //    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="project")
-    private Long project_id;
+//    @JoinColumn(name="project_id")
+    private Project project;
 
     @Enumerated(EnumType.STRING)
     private Responses response;
 
     @Builder
-    public ProjectResponse(Long user_id, Long project_id, Responses response) {
-        this.user_id = user_id;
-        this.project_id = project_id;
+    public ProjectResponse(User user, Project project, Responses response) {
+        this.user = user;
+        this.project = project;
         this.response = response;
     }
 

@@ -33,6 +33,15 @@ public class ProjectUpdate {
     @ApiParam(value = "프로젝트 디테일")
     private String projectDetail;
 
+    @ApiParam(value = "이메일 주소")
+    private String email;
+
+    @ApiParam(value = "카카오톡 오픈채팅 주소")
+    private String kakaoLink;
+
+    @ApiParam(value = "한줄 소개")
+    private String briefIntro;
+
     public Project toEntity() {
         return Project.builder()
                 .title(title)
@@ -41,6 +50,9 @@ public class ProjectUpdate {
                 .category(category)
                 .sites(sites)
                 .detail(projectDetail)
+                .email(email)
+                .kakaoLink(kakaoLink)
+                .briefIntro(briefIntro)
                 .build();
     }
 }

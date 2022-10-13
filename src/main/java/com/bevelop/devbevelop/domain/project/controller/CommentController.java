@@ -38,7 +38,7 @@ public class CommentController {
 
     @ApiOperation(value = "프로젝트 댓글 모두 불러오기")
     @GetMapping("comments/{projectId}")
-    public Set<Comment> commentList(@PathVariable Long projectId) throws CustomException {
+    public List<Comment> commentList(@PathVariable Long projectId) throws CustomException {
         return commentService.findAll(projectId);
     }
 }

@@ -33,6 +33,9 @@ public class ProjectRes {
     private String detail;
     private List<ProjectResponseRes> likes;
     private List<CommentRes> comments;
+    private String email;
+    private String kakaoLink;
+    private String briefIntro;
 
     /* Entity -> Dto*/
     public ProjectRes(Project project) {
@@ -45,5 +48,8 @@ public class ProjectRes {
         this.detail = project.getDetail();
         this.likes = project.getResponses().stream().map(ProjectResponseRes::new).collect(Collectors.toList());
         this.comments = project.getComments().stream().map(CommentRes::new).collect(Collectors.toList());
+        this.email = project.getEmail();
+        this.kakaoLink = project.getKakaoLink();
+        this.briefIntro = project.getBriefIntro();
     }
 }

@@ -37,8 +37,8 @@ public class ProjectController {
     @ApiOperation(value = "프로젝트 찾기", notes = "PathVariable로 주어진 title을 가진 프로젝트의 정보")
     @GetMapping("/view/{title}")
     public ProjectRes findProject(@PathVariable String title) throws CustomException {
-        ProjectRes project = projectService.findByTitle(title);
-        return project;
+        Project project = projectService.findByTitle(title);
+        return new ProjectRes(project);
     }
 
     @ApiOperation(value = "모든 프로젝트", notes = "모든 프로젝트의 리스트")

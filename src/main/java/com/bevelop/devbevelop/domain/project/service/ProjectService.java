@@ -29,14 +29,14 @@ public class ProjectService {
     }
 
     //title로 프로젝트 찾기
-    public ProjectRes findByTitle(String title) {
+    public Project findByTitle(String title) {
         Optional<Project> findProject = projectRepository.findByTitle(title);
-        return new ProjectRes(findProject.orElseThrow(()->new CustomException(ErrorCode.PROJECT_NOT_FOUND)));
+        return findProject.orElseThrow(()->new CustomException(ErrorCode.PROJECT_NOT_FOUND));
     }
 
-    public ProjectRes findById(Long id) {
+    public Project findById(Long id) {
         Optional<Project> findProject = projectRepository.findById(id);
-        return new ProjectRes(findProject.orElseThrow(()->new CustomException(ErrorCode.PROJECT_NOT_FOUND)));
+        return findProject.orElseThrow(()->new CustomException(ErrorCode.PROJECT_NOT_FOUND));
     }
 
     //update project

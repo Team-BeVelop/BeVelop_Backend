@@ -21,7 +21,7 @@ public class Project {
     @Column(name = "project_id")
     private Long id;
 
-    @JoinColumn(name = "owner_id")
+//    @JoinColumn(name = "owner_id")
     private Long userId;
 
     @Column(name = "project_title")
@@ -49,14 +49,23 @@ public class Project {
     @ElementCollection
     private Set<Website> sites;
 
-    @OneToMany(targetEntity=ProjectResponse.class, mappedBy = "project", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OneToMany(targetEntity=ProjectResponse.class, fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<ProjectResponse> responses;
 
-    @OneToMany(targetEntity=Comment.class, mappedBy = "project", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    private Set<Comment> comments;
+    @OneToMany(targetEntity=Comment.class, fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<Comment> comments;
+
+    @NotNull
+    public String email;
+
+    @NotNull
+    public String kakaoLink;
+
+    @NotNull
+    public String briefIntro;
 
     @Builder
-    public Project(Long userId, String title, String detail, int period, EnumSet<Technique> techniques, String category, Set<Website> sites) {
+    public Project(Long userId, String title, String detail, int period, EnumSet<Technique> techniques, String category, Set<Website> sites, String email, String kakaoLink, String briefIntro) {
         this.userId = userId;
         this.title = title;
         this.detail = detail;
@@ -64,21 +73,12 @@ public class Project {
         this.techniques = techniques;
         this.category = category;
         this.sites = sites;
+        this.email = email;
+        this.kakaoLink = kakaoLink;
+        this.briefIntro = briefIntro;
+
 
         responses = new ArrayList<>();
-        comments = new HashSet<>();
-    }
-    @Builder
-    public Project(Long userId, String title, String detail, int period, EnumSet<Technique> techniques, String category) {
-        this.userId = userId;
-        this.title = title;
-        this.detail = detail;
-        this.period = period;
-        this.techniques = techniques;
-        this.category = category;
-        this.sites = new HashSet<>();
-
-        responses = new ArrayList<>();
-        comments = new HashSet<>();
+        comments = new ArrayList<>();
     }
 }
