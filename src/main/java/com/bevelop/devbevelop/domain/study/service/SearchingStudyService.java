@@ -12,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +30,9 @@ public class SearchingStudyService {
     private final RecruitJobDao recruitJobDao;
     private final StudyMemberDao memberDao;
 
+
+
+
     public SearchingStudyService(
             final StudySummaryDao studySummaryDao,
             final StudyDetailsDao studyDetailsDao,
@@ -45,6 +47,7 @@ public class SearchingStudyService {
         this.recruitJobDao = recruitJobDao;
         this.memberDao = memberDao;
     }
+
 
     public StudiesResponse getStudies(final SearchingTags searchingTags, final Pageable pageable) {
         final Slice<StudySummaryData> studyData = studySummaryDao.searchBy(searchingTags, pageable);
@@ -78,11 +81,20 @@ public class SearchingStudyService {
 
         final List<RecruitJobData> recruitJobDataList = recruitJobDao.findRecruitJobByStudyId(studyId);
 
+        final List<ParticipatingMemberData> participants = memberDao.findMembersByStudyId(studyId);
+
         if (owner.getId() == content.getOwner().getUserId()) {
-            final List<ParticipatingMemberData> participants = memberDao.findMembersByStudyId(studyId);
-            return new StudyDetailResponse(content, relatedFieldDataList, recruitJobDataList, participants);
-        } else {
-            return new StudyDetailResponse(content, relatedFieldDataList, recruitJobDataList);
+            return new StudyDetailResponse(content, true, relatedFieldDataList, recruitJobDataList, participants);
         }
+
+
+        for (ParticipatingMemberData elem : participants) {
+            System.out.println(elem);
+            if (elem.getUserId() == owner.getId() && elem.getStatus().equals("ACCEPT")) {
+                return new StudyDetailResponse(content, true, relatedFieldDataList, recruitJobDataList);
+            }
+        }
+        return new StudyDetailResponse(content, false, relatedFieldDataList, recruitJobDataList);
     }
+
 }

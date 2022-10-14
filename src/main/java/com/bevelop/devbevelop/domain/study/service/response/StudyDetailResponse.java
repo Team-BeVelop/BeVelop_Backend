@@ -34,11 +34,13 @@ public class StudyDetailResponse {
     private LocalDate enrollmentEndDate;
     private LocalDate startDate;
     private LocalDate endDate;
+    private boolean status;
     private List<RelatedFieldData> fieldList;
     private List<RecruitJobData> jobList;
     private List<ParticipatingMemberData> members;
 
     public StudyDetailResponse(final StudyDetailsData study,
+                               final boolean status,
                                final List<RelatedFieldData> fieldList,
                                final List<RecruitJobData> jobList,
                                final List<ParticipatingMemberData> participants) {
@@ -57,12 +59,14 @@ public class StudyDetailResponse {
         this.enrollmentEndDate = study.getEnrollmentEndDate();
         this.startDate = study.getStartDate();
         this.endDate = study.getEndDate();
+        this.status = status;
         this.fieldList = fieldList;
         this.jobList = jobList;
         this.members = participants;
     }
 
     public StudyDetailResponse(final StudyDetailsData study,
+                               final boolean status,
                                final List<RelatedFieldData> fieldList,
                                final List<RecruitJobData> jobList
     ) {
@@ -81,6 +85,7 @@ public class StudyDetailResponse {
         this.enrollmentEndDate = study.getEnrollmentEndDate();
         this.startDate = study.getStartDate();
         this.endDate = study.getEndDate();
+        this.status = status;
         this.fieldList = fieldList;
         this.jobList = jobList;
     }
