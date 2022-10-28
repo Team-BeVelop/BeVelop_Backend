@@ -20,9 +20,33 @@ public class SearchingTags {
         tags.put(CategoryName.FIELD, field);
     }
 
-    public boolean hasBy(CategoryName name) { return !tags.get(name).isEmpty();}
+    public boolean hasBy(CategoryName name) {
+        return !tags.get(name).isEmpty();
+    }
 
     public String getTagIdsBy(CategoryName name) { return tags.get(name);}
+
+    public boolean hasBys(CategoryName name) {
+        if (name.equals("DIVISION")) {
+            return !tags.get(name).isEmpty();
+            }
+            return false;
+        }
+//
+    public boolean hasByss(CategoryName name) {
+        if (name.equals("JOB")) {
+            return tags.get(name).isEmpty();
+        }
+        return !tags.get(name).isEmpty();
+    }
+//
+    public boolean hasBysss(CategoryName name) {
+        if (name.equals("FIELD")) {
+            return tags.get(name).isEmpty();
+        }
+        return !tags.get(name).isEmpty();
+    }
+
 
     public static SearchingTags emptyTags() { return new SearchingTags("","","");}
 }

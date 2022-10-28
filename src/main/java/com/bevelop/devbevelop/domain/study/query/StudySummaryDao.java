@@ -28,7 +28,6 @@ public class StudySummaryDao {
 
         return new StudySummaryData(id, division, title, shortTitle);
     };
-
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     public Slice<StudySummaryData> searchBy(final SearchingTags searchingTags, final Pageable pageable) {
@@ -38,44 +37,70 @@ public class StudySummaryDao {
     }
 
     private String sql(final SearchingTags searchingTags) {
-        return "SELECT study.id, study.division, study.title, study.short_title "
+        String result = "SELECT study.id, study.division, study.title, study.short_title "
                 + "FROM study "
-                + joinTableClause(searchingTags)
-                + filtersInQueryClause(searchingTags)
+                + "JOIN study_recruit_job ON study.id = study_recruit_job.study_id "
+                + "JOIN study_related_field ON study.id = study_related_field.study_id "
+                + filtersInQueryClauseDivision(searchingTags)
+                + filtersInQueryClauseJob(searchingTags)
+                + filtersInQueryClauseField(searchingTags)
                 + "GROUP BY study.id "
                 + "ORDER BY study.created_at DESC "
                 + "LIMIT :limit OFFSET :offset ";
+        return result;
+
     }
 
-    private String joinTableClause(final SearchingTags searchingTags) {
-        String sql = "JOIN study_recruit_job {}_study_recruit_job ON study.id = {}_study_recruit_job.study_id "
-                + "JOIN tag {}_tag ON {}_study_tag.tag_id = {}_tag.id "
-                + "JOIN category {}_category ON {}_tag.category_id = {}_category.id AND {}_category.name = '{}' ";
+    private String filtersInQueryClauseDivision(final SearchingTags searchingTags) {
 
-        return Stream.of(CategoryName.values())
-                .filter(searchingTags::hasBy)
-                .map(name -> sql.replaceAll("\\{\\}", name.name().toLowerCase()))
-                .collect(Collectors.joining());
+        String sql = "AND division IN ('{}') ";
+
+        String result = searchingTags.getTagIdsBy(CategoryName.DIVISION);
+
+
+        if (result.isEmpty()) {
+            return "";
+        } else {
+            return sql.replaceAll("\\{\\}", result.toUpperCase());
+        }
     }
 
-    private String filtersInQueryClause(final SearchingTags searchingTags) {
-        String sql = "AND {}_tag.id IN (:{}) ";
+    private String filtersInQueryClauseJob(final SearchingTags searchingTags) {
 
-        return Stream.of(CategoryName.values())
-                .filter(searchingTags::hasBy)
-                .map(name -> sql.replaceAll("\\{\\}", name.name().toLowerCase()))
-                .collect(Collectors.joining());
+        String sql = "AND study_recruit_job.job_name IN ('{}') ";
+
+        String result = searchingTags.getTagIdsBy(CategoryName.JOB);
+
+        if (result.isEmpty()) {
+            return "";
+        } else {
+            return sql.replaceAll("\\{\\}", result.toUpperCase());
+        }
+    }
+
+    private String filtersInQueryClauseField(final SearchingTags searchingTags) {
+
+        String sql = "AND study_related_field.field_name IN ('{}') ";
+
+        String result = searchingTags.getTagIdsBy(CategoryName.FIELD);
+
+        if (result.isEmpty()) {
+            return "";
+        } else {
+            return sql.replaceAll("\\{\\}", result.toUpperCase());
+        }
     }
 
     private Map<String, Object> params(final SearchingTags searchingTags,
                                        final Pageable pageable) {
         final Map<String, Object> tagIds = Stream.of(CategoryName.values())
-                .collect(Collectors.toMap(name -> name.name().toLowerCase(), searchingTags::getTagIdsBy));
+                .collect(Collectors.toMap(name -> name.name().toUpperCase(), searchingTags::getTagIdsBy));
 
         Map<String, Object> param = new HashMap<>();
         param.put("limit", pageable.getPageSize() + 1);
         param.put("offset", pageable.getOffset());
         param.putAll(tagIds);
+        System.out.println(param);
         return param;
     }
 
