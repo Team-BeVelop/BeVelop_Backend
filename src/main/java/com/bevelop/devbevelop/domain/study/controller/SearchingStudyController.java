@@ -5,6 +5,8 @@ import com.bevelop.devbevelop.domain.study.service.SearchingStudyService;
 import com.bevelop.devbevelop.domain.study.service.response.StudiesResponse;
 import com.bevelop.devbevelop.domain.study.service.response.StudyDetailResponse;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -27,22 +29,22 @@ public class SearchingStudyController {
         return ResponseEntity.ok().body(studiesResponse);
     }
 
-//    @GetMapping("/search")
-//    public ResponseEntity<?> searchStudies(
-//            @RequestParam(required = false, name = "division", defaultValue=  "") final String division,
-//            @RequestParam(required = false, name = "job", defaultValue = "") final String job,
-//            @RequestParam(required = false, name = "field", defaultValue = "") final String field,
-//            @PageableDefault(size = 12) final Pageable pageable
-//
-//    ) {
-//        final SearchingTags searchingTags = new SearchingTags(division, job, field);
-//        final StudiesResponse studiesResponse = searchingStudyService.getStudies(searchingTags, pageable);
-//        return ResponseEntity.ok().body(studiesResponse);
-//    }
+    @GetMapping("/search")
+    public ResponseEntity<?> searchStudies(
+            @RequestParam(required = false, name = "DIVISION", defaultValue=  "") final String division,
+            @RequestParam(required = false, name = "JOB", defaultValue = "") final String job,
+            @RequestParam(required = false, name = "FIELD", defaultValue = "") final String field,
+            @PageableDefault(size = 5) final Pageable pageable
 
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "jwt", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
-//    })
+    ) {
+        final SearchingTags searchingTags = new SearchingTags(division, job, field);
+        final StudiesResponse studiesResponse = searchingStudyService.getStudies(searchingTags, pageable);
+        return ResponseEntity.ok().body(studiesResponse);
+    }
+
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "jwt", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
     @GetMapping("/{study-id}")
     public ResponseEntity<StudyDetailResponse> getStudyDetails(
             @PathVariable(name = "study-id") Long studyId) {
