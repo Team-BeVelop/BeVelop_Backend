@@ -28,8 +28,9 @@ public enum ErrorCode {
 
     // Member
     MEMBER_NOT_FOUND(NOT_FOUND,"MEMBER-0001", "일치하는 회원 정보를 찾을 수 없습니다"),
-    MEMBER_EXISTS(CONFLICT, "MEMBER-0002", "이미 존재하는 회원 정보입니다"),
-    MEMBER_SIGNUP_FAIL(BAD_REQUEST, "MEMBER-0003", "가입 실패"),
+	MEMBER_EMAIL_EXISTS(CONFLICT, "MEMBER-0002", "이미 존재하는 회원 이메일입니다"),
+	MEMBER_NICKNAME_EXISTS(CONFLICT, "MEMBER-0003", "이미 존재하는 회원 닉네임입니다"),
+    MEMBER_SIGNUP_FAIL(BAD_REQUEST, "MEMBER-0004", "가입 실패"),
 
     //Project
     PROJECT_NOT_FOUND(NOT_FOUND, "PROJECT-0001", "존재하지 않는 프로젝트입니다"),

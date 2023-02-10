@@ -66,7 +66,8 @@ public class AuthServiceImpl implements AuthService {
 
         newUser.hashPassword(bCryptPasswordEncoder);
 
-        validateDuplicateMember(newUser.getEmail());
+        validateDuplicateEmail(newUser.getEmail());
+        validateDuplicateNickname(newUser.getNickname());
 
         User user = userRepository.save(newUser);
         if(Objects.isNull(user)) throw new CustomException(ErrorCode.MEMBER_SIGNUP_FAIL);
@@ -81,7 +82,7 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public CommonResult join(User user) throws CustomException{
 
-        validateDuplicateMember(user.getEmail());
+        validateDuplicateEmail(user.getEmail());
 
         User neswUser = userRepository.save(user);
         if(Objects.isNull(user)) throw new CustomException(ErrorCode.MEMBER_SIGNUP_FAIL);
@@ -94,15 +95,16 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
-    public CommonResult validateDuplicateMember(String email) {
+    public CommonResult validateDuplicateEmail(String email) {
         Optional<User> findUser = userRepository.findByEmail(email);
-        if(findUser.isPresent()) throw new CustomException(ErrorCode.MEMBER_EXISTS);
+        if(findUser.isPresent()) throw new CustomException(ErrorCode.MEMBER_EMAIL_EXISTS);
         return responseService.getSuccessResult();
     }
 
 
     @Override
     public ResponseEntity<JSONObject> login(UserLogInDto userLoginDto) {
+    	System.out.println("loginReq = "+userLoginDto.toString());
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -307,22 +309,29 @@ public class AuthServiceImpl implements AuthService {
         return responseService.getSuccessResult();
     }
 
-    @Override
-    @Transactional
-    public CommonResult update(Long userId, UserDetails userDetails, UserUpdateDto userUpdateDto) {
-
-        Optional<User> findUser = userRepository.findByEmail(userDetails.getUsername());
-
-        System.out.println(findUser.toString());
-
-        if(userId != findUser.get().getId()) {
-            throw new CustomException(ErrorCode.MEMBER_NOT_FOUND);
-        }
-
-        findUser.get().update(userUpdateDto.getName(),userUpdateDto.getJob(), userUpdateDto.getInterests(),userUpdateDto.mapToAttachedStacks());
-
-
-        // 성공할때도 200을 보낼수도있고 201을 보낼수도 있어서 나중에 변경 필요
+	@Override
+	public CommonResult validateDuplicateNickname(String nickname) {
+        Optional<User> findUser = userRepository.findByNickname(nickname);
+        if(findUser.isPresent()) throw new CustomException(ErrorCode.MEMBER_NICKNAME_EXISTS);
         return responseService.getSuccessResult();
-    }
+	}
+
+//    @Override
+//    @Transactional
+//    public CommonResult update(Long userId, UserDetails userDetails, UserUpdateDto userUpdateDto) {
+//
+//        Optional<User> findUser = userRepository.findByEmail(userDetails.getUsername());
+//
+//        System.out.println(findUser.toString());
+//
+//        if(userId != findUser.get().getId()) {
+//            throw new CustomException(ErrorCode.MEMBER_NOT_FOUND);
+//        }
+//
+//        findUser.get().update(userUpdateDto.getName(),userUpdateDto.getJob(), userUpdateDto.getInterests(),userUpdateDto.mapToAttachedStacks());
+//
+//
+//        // 성공할때도 200을 보낼수도있고 201을 보낼수도 있어서 나중에 변경 필요
+//        return responseService.getSuccessResult();
+//    }
 }

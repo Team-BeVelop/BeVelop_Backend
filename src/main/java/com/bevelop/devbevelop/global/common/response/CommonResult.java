@@ -16,4 +16,21 @@ public class CommonResult {
 
     @ApiModelProperty(value = "응답 메시지")
     private String msg;
+    
+    @Override
+    public boolean equals(Object obj) {
+    	if(!(obj instanceof CommonResult)) {
+    		return false;
+    	}
+    	
+    	CommonResult o = (CommonResult) obj;
+    	return o.success==this.success && o.code==this.code && o.msg.equals(this.msg);
+    }
+
+	@Override
+	public String toString() {
+		return "CommonResult [success=" + success + ", code=" + code + ", msg=" + msg + "]";
+	}
+    
+    
 }

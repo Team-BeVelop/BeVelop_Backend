@@ -16,35 +16,33 @@ import java.util.stream.Collectors;
 @Table(name = "bevelop_user")
 public class User extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="user_id")
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "user_id")
+	private Long id;
 
-    @Column
-    private String socialId;
+	@Column
+	private String socialId;
 
-    @Column
-    private String email;
+	@Column
+	@NotNull
+	private String email;
 
-    @Column
-    private String password;
+	@Column
+	@NotNull
+	private String password;
 
-    @Column
-    @NotNull
-    private String name;
+	@Column
+	@NotNull
+	private String nickname;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+	private Role role;
 
-    @Enumerated(EnumType.STRING)
-    private Job job;
+	private String job;
 
-    @Enumerated(EnumType.STRING)
-    private Interests interests;
+	private String interests;
 
-    @Embedded
-    private AttachedStacks attachedStacks;
+	private AttachedStacks attachedStacks;
 
 //    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 //    @JoinColumn(name = "user_id")
@@ -54,41 +52,34 @@ public class User extends BaseEntity {
 //    @CollectionTable(name = "stack_list", joinColumns = @JoinColumn(name = "user_id"))
 //    private Set<Stack> stackSet = new HashSet<>();
 
+	private String provider;
 
-    private String provider;
+	@Builder
+	public User(String email, String password, String nickname, Role role, String job, String interests,
+			AttachedStacks attachedStacks, String provider) {
+		super();
+		this.email = email;
+		this.password = password;
+		this.nickname = nickname;
+		this.role = role;
+		this.job = job;
+		this.interests = interests;
+		this.attachedStacks = attachedStacks;
+		this.provider = provider;
+	}
 
+	public User hashPassword(PasswordEncoder passwordEncoder) {
+		this.password = passwordEncoder.encode(this.password);
+		return this;
+	}
 
-    @Builder
-    public User(String email, String password, String name, Job job, Interests interests, String provider, String socialId, AttachedStacks attachedStacks) {
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.job = job;
-        this.interests = interests;
-        this.role = Role.SLAVE;
-        this.provider = provider;
-        this.socialId = socialId;
-        this.attachedStacks = attachedStacks;
-    }
+	public User hashProvider(PasswordEncoder passwordEncoder) {
+		this.password = passwordEncoder.encode(this.provider);
+		return this;
+	}
 
-    public User hashPassword(PasswordEncoder passwordEncoder) {
-        this.password = passwordEncoder.encode(this.password);
-        return this;
-    }
+	public boolean matchPassword(PasswordEncoder passwordEncoder, String checkPassword) {
+		return passwordEncoder.matches(checkPassword, getPassword());
+	}
 
-    public User hashProvider(PasswordEncoder passwordEncoder) {
-        this.password = passwordEncoder.encode(this.provider);
-        return this;
-    }
-
-    public boolean matchPassword(PasswordEncoder passwordEncoder, String checkPassword) {
-        return passwordEncoder.matches(checkPassword, getPassword());
-    }
-
-    public void update(String name, Job job, Interests interests, AttachedStacks attachedStacks) {
-        this.name = name;
-        this.job = job;
-        this.interests = interests;
-        this.attachedStacks = attachedStacks;
-    }
 }

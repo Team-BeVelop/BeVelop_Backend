@@ -34,7 +34,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private void validateDuplicateMember(User user) {
         Optional<User> findUser = userRepository.findByEmail(user.getEmail());
-        if(findUser.isPresent()) throw new CustomException(ErrorCode.MEMBER_EXISTS);
+        if(findUser.isPresent()) throw new CustomException(ErrorCode.MEMBER_EMAIL_EXISTS);
     }
 
     @Override

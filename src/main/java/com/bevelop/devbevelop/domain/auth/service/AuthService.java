@@ -35,10 +35,23 @@ public interface AuthService {
 
     CommonResult remove(UserDetails userDetails, UserWithdrawalDto userWithdrawalDto);
 
-    CommonResult update(Long id, UserDetails userDetails, UserUpdateDto userUpdateDto);
+//    CommonResult update(Long id, UserDetails userDetails, UserUpdateDto userUpdateDto);
 
 //    ResponseEntity<TokenDto> regenerateToken(RegenerateTokenDto refreshTokenDto);
 
     ResponseEntity<TokenDto> regenerateToken(String refreshToken);
-    CommonResult validateDuplicateMember(String email);
+    
+    /**
+     * 중복 이메일 체크
+     * @param email
+     * @return CommonResult
+     */
+    CommonResult validateDuplicateEmail(String email);
+    
+    /**
+     * 중복 닉네임 체크
+     * @param nickname
+     * @return CommonResult
+     */
+    CommonResult validateDuplicateNickname(String nickname);
 }
