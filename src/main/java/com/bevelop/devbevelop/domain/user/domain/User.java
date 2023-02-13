@@ -36,12 +36,17 @@ public class User extends BaseEntity {
 	@NotNull
 	private String nickname;
 
+	private String introduce;
+
 	private Role role;
 
 	private String job;
 
 	private String interests;
 
+	private String url;
+
+	@Embedded
 	private AttachedStacks attachedStacks;
 
 //    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
@@ -54,18 +59,33 @@ public class User extends BaseEntity {
 
 	private String provider;
 
+	public void setAttachedStacks(AttachedStacks attachedStacks) {
+		this.attachedStacks = attachedStacks;
+	}
+
 	@Builder
-	public User(String email, String password, String nickname, Role role, String job, String interests,
-			AttachedStacks attachedStacks, String provider) {
+	public User(String email, String password, String nickname, String introduce, Role role, String job, String interests,
+			String url, AttachedStacks attachedStacks, String provider) {
 		super();
 		this.email = email;
 		this.password = password;
 		this.nickname = nickname;
+		this.introduce = introduce;
 		this.role = role;
 		this.job = job;
 		this.interests = interests;
+		this.url = url;
 		this.attachedStacks = attachedStacks;
 		this.provider = provider;
+	}
+
+	public void update(String nickname, String introduce, String job, String interests, String url, AttachedStacks attachedStacks) {
+		this.nickname = nickname;
+		this.introduce = introduce;
+		this.job = job;
+		this.interests = interests;
+		this.url = url;
+		this.attachedStacks = attachedStacks;
 	}
 
 	public User hashPassword(PasswordEncoder passwordEncoder) {
