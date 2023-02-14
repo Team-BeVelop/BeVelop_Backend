@@ -13,14 +13,14 @@ import lombok.NoArgsConstructor;
 public class CommentRes {
     private Long id;
     private String comment;
-    private String userName;
+    private String userNickname;
     private String projectTitle;
 
     /* Entity -> Dto*/
     public CommentRes(Comment comment) {
         this.id = comment.getId();
         this.comment = comment.getComment();
-        this.userName = comment.getUser().getName();
+        this.userNickname = comment.getUser().getNickname();
         this.projectTitle = comment.getProject().getTitle();
     }
 }

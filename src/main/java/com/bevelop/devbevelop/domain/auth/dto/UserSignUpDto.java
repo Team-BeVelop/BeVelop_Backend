@@ -1,8 +1,12 @@
 package com.bevelop.devbevelop.domain.auth.dto;
 
+import com.bevelop.devbevelop.domain.user.domain.Role;
 import com.bevelop.devbevelop.domain.user.domain.User;
 import io.swagger.annotations.ApiParam;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -13,6 +17,9 @@ import javax.validation.constraints.NotEmpty;
 @Getter
 @Setter
 @ToString
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserSignUpDto {
     @NotEmpty(message = "이메일은 필수 입력 값입니다.")
     @Email
@@ -38,6 +45,7 @@ public class UserSignUpDto {
                 .email(this.getEmail())
                 .password(this.getPassword())
                 .nickname(this.getNickname())
+                .role(Role.SLAVE)
                 .build();
     }
 }

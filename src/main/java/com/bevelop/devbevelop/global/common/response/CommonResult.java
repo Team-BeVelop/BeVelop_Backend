@@ -1,11 +1,17 @@
 package com.bevelop.devbevelop.global.common.response;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class CommonResult {
 
     @ApiModelProperty(value = "응답 성공여부 : true/false")
