@@ -14,6 +14,7 @@ permissions:
     owner: ubuntu
     group: ubuntu
 
+
 hooks:
   AfterInstall:
     - location: scripts/stop.sh
