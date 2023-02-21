@@ -1,10 +1,10 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-#    url: jdbc:mysql://bevelop-rds-instance.c6qpo4nr80mp.ap-northeast-2.rds.amazonaws.com:3306/bevelop?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    url: jdbc:mysql://localhost:3306/bevelop?serverTimezone=UTC
-    password: 1234
+    username: admin
+    url: jdbc:mysql://bevelop-rds-instance.c6qpo4nr80mp.ap-northeast-2.rds.amazonaws.com:3306/bevelop?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+#    url: jdbc:mysql://localhost:3306/bevelop?serverTimezone=UTC
+    password: wlghd6438!
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
@@ -34,7 +34,7 @@ spring:
     pathmatch:
       matching-strategy: ant-path-matcher
   redis:
-    host: localhost
+    host: redis-test.30belf.ng.0001.apn2.cache.amazonaws.com
     port: 6379
 
 jwt:
