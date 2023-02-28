@@ -33,7 +33,7 @@ public class AuthController {
 
 	private final AuthService authService;
 	private final KakaoService kakaoService;
-//	private final GithubService githubService;
+	private final GithubService githubService;
 //	private final UserRepository userRepository;
 
 	@ApiOperation(value = "회원가입", notes = "회원 가입")
@@ -103,19 +103,19 @@ public class AuthController {
 		return authService.join(UserSignUpDto.builder().nickname(nickname).email(email).password(password).build());
 	}
 
-//	@ApiOperation(value = "소셜 깃허브 계정 가입", notes = "소셜 계정(깃허브)을(를) 이용하여 회원가입을 한다.")
-//	@PostMapping(value = "/signup/github")
-//	public CommonResult signupGithub(
-//			@ApiParam(value = "소셜 authentication code", required = true) @RequestParam String code,
-//			@Valid @RequestBody SocialSignUpDto socialSignUpDto) {
-//		GithubProfile githubProfile = githubService.execGithubLogin(code);
-//		User user = User.builder().name(socialSignUpDto.getName()).provider("github")
-//				.socialId("g" + githubProfile.getId()).job(socialSignUpDto.getJob())
-//				.interests(socialSignUpDto.getInterests()).build();
-//		return authService.join(user);
-////        return responseService.getSuccessResult();
-////        return "redirect:webauthcallback://success?customToken="+jwtTokenProvider.createToken(user.getId(), user.getRole());
-//	}
+	@ApiOperation(value = "소셜 깃허브 계정 가입", notes = "소셜 계정(깃허브)을(를) 이용하여 회원가입을 한다.")
+	@PostMapping(value = "/signup/github")
+	public CommonResult signupGithub(
+			@ApiParam(value = "소셜 authentication code", required = true) @RequestParam String code) {
+		
+		String githubToken = githubService.getGithubTokenInfo(code).getAccess_token();
+		GithubProfile result = githubService.getUserInfo(githubToken);
+        String nickname = (String) result.getName();
+        String email = (String) result.getEmail();
+        String password = String.valueOf(result.getId());
+
+		return authService.join(UserSignUpDto.builder().nickname(nickname).email(email).password(password).build());
+	}
 
 	@ApiOperation(value = "소셜 카카오 로그인", notes = "소셜 회원(카카오)을(를) 로그인을 한다.")
 	@PostMapping(value = "/login/kakao")
@@ -130,23 +130,20 @@ public class AuthController {
         String password = socialId;
 
 		return authService.login(UserLogInDto.builder().email(email).password(password).build());
-	
-//        return responseService.getSingleResult(jwtTokenProvider.createToken(user.getId(), user.getRole()));
-//        return "redirect:webauthcallback://success?customToken="+jwtTokenProvider.createToken(user.ge tId(), user.getRole());
 	}
 
-//	@ApiOperation(value = "소셜 깃허브 로그인", notes = "소셜 회원(깃허브)을(를) 로그인을 한다.")
-//	@PostMapping(value = "/login/github")
-//	public ResponseEntity<TokenDto> loginByGithub(
-//			@ApiParam(value = "소셜 authentication code", required = true) @RequestParam String code) {
-//
-//		GithubProfile profile = githubService.execGithubLogin(code);
-//		User user = userRepository.findBySocialIdAndProvider("g" + profile.getId(), "github")
-//				.orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
-//		return authService.login(user);
-////        return responseService.getSingleResult(jwtTokenProvider.createToken(user.getId(), user.getRole()));
-////        return "redirect:webauthcallback://success?customToken="+jwtTokenProvider.createToken(user.ge tId(), user.getRole());
-//	}
+	@ApiOperation(value = "소셜 깃허브 로그인", notes = "소셜 회원(깃허브)을(를) 로그인을 한다.")
+	@PostMapping(value = "/login/github")
+	public ResponseEntity<?> loginByGithub(
+			@ApiParam(value = "소셜 authentication code", required = true) @RequestParam String code) {
+
+		String githubToken = githubService.getGithubTokenInfo(code).getAccess_token();
+		GithubProfile result = githubService.getUserInfo(githubToken);
+        String nickname = (String) result.getName();
+        String email = (String) result.getEmail();
+        String password = String.valueOf(result.getId());
+		return authService.login(UserLogInDto.builder().email(email).password(password).build());
+	}
 //
 //	@ApiOperation(value = "email 중복 검사", notes = "회원가입 시 email 중복 검사")
 //	@PostMapping(value = "signup/duplicate")

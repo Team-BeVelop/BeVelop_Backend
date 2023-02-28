@@ -44,32 +44,6 @@ public class KakaoService {
 	@Value("${spring.social.kakao.redirect}")
 	private String kakaoRedirect;
 
-	public KakaoProfile execKakaoLogin(String code) {
-		String accesesToken = getKakaoTokenInfo(code).getAccess_token();
-		KakaoProfile kakaoProfile = getKakaoProfile(accesesToken);
-		return kakaoProfile;
-	}
-
-	public KakaoProfile getKakaoProfile(String accessToken) {
-		// Set header : Content-type: application/x-www-form-urlencoded
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-		headers.set("Authorization", "Bearer " + accessToken);
-
-		// Set http entity
-		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(null, headers);
-		try {
-			// Request profile
-			ResponseEntity<String> response = restTemplate
-					.postForEntity(env.getProperty("spring.social.kakao.url.profile"), request, String.class);
-			if (response.getStatusCode() == HttpStatus.OK)
-				return gson.fromJson(response.getBody(), KakaoProfile.class);
-		} catch (Exception e) {
-			throw new CustomException(ErrorCode.COMMUNICATION_ERROR);
-		}
-		throw new CustomException(ErrorCode.COMMUNICATION_ERROR);
-	}
-
 	public RetSocialAuth getKakaoTokenInfo(String code) {
 		// Set header : Content-type: application/x-www-form-urlencoded
 		HttpHeaders headers = new HttpHeaders();
