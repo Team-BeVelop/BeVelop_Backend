@@ -20,10 +20,6 @@ public class User extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "user_id")
 	private Long id;
-
-	@Column
-	private String socialId;
-
 	@Column
 	@NotNull
 	private String email;
@@ -57,7 +53,6 @@ public class User extends BaseEntity {
 //    @CollectionTable(name = "stack_list", joinColumns = @JoinColumn(name = "user_id"))
 //    private Set<Stack> stackSet = new HashSet<>();
 
-	private String provider;
 
 	public void setAttachedStacks(AttachedStacks attachedStacks) {
 		this.attachedStacks = attachedStacks;
@@ -80,21 +75,15 @@ public class User extends BaseEntity {
 		return this;
 	}
 
-	public User hashProvider(PasswordEncoder passwordEncoder) {
-		this.password = passwordEncoder.encode(this.provider);
-		return this;
-	}
-
 	public boolean matchPassword(PasswordEncoder passwordEncoder, String checkPassword) {
 		return passwordEncoder.matches(checkPassword, getPassword());
 	}
 
 
 	@Builder
-	public User(Long id, String socialId, String email, String password, String nickname, String introduce, Role role,
-			String job, String interests, String url, AttachedStacks attachedStacks, String provider) {
+	public User(Long id, String email, String password, String nickname, String introduce, Role role,
+			String job, String interests, String url, AttachedStacks attachedStacks) {
 		this.id = id;
-		this.socialId = socialId;
 		this.email = email;
 		this.password = password;
 		this.nickname = nickname;
@@ -104,7 +93,6 @@ public class User extends BaseEntity {
 		this.interests = interests;
 		this.url = url;
 		this.attachedStacks = attachedStacks;
-		this.provider = provider;
 	}
 
 //	@Builder

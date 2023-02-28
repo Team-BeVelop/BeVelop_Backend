@@ -38,7 +38,7 @@ public class ProjectLikeController {
     public CommonResult addLike(@PathVariable Long projectId, @RequestParam Responses response) throws CustomException {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User signedInUser =  userService.findBySocialIdOrEmail(authentication.getName()).orElseThrow(()-> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+        User signedInUser =  userService.findByEmail(authentication.getName()).orElseThrow(()-> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         Project project = projectService.findById(projectId);
 

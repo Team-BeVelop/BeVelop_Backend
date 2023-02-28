@@ -42,6 +42,4 @@ public interface UserService {
     User updateUser(User user, String newInfo);
 
     Optional<User> findById(Long id);
-    Optional<User> findBySocialId(String id);
-    Optional<User> findBySocialIdOrEmail(String id);
 }

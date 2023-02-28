@@ -34,7 +34,7 @@ public class UserController {
     @GetMapping("/profile")
     public User profile() throws CustomException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findBySocialIdOrEmail(authentication.getName()).orElseThrow(()-> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+        User user = userService.findByEmail(authentication.getName()).orElseThrow(()-> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
         return user;
     }
 

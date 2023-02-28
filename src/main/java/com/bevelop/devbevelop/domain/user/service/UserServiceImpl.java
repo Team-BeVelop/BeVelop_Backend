@@ -40,15 +40,4 @@ public class UserServiceImpl implements UserService {
     public Optional<User> findById(Long id) {
         return userRepository.findById(id);
     }
-
-    @Override
-    public Optional<User> findBySocialId(String id) {
-        return userRepository.findBySocialId(id);
-    }
-
-    @Override
-    public Optional<User> findBySocialIdOrEmail(String id) {
-        if(id.contains("@")) return findByEmail(id);
-        return findBySocialId(id);
-    }
 }

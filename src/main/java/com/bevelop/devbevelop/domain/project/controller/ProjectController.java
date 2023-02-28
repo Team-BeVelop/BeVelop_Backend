@@ -58,7 +58,7 @@ public class ProjectController {
 
         //현재 로그인 된 유저로 오너 유저 정보 받아와서 오너 설정
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User owner =  userService.findBySocialIdOrEmail(authentication.getName()).orElseThrow(()-> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+        User owner =  userService.findByEmail(authentication.getName()).orElseThrow(()-> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
         project.setUserId(owner.getId());
 
         return projectService.save(project);
@@ -74,7 +74,7 @@ public class ProjectController {
 
         //현재 로그인 된 유저가 오너인지 확인
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User owner =  userService.findBySocialIdOrEmail(authentication.getName()).orElseThrow(()-> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+        User owner =  userService.findByEmail(authentication.getName()).orElseThrow(()-> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
         if(owner.getId() != projectService.findById(id).getUserId()) throw new CustomException(ErrorCode.NOT_OWNER);
 
         project.setId(id);
@@ -90,7 +90,7 @@ public class ProjectController {
     public void deleteProject(@PathVariable("id") Long id) {
         //현재 로그인 된 유저가 오너인지 확인
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User owner =  userService.findBySocialIdOrEmail(authentication.getName()).orElseThrow(()-> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+        User owner =  userService.findByEmail(authentication.getName()).orElseThrow(()-> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
         if(owner.getId() != projectService.findById(id).getUserId()) throw new CustomException(ErrorCode.NOT_OWNER);
 
         projectService.deleteProject(id);
