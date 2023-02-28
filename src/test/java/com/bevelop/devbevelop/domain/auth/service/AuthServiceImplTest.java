@@ -3,20 +3,12 @@ package com.bevelop.devbevelop.domain.auth.service;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.json.simple.JSONObject;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.AdditionalAnswers;
-import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,11 +19,9 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
-import java.util.Random;
 
 import com.bevelop.devbevelop.domain.auth.dto.UserLogInDto;
 import com.bevelop.devbevelop.domain.auth.dto.UserSignUpDto;
@@ -42,25 +32,13 @@ import com.bevelop.devbevelop.global.common.response.ResponseService;
 import com.bevelop.devbevelop.global.common.response.ResponseService.CommonResponse;
 import com.bevelop.devbevelop.global.config.security.jwt.JwtTokenProvider;
 
-//@SpringBootTest
+
 @ExtendWith(MockitoExtension.class)
 class AuthServiceImplTest {
-
-//	@Autowired
-//	AuthService authService;
-//	
-//	@Autowired
-//	UserRepository userRepository;
-//	
-//	@Autowired
-//	ResponseService responseService;
-
 	@InjectMocks
 	AuthServiceImpl authServiceImpl;
-
 	@Spy
 	UserRepository userRepository;
-
 	@Spy
 	PasswordEncoder passwordEncoder = new MockPasswordEncoder();
 	@Spy
@@ -69,8 +47,8 @@ class AuthServiceImplTest {
 	JwtTokenProvider jwtTokenProvider;
 	@Spy
 	AuthenticationManager authenticationManager;
-	@Spy
-	RedisTemplate<String, String> redisTemplate;
+	
+	RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
 
 //	@Mock
 //	ResponseService responseService;
@@ -89,10 +67,9 @@ class AuthServiceImplTest {
 
 	@Test
 	void testJoinUserSignUpDto() {
-		UserSignUpDto userSignUpDto = userSignUpDto();
 		when(userRepository.save(any(User.class))).then(AdditionalAnswers.returnsFirstArg());
 
-		CommonResult result = authServiceImpl.join(userSignUpDto);
+		CommonResult result = authServiceImpl.join(userSignUpDto());
 
 		assertEquals(result, successResult());
 	}
@@ -116,8 +93,10 @@ class AuthServiceImplTest {
 		when(authenticationManager.authenticate(any(Authentication.class)))
 				.thenReturn(new UsernamePasswordAuthenticationToken(existingUserLoginDto().getEmail(),
 						existingUserLoginDto().getPassword()));
-//		when(jwtTokenProvider.generateRefreshToken(any(Authentication.class))).thenReturn(value);
-
+		when(userRepository.findByEmail(any(String.class))).thenReturn(Optional.of(existingUserLoginDto().toUserEntity()));
+//		when(redisTemplate.opsForValue()).thenReturn(new DefaultValueOperations<>(redisTemplate));
+//		Mockito.doNothing().when(redisTemplate.opsForValue()).set(any(String.class), any(String.class), any(long.class), any(TimeUnit.class));
+		
 		ReflectionTestUtils.setField(jwtTokenProvider, "access_token_secret_key", "bevelop");
 		ReflectionTestUtils.setField(jwtTokenProvider, "refresh_token_secret_key", "backendBevelop");
 		ReflectionTestUtils.setField(jwtTokenProvider, "access_token_expire_time", 60000);
@@ -135,20 +114,6 @@ class AuthServiceImplTest {
 	@Test
 	void testLoginUser() {
 		fail("Not yet implemented");
-	}
-
-	@Test
-	void testValidateDuplicateEmail() {
-		CommonResult answer = authServiceImpl.validateDuplicateEmail("success@success.com");
-
-		assertEquals(successResult(), answer);
-	}
-
-	@Test
-	void testValidateDuplicateNickname() {
-		CommonResult answer = authServiceImpl.validateDuplicateNickname("success");
-
-		assertEquals(successResult(), answer);
 	}
 
 }

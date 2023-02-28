@@ -20,6 +20,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 import javax.validation.Valid;
 
 @Api(tags = { "1. Auth Controller" })
@@ -30,7 +32,7 @@ import javax.validation.Valid;
 public class AuthController {
 
 	private final AuthService authService;
-//	private final KakaoService kakaoService;
+	private final KakaoService kakaoService;
 //	private final GithubService githubService;
 //	private final UserRepository userRepository;
 
@@ -86,20 +88,20 @@ public class AuthController {
 		return authService.remove(userDetails, withdrawalDto);
 	}
 
-//	@ApiOperation(value = "소셜 카카오 계정 가입", notes = "소셜 계정(카카오)을(를) 이용하여 회원가입을 한다.")
-//	@PostMapping(value = "/signup/kakao")
-//	public CommonResult signupKakao(
-//			@ApiParam(value = "소셜 authentication code", required = true) @RequestParam String code,
-//			@Valid @RequestBody SocialSignUpDto socialSignUpDto) {
-//		KakaoProfile kakaoProfile = kakaoService.execKakaoLogin(code);
-//		User user = User.builder().name(socialSignUpDto.getName()).provider("kakao")
-//				.socialId("k" + kakaoProfile.getId()).job(socialSignUpDto.getJob())
-//				.interests(socialSignUpDto.getInterests()).build();
-//
-//		return authService.join(user);
-////        return responseService.getSuccessResult();
-////        return "redirect:webauthcallback://success?customToken="+jwtTokenProvider.createToken(user.getId(), user.getRole());
-//	}
+	@ApiOperation(value = "소셜 카카오 계정 가입", notes = "소셜 계정(카카오)을(를) 이용하여 회원가입을 한다.")
+	@PostMapping(value = "/signup/kakao")
+	public CommonResult signupKakao(
+			@ApiParam(value = "소셜 authentication code", required = true) @RequestParam String code) {
+		
+		String kakaoToken = kakaoService.getKakaoTokenInfo(code).getAccess_token();
+		Map<String, Object> result = kakaoService.getUserInfo(kakaoToken);
+        String socialId = (String) result.get("id");
+        String nickname = (String) result.get("nickname");
+        String email = (String) result.get("email");
+        String password = socialId;
+
+		return authService.join(UserSignUpDto.builder().nickname(nickname).email(email).password(password).build());
+	}
 
 //	@ApiOperation(value = "소셜 깃허브 계정 가입", notes = "소셜 계정(깃허브)을(를) 이용하여 회원가입을 한다.")
 //	@PostMapping(value = "/signup/github")
@@ -115,18 +117,23 @@ public class AuthController {
 ////        return "redirect:webauthcallback://success?customToken="+jwtTokenProvider.createToken(user.getId(), user.getRole());
 //	}
 
-//	@ApiOperation(value = "소셜 카카오 로그인", notes = "소셜 회원(카카오)을(를) 로그인을 한다.")
-//	@PostMapping(value = "/login/kakao")
-//	public ResponseEntity<TokenDto> loginByKakao(
-//			@ApiParam(value = "소셜 authentication code", required = true) @RequestParam String code) {
-//
-//		KakaoProfile profile = kakaoService.execKakaoLogin(code);
-//		User user = userRepository.findBySocialIdAndProvider("k" + profile.getId(), "kakao")
-//				.orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
-//		return authService.login(user);
-////        return responseService.getSingleResult(jwtTokenProvider.createToken(user.getId(), user.getRole()));
-////        return "redirect:webauthcallback://success?customToken="+jwtTokenProvider.createToken(user.ge tId(), user.getRole());
-//	}
+	@ApiOperation(value = "소셜 카카오 로그인", notes = "소셜 회원(카카오)을(를) 로그인을 한다.")
+	@PostMapping(value = "/login/kakao")
+	public ResponseEntity<?> loginByKakao(
+			@ApiParam(value = "소셜 authentication code", required = true) @RequestParam String code) {
+
+		String kakaoToken = kakaoService.getKakaoTokenInfo(code).getAccess_token();
+		Map<String, Object> result = kakaoService.getUserInfo(kakaoToken);
+        String socialId = (String) result.get("id");
+        String nickname = (String) result.get("nickname");
+        String email = (String) result.get("email");
+        String password = socialId;
+
+		return authService.login(UserLogInDto.builder().email(email).password(password).build());
+	
+//        return responseService.getSingleResult(jwtTokenProvider.createToken(user.getId(), user.getRole()));
+//        return "redirect:webauthcallback://success?customToken="+jwtTokenProvider.createToken(user.ge tId(), user.getRole());
+	}
 
 //	@ApiOperation(value = "소셜 깃허브 로그인", notes = "소셜 회원(깃허브)을(를) 로그인을 한다.")
 //	@PostMapping(value = "/login/github")

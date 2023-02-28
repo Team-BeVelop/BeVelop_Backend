@@ -63,23 +63,10 @@ public class User extends BaseEntity {
 		this.attachedStacks = attachedStacks;
 	}
 
-	@Builder
-	public User(String email, String password, String nickname, String introduce, Role role, String job, String interests,
-			String url, AttachedStacks attachedStacks, String provider) {
-		super();
-		this.email = email;
-		this.password = password;
-		this.nickname = nickname;
-		this.introduce = introduce;
-		this.role = role;
-		this.job = job;
-		this.interests = interests;
-		this.url = url;
-		this.attachedStacks = attachedStacks;
-		this.provider = provider;
-	}
 
-	public void update(String nickname, String introduce, String job, String interests, String url, AttachedStacks attachedStacks) {
+
+	public void update(String nickname, String introduce, String job, String interests, String url,
+			AttachedStacks attachedStacks) {
 		this.nickname = nickname;
 		this.introduce = introduce;
 		this.job = job;
@@ -101,5 +88,32 @@ public class User extends BaseEntity {
 	public boolean matchPassword(PasswordEncoder passwordEncoder, String checkPassword) {
 		return passwordEncoder.matches(checkPassword, getPassword());
 	}
+
+
+	@Builder
+	public User(Long id, String socialId, String email, String password, String nickname, String introduce, Role role,
+			String job, String interests, String url, AttachedStacks attachedStacks, String provider) {
+		this.id = id;
+		this.socialId = socialId;
+		this.email = email;
+		this.password = password;
+		this.nickname = nickname;
+		this.introduce = introduce;
+		this.role = role;
+		this.job = job;
+		this.interests = interests;
+		this.url = url;
+		this.attachedStacks = attachedStacks;
+		this.provider = provider;
+	}
+
+//	@Builder
+//	public User(String email, String socialId, String nickname, String provider, String password) {
+//		this.email = email;
+//		this.socialId = socialId;
+//		this.nickname = nickname;
+//		this.provider = provider;
+//		this.password = password;
+//	}
 
 }

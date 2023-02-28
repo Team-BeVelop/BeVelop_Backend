@@ -19,7 +19,6 @@ public interface AuthService {
      */
     CommonResult join(UserSignUpDto userSignUpDto);
 
-    CommonResult join(User user);
 
     /**
      * 유저 정보로 로그인
@@ -28,7 +27,6 @@ public interface AuthService {
      */
     ResponseEntity<?> login(UserLogInDto userLoginDto);
 
-    ResponseEntity<TokenDto> login(User user);
 
 
     CommonResult logout(UserLogOutDto userLogOutDto);
