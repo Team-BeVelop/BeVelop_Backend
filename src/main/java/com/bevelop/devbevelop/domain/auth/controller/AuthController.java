@@ -94,11 +94,10 @@ public class AuthController {
 			@ApiParam(value = "소셜 authentication code", required = true) @RequestParam String code) {
 		
 		String kakaoToken = kakaoService.getKakaoTokenInfo(code).getAccess_token();
-		Map<String, Object> result = kakaoService.getUserInfo(kakaoToken);
-        String socialId = (String) result.get("id");
-        String nickname = (String) result.get("nickname");
-        String email = (String) result.get("email");
-        String password = socialId;
+		KakaoProfile result = kakaoService.getUserInfo(kakaoToken);
+        String nickname = result.getProperties().getNickname();
+        String email = result.getKakao_account().getEmail();
+        String password = String.valueOf(result.getId());
 
 		return authService.join(UserSignUpDto.builder().nickname(nickname).email(email).password(password).build());
 	}
@@ -123,11 +122,10 @@ public class AuthController {
 			@ApiParam(value = "소셜 authentication code", required = true) @RequestParam String code) {
 
 		String kakaoToken = kakaoService.getKakaoTokenInfo(code).getAccess_token();
-		Map<String, Object> result = kakaoService.getUserInfo(kakaoToken);
-        String socialId = (String) result.get("id");
-        String nickname = (String) result.get("nickname");
-        String email = (String) result.get("email");
-        String password = socialId;
+		KakaoProfile result = kakaoService.getUserInfo(kakaoToken);
+        String nickname = result.getProperties().getNickname();
+        String email = result.getKakao_account().getEmail();
+        String password = String.valueOf(result.getId());
 
 		return authService.login(UserLogInDto.builder().email(email).password(password).build());
 	}

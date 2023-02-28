@@ -1,5 +1,6 @@
 package com.bevelop.devbevelop.domain.auth.service;
 
+import com.bevelop.devbevelop.domain.auth.dto.GithubProfile;
 import com.bevelop.devbevelop.domain.auth.dto.KakaoProfile;
 import com.bevelop.devbevelop.domain.auth.dto.RetSocialAuth;
 import com.bevelop.devbevelop.global.error.ErrorCode;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,45 +65,89 @@ public class KakaoService {
 		}
 		return null;
 	}
+	
+//	public GithubProfile getUserInfo(String access_token) {
+//    	HttpHeaders headers = new HttpHeaders();
+//        headers.setAccept(Arrays.asList(new MediaType[] {MediaType.APPLICATION_JSON}));
+//        headers.set("Accept", "application/vnd.github+json");
+//        headers.set("Authorization", "Bearer " + access_token);
+//        headers.set("X-GitHub-Api-Version", "2022-11-28");
+//
+//        // Set http entity
+//        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(null, headers);
+//        try {
+//            // Request profile
+//            ResponseEntity<String> response = restTemplate.exchange(env.getProperty("spring.social.github.url.profile"), HttpMethod.GET, request, String.class);
+//            if (response.getStatusCode() == HttpStatus.OK) {
+//            	GithubProfile githubProfile = gson.fromJson(response.getBody(), GithubProfile.class);
+//            	if(githubProfile.getEmail()==null) {
+//            		githubProfile.setEmail(githubProfile.getId()+"@github.com");
+//            	}	
+//            	return githubProfile;
+//            }
+//        } catch (Exception e) {
+//            throw new CustomException(ErrorCode.COMMUNICATION_ERROR);
+//        }
+//        throw new CustomException(ErrorCode.COMMUNICATION_ERROR);
+//	}
 
-	public Map<String, Object> getUserInfo(String access_token) {
-		Map<String, Object> resultMap = new HashMap<>();
-		String reqURL = "https://kapi.kakao.com/v2/user/me";
-		try {
-			URL url = new URL(reqURL);
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			conn.setRequestMethod("GET");
-
-			// 요청에 필요한 Header에 포함될 내용
-			conn.setRequestProperty("Authorization", "Bearer " + access_token);
-
-			int responseCode = conn.getResponseCode();
-			System.out.println("responseCode : " + responseCode);
-
-			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
-			String br_line = "";
-			String result = "";
-
-			while ((br_line = br.readLine()) != null) {
-				result += br_line;
-			}
-			System.out.println("response:" + result);
-
-			JsonElement element = JsonParser.parseString(result);
-			JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
-			JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
-			String id = element.getAsJsonObject().get("id").getAsString();
-			String nickname = properties.getAsJsonObject().get("nickname").getAsString();
-			String email = kakao_account.getAsJsonObject().get("email").getAsString();
-			resultMap.put("nickname", nickname);
-			resultMap.put("id", id);
-			resultMap.put("email", email);
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return resultMap;
+	public KakaoProfile getUserInfo(String access_token) {
+		HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(Arrays.asList(new MediaType[] {MediaType.APPLICATION_JSON}));
+        headers.set("Authorization", "Bearer " + access_token);
+        
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(null, headers);
+        try {
+            // Request profile
+            ResponseEntity<String> response = restTemplate.exchange(env.getProperty("spring.social.kakao.url.profile"), HttpMethod.GET, request, String.class);
+            if (response.getStatusCode() == HttpStatus.OK) {
+            	return gson.fromJson(response.getBody(), KakaoProfile.class);
+            }
+        } catch (Exception e) {
+            throw new CustomException(ErrorCode.COMMUNICATION_ERROR);
+        }
+        throw new CustomException(ErrorCode.COMMUNICATION_ERROR);
 	}
+		
+		
+		
+		
+//		Map<String, Object> resultMap = new HashMap<>();
+//		String reqURL = "https://kapi.kakao.com/v2/user/me";
+//		try {
+//			URL url = new URL(reqURL);
+//			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+//			conn.setRequestMethod("GET");
+//
+//			// 요청에 필요한 Header에 포함될 내용
+//			conn.setRequestProperty("Authorization", "Bearer " + access_token);
+//
+//			int responseCode = conn.getResponseCode();
+//			System.out.println("responseCode : " + responseCode);
+//
+//			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+//
+//			String br_line = "";
+//			String result = "";
+//
+//			while ((br_line = br.readLine()) != null) {
+//				result += br_line;
+//			}
+//			System.out.println("response:" + result);
+//
+//			JsonElement element = JsonParser.parseString(result);
+//			JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
+//			JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
+//			String id = element.getAsJsonObject().get("id").getAsString();
+//			String nickname = properties.getAsJsonObject().get("nickname").getAsString();
+//			String email = kakao_account.getAsJsonObject().get("email").getAsString();
+//			resultMap.put("nickname", nickname);
+//			resultMap.put("id", id);
+//			resultMap.put("email", email);
+//
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		return resultMap;
 }
