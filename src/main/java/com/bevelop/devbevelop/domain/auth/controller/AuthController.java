@@ -71,15 +71,6 @@ public class AuthController {
 		return authService.logout(userLogOutDto);
 	}
 
-	@ApiImplicitParams({
-			@ApiImplicitParam(name = "jwt", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header") })
-	@ApiOperation(value = "회원수정", notes = "회원 수정")
-	@PutMapping("/edit/{id}")
-	public CommonResult updateUser(@PathVariable("id") Long id, @AuthenticationPrincipal UserDetails userDetails,
-			@Valid @RequestBody UserUpdateDto userUpdateDto) {
-		return authService.update(id, userDetails, userUpdateDto);
-	}
-
 	@ApiOperation(value = "회원탈퇴", notes = "회원 탈퇴")
 	@PostMapping("/remove")
 	public CommonResult remove(@AuthenticationPrincipal UserDetails userDetails,

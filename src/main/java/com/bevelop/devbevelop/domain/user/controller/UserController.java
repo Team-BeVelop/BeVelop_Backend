@@ -1,8 +1,10 @@
 package com.bevelop.devbevelop.domain.user.controller;
 
+import com.bevelop.devbevelop.domain.auth.dto.UserUpdateDto;
 import com.bevelop.devbevelop.domain.user.domain.Role;
 import com.bevelop.devbevelop.domain.user.domain.User;
 import com.bevelop.devbevelop.domain.user.service.UserServiceImpl;
+import com.bevelop.devbevelop.global.common.response.CommonResult;
 import com.bevelop.devbevelop.global.error.exception.CustomException;
 import com.bevelop.devbevelop.global.error.ErrorCode;
 import io.swagger.annotations.Api;
@@ -11,9 +13,12 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Api(tags = {"2. User Controller"})
@@ -53,5 +58,13 @@ public class UserController {
         if(user.getRole().equals(Role.MASTER))
             return userService.findAll();
         throw new CustomException(ErrorCode.NOT_MASTER);
+    }
+
+    @ApiOperation(value = "유저 정보 수정", notes = "회원 수정")
+    @PutMapping("/edit/{id}")
+    public CommonResult updateUser(@Valid @RequestBody UserUpdateDto userUpdateDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByEmail(authentication.getName()).orElseThrow(()-> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+        return userService.updateUser(user, userUpdateDto);
     }
 }
