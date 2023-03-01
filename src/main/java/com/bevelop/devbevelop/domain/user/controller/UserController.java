@@ -1,5 +1,6 @@
 package com.bevelop.devbevelop.domain.user.controller;
 
+import com.bevelop.devbevelop.domain.user.domain.Role;
 import com.bevelop.devbevelop.domain.user.domain.User;
 import com.bevelop.devbevelop.domain.user.service.UserServiceImpl;
 import com.bevelop.devbevelop.global.error.exception.CustomException;
@@ -27,9 +28,6 @@ public class UserController {
         return "testing Docker...";
     }
 
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "jwt", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
-    })
     @ApiOperation(value = "현재 유저 프로필", notes = "현재 로그인된 유저의 정보")
     @GetMapping("/profile")
     public User profile() throws CustomException {
@@ -38,9 +36,6 @@ public class UserController {
         return user;
     }
 
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "jwt", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
-    })
     @ApiOperation(value = "유저 프로필 찾기", notes = "PathVariable로 주어진 username을 가진 유저의 정보")
     @GetMapping("/profile/view/{username}")
     public User userProfile(@PathVariable String username) throws CustomException {
@@ -50,12 +45,13 @@ public class UserController {
         return user;
     }
 
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "jwt", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
-    })
     @ApiOperation(value = "모든 유저", notes = "모든 유저의 리스트")
     @GetMapping("/userList")
     public List<User> showUserList() {
-        return userService.findAll();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByEmail(authentication.getName()).orElseThrow(()-> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+        if(user.getRole().equals(Role.MASTER))
+            return userService.findAll();
+        throw new CustomException(ErrorCode.NOT_MASTER);
     }
 }
