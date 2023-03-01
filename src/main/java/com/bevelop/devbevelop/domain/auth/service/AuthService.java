@@ -35,7 +35,7 @@ public interface AuthService {
 
     CommonResult update(Long id, UserDetails userDetails, UserUpdateDto userUpdateDto);
 
-//    ResponseEntity<TokenDto> regenerateToken(RegenerateTokenDto refreshTokenDto);
+    ResponseEntity<TokenDto> regenerateToken(RegenerateTokenDto refreshTokenDto);
 
     ResponseEntity<TokenDto> regenerateToken(String refreshToken);
     

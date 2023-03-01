@@ -27,8 +27,7 @@ import javax.validation.Valid;
 @Api(tags = { "1. Auth Controller" })
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "/auth")
-@Controller
+@RequestMapping("/auth")
 public class AuthController {
 
 	private final AuthService authService;
@@ -54,17 +53,17 @@ public class AuthController {
 		return authService.login(userLoginDto);
 	}
 
-//    @ApiOperation(value = "토큰 재발급", notes = "회원 토큰 재발급")
-//    @PostMapping("/regenerateToken")
-//    public ResponseEntity<TokenDto> regenerateToken(@Valid @RequestBody RegenerateTokenDto refreshTokenDto) {
-//        return authService.regenerateToken(refreshTokenDto);
-//    }
+    @ApiOperation(value = "토큰 재발급", notes = "회원 토큰 재발급")
+    @PostMapping("/regenerateToken")
+    public ResponseEntity<TokenDto> regenerateToken(@Valid @RequestBody RegenerateTokenDto refreshTokenDto) {
+        return authService.regenerateToken(refreshTokenDto);
+    }
 
-	@ApiOperation(value = "토큰 재발급", notes = "회원 토큰 재발급")
-	@PostMapping("/regenerateToken")
-	public ResponseEntity<TokenDto> regenerateToken(@Valid @RequestBody String refreshToken) {
-		return authService.regenerateToken(refreshToken);
-	}
+//	@ApiOperation(value = "토큰 재발급", notes = "회원 토큰 재발급")
+//	@PostMapping("/regenerateToken")
+//	public ResponseEntity<TokenDto> regenerateToken(@Valid @RequestBody String refreshToken) {
+//		return authService.regenerateToken(refreshToken);
+//	}
 
 	@ApiOperation(value = "로그아웃", notes = "회원 로그아웃")
 	@PostMapping("/logout")
@@ -142,11 +141,5 @@ public class AuthController {
         String password = String.valueOf(result.getId());
 		return authService.login(UserLogInDto.builder().email(email).password(password).build());
 	}
-//
-//	@ApiOperation(value = "email 중복 검사", notes = "회원가입 시 email 중복 검사")
-//	@PostMapping(value = "signup/duplicate")
-//	public CommonResult validateDuplicateEmail(@ApiParam(value = "email", required = true) @RequestParam String email) {
-//		return authService.validateDuplicateMember(email);
-//	}
 
 }
