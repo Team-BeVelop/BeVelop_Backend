@@ -33,8 +33,6 @@ public interface AuthService {
 
     CommonResult remove(UserDetails userDetails, UserWithdrawalDto userWithdrawalDto);
 
-    CommonResult update(Long id, UserDetails userDetails, UserUpdateDto userUpdateDto);
-
     ResponseEntity<TokenDto> regenerateToken(RegenerateTokenDto refreshTokenDto);
 
     ResponseEntity<TokenDto> regenerateToken(String refreshToken);

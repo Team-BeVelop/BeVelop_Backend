@@ -252,23 +252,4 @@ public class AuthServiceImpl implements AuthService {
 			throw new CustomException(ErrorCode.MEMBER_NICKNAME_EXISTS);
 		return responseService.getSuccessResult();
 	}
-
-    @Override
-    @Transactional
-    public CommonResult update(Long userId, UserDetails userDetails, UserUpdateDto userUpdateDto) {
-
-        Optional<User> findUser = userRepository.findByEmail(userDetails.getUsername());
-
-        System.out.println(findUser.toString());
-
-        if(userId != findUser.get().getId()) {
-            throw new CustomException(ErrorCode.MEMBER_NOT_FOUND);
-        }
-
-        findUser.get().update(userUpdateDto.getNickname(),userUpdateDto.getIntroduce(), userUpdateDto.getJob(), userUpdateDto.getInterests(), userUpdateDto.getUrl(), userUpdateDto.mapToAttachedStacks());
-
-
-        // 성공할때도 200을 보낼수도있고 201을 보낼수도 있어서 나중에 변경 필요
-        return responseService.getSuccessResult();
-    }
 }
