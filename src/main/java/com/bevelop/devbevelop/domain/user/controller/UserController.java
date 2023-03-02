@@ -8,14 +8,10 @@ import com.bevelop.devbevelop.global.common.response.CommonResult;
 import com.bevelop.devbevelop.global.error.exception.CustomException;
 import com.bevelop.devbevelop.global.error.ErrorCode;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -32,13 +28,16 @@ public class UserController {
     public String hello() {
         return "testing Docker...";
     }
+    
+    private User getCurrentUser() {
+    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    	return userService.findByEmail(authentication.getName()).orElseThrow(()->new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+    }
 
     @ApiOperation(value = "현재 유저 프로필", notes = "현재 로그인된 유저의 정보")
     @GetMapping("/profile")
     public User profile() throws CustomException {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findByEmail(authentication.getName()).orElseThrow(()-> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
-        return user;
+        return getCurrentUser();
     }
 
     @ApiOperation(value = "유저 프로필 찾기", notes = "PathVariable로 주어진 username을 가진 유저의 정보")
@@ -53,9 +52,8 @@ public class UserController {
     @ApiOperation(value = "모든 유저", notes = "모든 유저의 리스트")
     @GetMapping("/userList")
     public List<User> showUserList() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findByEmail(authentication.getName()).orElseThrow(()-> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
-        if(user.getRole().equals(Role.MASTER))
+    	User user = getCurrentUser();
+    	if(user.getRole().equals(Role.MASTER))
             return userService.findAll();
         throw new CustomException(ErrorCode.NOT_MASTER);
     }
@@ -63,8 +61,7 @@ public class UserController {
     @ApiOperation(value = "유저 정보 수정", notes = "회원 수정")
     @PutMapping("/edit/{id}")
     public CommonResult updateUser(@Valid @RequestBody UserUpdateDto userUpdateDto) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findByEmail(authentication.getName()).orElseThrow(()-> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+        User user = getCurrentUser();
         return userService.updateUser(user, userUpdateDto);
     }
 }
