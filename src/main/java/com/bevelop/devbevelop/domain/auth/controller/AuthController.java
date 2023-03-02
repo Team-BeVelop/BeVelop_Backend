@@ -33,7 +33,6 @@ public class AuthController {
 	private final AuthService authService;
 	private final KakaoService kakaoService;
 	private final GithubService githubService;
-//	private final UserRepository userRepository;
 
 	@ApiOperation(value = "회원가입", notes = "회원 가입")
 	@PostMapping("/signup")
@@ -58,12 +57,6 @@ public class AuthController {
     public ResponseEntity<TokenDto> regenerateToken(@Valid @RequestBody RegenerateTokenDto refreshTokenDto) {
         return authService.regenerateToken(refreshTokenDto);
     }
-
-//	@ApiOperation(value = "토큰 재발급", notes = "회원 토큰 재발급")
-//	@PostMapping("/regenerateToken")
-//	public ResponseEntity<TokenDto> regenerateToken(@Valid @RequestBody String refreshToken) {
-//		return authService.regenerateToken(refreshToken);
-//	}
 
 	@ApiOperation(value = "로그아웃", notes = "회원 로그아웃")
 	@PostMapping("/logout")

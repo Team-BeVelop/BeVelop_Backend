@@ -35,8 +35,6 @@ public interface AuthService {
 
     ResponseEntity<TokenDto> regenerateToken(RegenerateTokenDto refreshTokenDto);
 
-    ResponseEntity<TokenDto> regenerateToken(String refreshToken);
-    
     /**
      * 중복 이메일 체크
      * @param email
