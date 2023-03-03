@@ -1,13 +1,17 @@
 package com.bevelop.devbevelop.domain.user.service;
 
+import com.bevelop.devbevelop.domain.auth.dto.UserUpdateDto;
 import com.bevelop.devbevelop.domain.user.domain.User;
 import com.bevelop.devbevelop.domain.user.repository.UserRepository;
+import com.bevelop.devbevelop.global.common.response.CommonResult;
+import com.bevelop.devbevelop.global.common.response.ResponseService;
 import com.bevelop.devbevelop.global.error.exception.CustomException;
 import com.bevelop.devbevelop.global.error.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +21,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final ResponseService responseService;
 
     @Override
     public List<User> findAll() {
@@ -29,26 +34,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findByName(String name) { return userRepository.findByNickname(name); }
+    public Optional<User> findByName(String name) {
+        return userRepository.findByNickname(name);
+    }
 
     @Override
-    public User updateUser(User user, String newInfo) {
-        return null;
+    @Transactional
+    public CommonResult updateUser(User user, UserUpdateDto userUpdateDto) {
+        user.update(userUpdateDto);
+        return responseService.getSuccessResult();
     }
 
     @Override
     public Optional<User> findById(Long id) {
         return userRepository.findById(id);
-    }
-
-    @Override
-    public Optional<User> findBySocialId(String id) {
-        return userRepository.findBySocialId(id);
-    }
-
-    @Override
-    public Optional<User> findBySocialIdOrEmail(String id) {
-        if(id.contains("@")) return findByEmail(id);
-        return findBySocialId(id);
     }
 }

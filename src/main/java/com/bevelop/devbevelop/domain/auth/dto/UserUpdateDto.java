@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(force = true)
 public class UserUpdateDto {
 
-
     @ApiParam(value = "이름")
     private String nickname;
 

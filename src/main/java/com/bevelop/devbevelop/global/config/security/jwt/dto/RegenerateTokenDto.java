@@ -1,10 +1,10 @@
 package com.bevelop.devbevelop.global.config.security.jwt.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.*;
 
-@AllArgsConstructor
-@Getter
+@Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor @Builder
 public class RegenerateTokenDto {
     private String refresh_token;
 }

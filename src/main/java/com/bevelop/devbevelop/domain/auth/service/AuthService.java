@@ -19,7 +19,6 @@ public interface AuthService {
      */
     CommonResult join(UserSignUpDto userSignUpDto);
 
-    CommonResult join(User user);
 
     /**
      * 유저 정보로 로그인
@@ -28,19 +27,14 @@ public interface AuthService {
      */
     ResponseEntity<?> login(UserLogInDto userLoginDto);
 
-    ResponseEntity<TokenDto> login(User user);
 
 
     CommonResult logout(UserLogOutDto userLogOutDto);
 
     CommonResult remove(UserDetails userDetails, UserWithdrawalDto userWithdrawalDto);
 
-    CommonResult update(Long id, UserDetails userDetails, UserUpdateDto userUpdateDto);
+    ResponseEntity<TokenDto> regenerateToken(RegenerateTokenDto refreshTokenDto);
 
-//    ResponseEntity<TokenDto> regenerateToken(RegenerateTokenDto refreshTokenDto);
-
-    ResponseEntity<TokenDto> regenerateToken(String refreshToken);
-    
     /**
      * 중복 이메일 체크
      * @param email

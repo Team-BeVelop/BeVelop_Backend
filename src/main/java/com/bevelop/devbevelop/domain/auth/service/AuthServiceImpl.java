@@ -50,7 +50,6 @@ public class AuthServiceImpl implements AuthService {
 	private final AuthenticationManager authenticationManager;
 	private final RedisTemplate<String, String> redisTemplate;
 
-//	private final UserDetailsService userDetailsService;
 
 	@Value("${jwt.token.refresh-token-expire-length}")
 	private long refresh_token_expire_time;
@@ -73,24 +72,6 @@ public class AuthServiceImpl implements AuthService {
 
 		// 성공할때도 200을 보낼수도있고 201을 보낼수도 있어서 나중에 변경 필요
 		return responseService.getSuccessResult();
-
-//        return responseService.getFailResult(400,"Fail to Sign up");
-	}
-
-	@Override
-	@Transactional
-	public CommonResult join(User user) throws CustomException {
-
-		validateDuplicateEmail(user.getEmail());
-
-		User neswUser = userRepository.save(user);
-		if (Objects.isNull(user))
-			throw new CustomException(ErrorCode.MEMBER_SIGNUP_FAIL);
-
-		// 성공할때도 200을 보낼수도있고 201을 보낼수도 있어서 나중에 변경 필요
-		return responseService.getSuccessResult();
-
-//        return responseService.getFailResult(400,"Fail to Sign up");
 	}
 
 	@Override
@@ -132,118 +113,57 @@ public class AuthServiceImpl implements AuthService {
 			httpHeaders.add("Authorization", "Bearer " + tokenDto.getAccess_token());
 			return new ResponseEntity<>(jsonObject, httpHeaders, HttpStatus.OK);
 		} catch (AuthenticationException e) {
-//            throw new BaseException("Invalid credentials supplied", HttpStatus.BAD_REQUEST);
 			e.printStackTrace();
 			throw new CustomException(ErrorCode.LOGIN_ERROR);
 		}
 	}
 
-	@Override
-	public ResponseEntity<TokenDto> login(User user) {
-		try {
-			Authentication authentication = authenticationManager
-					.authenticate(new UsernamePasswordAuthenticationToken(user.getSocialId(), user.getProvider()));
+    @Override
+    public ResponseEntity<TokenDto> regenerateToken(RegenerateTokenDto refreshTokenDto) {
+        String refresh_token = refreshTokenDto.getRefresh_token();
+        try {
+            // Refresh Token 검증
+            if (!jwtTokenProvider.validateRefreshToken(refresh_token)) {
+                throw new CustomException(ErrorCode.JWT_REFRESH_TOKEN_EXPIRED);
+            }
 
-			String refresh_token = jwtTokenProvider.generateRefreshToken(authentication);
+            // Access Token 에서 User email를 가져온다.
+            Authentication authentication = jwtTokenProvider.getAuthenticationByRefreshToken(refresh_token);
 
-			TokenDto tokenDto = new TokenDto(jwtTokenProvider.generateAccessToken(authentication), refresh_token);
+            // Redis에서 저장된 Refresh Token 값을 가져온다.
+            String refreshToken = redisTemplate.opsForValue().get(authentication.getName());
+            if(ObjectUtils.isEmpty(refreshToken)) {
+                throw new CustomException(ErrorCode.LOGOUT_ERROR);
+            }
+            if(!refreshToken.equals(refresh_token)) {
+                throw new CustomException(ErrorCode.MISMATCH_REFRESH_TOKEN);
+            }
 
-			// Redis에 저장 - 만료 시간 설정을 통해 자동 삭제 처리
-			redisTemplate.opsForValue().set(authentication.getName(), refresh_token, refresh_token_expire_time,
-					TimeUnit.MILLISECONDS);
+            // 토큰 재발행
+            String new_refresh_token = jwtTokenProvider.generateRefreshToken(authentication);
+            String new_access_token = jwtTokenProvider.generateAccessToken(authentication);
+            TokenDto tokenDto = new TokenDto(
+                    new_access_token,
+                    new_refresh_token
+            );
 
-			HttpHeaders httpHeaders = new HttpHeaders();
-			httpHeaders.add("Authorization", "Bearer " + tokenDto.getAccess_token());
-			return new ResponseEntity<>(tokenDto, httpHeaders, HttpStatus.OK);
-		} catch (AuthenticationException e) {
-//            throw new BaseException("Invalid credentials supplied", HttpStatus.BAD_REQUEST);
-			throw new CustomException(ErrorCode.LOGIN_ERROR);
-		}
-	}
+            // RefreshToken Redis에 업데이트
+            redisTemplate.opsForValue().set(
+                    authentication.getName(),
+                    new_refresh_token,
+                    refresh_token_expire_time,
+                    TimeUnit.MILLISECONDS
+            );
 
-//    @Override
-//    public ResponseEntity<TokenDto> regenerateToken(RegenerateTokenDto refreshTokenDto) {
-//        String refresh_token = refreshTokenDto.getRefresh_token();
-//        try {
-//            // Refresh Token 검증
-//            if (!jwtTokenProvider.validateRefreshToken(refresh_token)) {
-//                throw new CustomException(ErrorCode.JWT_REFRESH_TOKEN_EXPIRED);
-//            }
-//
-//            // Access Token 에서 User email를 가져온다.
-//            Authentication authentication = jwtTokenProvider.getAuthenticationByRefreshToken(refresh_token);
-//
-//            // Redis에서 저장된 Refresh Token 값을 가져온다.
-//            String refreshToken = redisTemplate.opsForValue().get(authentication.getName());
-//            if(ObjectUtils.isEmpty(refreshToken)) {
-//                throw new CustomException(ErrorCode.LOGOUT_ERROR);
-//            }
-//            if(!refreshToken.equals(refresh_token)) {
-//                throw new CustomException(ErrorCode.MISMATCH_REFRESH_TOKEN);
-//            }
-//
-//            // 토큰 재발행
-//            String new_refresh_token = jwtTokenProvider.generateRefreshToken(authentication);
-//            String new_access_token = jwtTokenProvider.generateAccessToken(authentication);
-//            TokenDto tokenDto = new TokenDto(
-//                    new_access_token,
-//                    new_refresh_token
-//            );
-//
-//            // RefreshToken Redis에 업데이트
-//            redisTemplate.opsForValue().set(
-//                    authentication.getName(),
-//                    new_refresh_token,
-//                    refresh_token_expire_time,
-//                    TimeUnit.MILLISECONDS
-//            );
-//
-//            HttpHeaders httpHeaders = new HttpHeaders();
-//            httpHeaders.add("Authorization", "Bearer " + tokenDto.getAccess_token());
-//
-//            return new ResponseEntity<>(tokenDto, httpHeaders, HttpStatus.OK);
-//        } catch (ExpiredJwtException e) {
-//            throw new CustomException(ErrorCode.JWT_REFRESH_TOKEN_EXPIRED);
-//        }
-//    }
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.add("Authorization", "Bearer " + tokenDto.getAccess_token());
 
-	@Override
-	public ResponseEntity<TokenDto> regenerateToken(String refresh_token) {
-		try {
-			// Refresh Token 검증
-			if (!jwtTokenProvider.validateRefreshToken(refresh_token)) {
-				throw new CustomException(ErrorCode.JWT_REFRESH_TOKEN_EXPIRED);
-			}
+            return new ResponseEntity<>(tokenDto, httpHeaders, HttpStatus.OK);
+        } catch (ExpiredJwtException e) {
+            throw new CustomException(ErrorCode.JWT_REFRESH_TOKEN_EXPIRED);
+        }
+    }
 
-			// Access Token 에서 User email를 가져온다.
-			Authentication authentication = jwtTokenProvider.getAuthenticationByRefreshToken(refresh_token);
-
-			// Redis에서 저장된 Refresh Token 값을 가져온다.
-			String refreshToken = redisTemplate.opsForValue().get(authentication.getName());
-			if (ObjectUtils.isEmpty(refreshToken)) {
-				throw new CustomException(ErrorCode.LOGOUT_ERROR);
-			}
-			if (!refreshToken.equals(refresh_token)) {
-				throw new CustomException(ErrorCode.MISMATCH_REFRESH_TOKEN);
-			}
-
-			// 토큰 재발행
-			String new_refresh_token = jwtTokenProvider.generateRefreshToken(authentication);
-			String new_access_token = jwtTokenProvider.generateAccessToken(authentication);
-			TokenDto tokenDto = new TokenDto(new_access_token, new_refresh_token);
-
-			// RefreshToken Redis에 업데이트
-			redisTemplate.opsForValue().set(authentication.getName(), new_refresh_token, refresh_token_expire_time,
-					TimeUnit.MILLISECONDS);
-
-			HttpHeaders httpHeaders = new HttpHeaders();
-			httpHeaders.add("Authorization", "Bearer " + tokenDto.getAccess_token());
-
-			return new ResponseEntity<>(tokenDto, httpHeaders, HttpStatus.OK);
-		} catch (ExpiredJwtException e) {
-			throw new CustomException(ErrorCode.JWT_REFRESH_TOKEN_EXPIRED);
-		}
-	}
 
 	@Override
 	public CommonResult logout(UserLogOutDto userLogOutDto) {
@@ -291,23 +211,4 @@ public class AuthServiceImpl implements AuthService {
 			throw new CustomException(ErrorCode.MEMBER_NICKNAME_EXISTS);
 		return responseService.getSuccessResult();
 	}
-
-    @Override
-    @Transactional
-    public CommonResult update(Long userId, UserDetails userDetails, UserUpdateDto userUpdateDto) {
-
-        Optional<User> findUser = userRepository.findByEmail(userDetails.getUsername());
-
-        System.out.println(findUser.toString());
-
-        if(userId != findUser.get().getId()) {
-            throw new CustomException(ErrorCode.MEMBER_NOT_FOUND);
-        }
-
-        findUser.get().update(userUpdateDto.getNickname(),userUpdateDto.getIntroduce(), userUpdateDto.getJob(), userUpdateDto.getInterests(), userUpdateDto.getUrl(), userUpdateDto.mapToAttachedStacks());
-
-
-        // 성공할때도 200을 보낼수도있고 201을 보낼수도 있어서 나중에 변경 필요
-        return responseService.getSuccessResult();
-    }
 }

@@ -10,13 +10,15 @@ import lombok.ToString;
 public class KakaoProfile {
     private Long id;
     private Properties properties;
+    private KakaoAccount kakao_account;
 
     @Getter
-    @Setter
-    @ToString
-    private static class Properties {
+    public static class Properties {
         private String nickname;
-        private String thumbnail_image;
-        private String profile_image;
+    }
+    
+    @Getter
+	public static class KakaoAccount {
+    	private String email;
     }
 }

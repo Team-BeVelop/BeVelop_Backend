@@ -19,43 +19,32 @@ import java.util.Set;
 @RequiredArgsConstructor
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    @Autowired
-    private final UserRepository userRepository;
+	@Autowired
+	private final UserRepository userRepository;
 
+	public User save(User user) {
+		validateDuplicateMember(user);
+		return userRepository.save(user);
+	}
 
-    public User save(User user){
-        validateDuplicateMember(user);
-        return userRepository.save(user);
-    }
+	public User findByEmail(String email) {
+		return userRepository.findByEmail(email).orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+	}
 
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(()->new CustomException(ErrorCode.MEMBER_NOT_FOUND));
-    }
+	private void validateDuplicateMember(User user) {
+		Optional<User> findUser = userRepository.findByEmail(user.getEmail());
+		if (findUser.isPresent())
+			throw new CustomException(ErrorCode.MEMBER_EMAIL_EXISTS);
+	}
 
-    private void validateDuplicateMember(User user) {
-        Optional<User> findUser = userRepository.findByEmail(user.getEmail());
-        if(findUser.isPresent()) throw new CustomException(ErrorCode.MEMBER_EMAIL_EXISTS);
-    }
+	@Override
+	public UserDetails loadUserByUsername(String email) throws CustomException {
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws CustomException {
+		User user = userRepository.findByEmail(email)
+				.orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
-        if(email.contains("@")) {
+		return org.springframework.security.core.userdetails.User.builder().username(user.getEmail())
+				.password(user.getPassword()).roles(user.getRole().toString()).build();
 
-            User user = userRepository.findByEmail(email).orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
-
-            return org.springframework.security.core.userdetails.User.builder()
-                    .username(user.getEmail())
-                    .password(user.getPassword())
-                    .roles(user.getRole().toString())
-                    .build();
-        }
-        String provider = (email.contains("k"))? "kakao" : "github";
-        User user = userRepository.findBySocialIdAndProvider(email, provider).orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
-        return org.springframework.security.core.userdetails.User.builder()
-                .username(user.getSocialId())
-                .password(user.getPassword())
-                .roles(user.getRole().toString())
-                .build();
-    }
+	}
 }
