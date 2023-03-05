@@ -35,14 +35,17 @@ public class UserSummaryDao {
     public Slice<UserSummaryData> searchBy(final SearchingTags searchingTags, final Pageable pageable) {
         final List<UserSummaryData> data = jdbcTemplate
                 .query(sql(searchingTags), params(searchingTags, pageable), USER_ROW_MAPPER);
-        System.out.println(Arrays.toString(data.toArray()));
+
         return new SliceImpl<>(getCurrentPageUsers(data, pageable), pageable, hasNext(data, pageable));
     }
 
     private String sql(final SearchingTags searchingTags) {
         String result = "SELECT a.user_id, a.nickname, a.job, a.interests FROM bevelop_user as a "
+                + "JOIN stack_tag ON a.user_id = stack_tag.user_id "
                 + filtersInQueryClauseJob(searchingTags)
                 + filtersInQueryClauseInterests(searchingTags)
+                + filtersInQueryClauseStack(searchingTags)
+                + "GROUP BY a.user_id "
                 + "ORDER BY a.reg_time DESC "
                 + "LIMIT :limit OFFSET :offset ";
         return result;
@@ -74,11 +77,23 @@ public class UserSummaryDao {
         }
     }
 
+    private String filtersInQueryClauseStack(final SearchingTags searchingTags) {
+
+        String sql = "AND stack_tag.stack_id IN ('{}') ";
+
+        String result = searchingTags.getTagIdsBy(UserCategoryName.STACK);
+
+        if(result.isEmpty()) {
+            return "";
+        } else {
+            return sql.replaceAll("\\{\\}", result.toUpperCase());
+        }
+    }
+
     private Map<String, Object> params(final SearchingTags searchingTags,
                                        final Pageable pageable) {
 
         final Map<String, Object> tagIds = Stream.of(UserCategoryName.values())
-                .peek(n -> System.out.println(n+" "))
                 .collect(Collectors.toMap(name -> name.name().toUpperCase(), searchingTags::getTagIdsBy));
 
 

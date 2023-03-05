@@ -23,7 +23,7 @@ public class SearchingUserController {
 
     @GetMapping("/abc")
     public ResponseEntity<UsersResponse> getUsers(
-            @PageableDefault(size = 5) final Pageable pageable
+            @PageableDefault(size = 12) final Pageable pageable
             ) {
         final UsersResponse usersResponse = searchingUserService.getUsers(SearchingTags.emptyTags(), pageable);
         return ResponseEntity.ok().body(usersResponse);
