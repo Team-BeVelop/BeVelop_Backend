@@ -55,7 +55,7 @@ public class UserStackDao {
             return new HashMap<>();
         }
 
-        final String sql = "SELECT user_id, stack_id FROM stack_tag "
+        final String sql = "SELECT stack_tag.user_id, stack_tag.stack_id FROM stack_tag "
                 + "JOIN bevelop_user ON bevelop_user.user_id = stack_tag.user_id "
                 + "WHERE bevelop_user.user_id IN (:userId)";
 
