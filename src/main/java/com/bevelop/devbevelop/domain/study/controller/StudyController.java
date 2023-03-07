@@ -28,30 +28,22 @@ public class StudyController {
     private final StudyService studyService;
 
 
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "jwt", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
-    })
     @ApiOperation(value = "스터디 생성", notes = "스터디 생성")
     @PostMapping
     public ResponseEntity<Void> createStudy(
-            @AuthenticationPrincipal UserDetails userDetails,
             @Valid @RequestBody final StudyRequest studyRequest
     ) {
-        Study study = studyService.createStudy(userDetails, studyRequest);
+        Study study = studyService.createStudy(studyRequest);
         return ResponseEntity.created(URI.create("/studies/"+ study.getId())).build();
     }
 
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "jwt", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
-    })
     @ApiOperation(value = "스터디 수정", notes = "스터디 수정")
     @PutMapping("/{study-id}")
     public ResponseEntity<Void> updateStudy(
-            @AuthenticationPrincipal UserDetails userDetails,
             @PathVariable("study-id") final Long studyId,
             @Valid @RequestBody final StudyRequest studyRequest
     ) {
-        studyService.updateStudy(userDetails, studyId, studyRequest);
+        studyService.updateStudy(studyId, studyRequest);
         return ResponseEntity.ok().build();
     }
 }

@@ -3,6 +3,7 @@ package com.bevelop.devbevelop.domain.study.service;
 import com.bevelop.devbevelop.domain.study.domain.*;
 import com.bevelop.devbevelop.domain.study.dto.StudyRequest;
 import com.bevelop.devbevelop.domain.study.repository.StudyRepository;
+import com.bevelop.devbevelop.domain.user.controller.UserController;
 import com.bevelop.devbevelop.domain.user.domain.RecruitJobs;
 import com.bevelop.devbevelop.domain.user.domain.User;
 import com.bevelop.devbevelop.domain.user.repository.UserRepository;
@@ -21,26 +22,22 @@ import java.time.LocalDateTime;
 public class StudyService {
 
     private final StudyRepository studyRepository;
-    private final UserRepository userRepository;
-    private final UserService userService;
+    private final UserController userController;
 
     private final DateTimeSystem dateTimeSystem;
 
     public StudyService(final StudyRepository studyRepository,
-                        final UserRepository userRepository,
-                        final UserService userService,
+                        final UserController userController,
                         final DateTimeSystem dateTimeSystem
     ) {
         this.studyRepository = studyRepository;
-        this.userRepository = userRepository;
-        this.userService = userService;
+        this.userController = userController;
         this.dateTimeSystem = dateTimeSystem;
     }
 
-    public Study createStudy(final UserDetails userDetails, final StudyRequest studyRequest) {
+    public Study createStudy(final StudyRequest studyRequest) {
         final LocalDateTime createdAt = dateTimeSystem.now();
-        User owner = userService.findByEmail(userDetails.getUsername())
-                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+        User owner = userController.getCurrentUser();
 
         final Participants participants = studyRequest.mapToParticipants(owner.getId());
         final RecruitPlanner recruitPlanner = studyRequest.mapToRecruitPlan();
@@ -55,12 +52,11 @@ public class StudyService {
     }
 
 
-    public void updateStudy(UserDetails userDetails, Long studyId, StudyRequest studyRequest) {
+    public void updateStudy(Long studyId, StudyRequest studyRequest) {
         Study study = studyRepository.findById(studyId)
                 .orElseThrow(() -> new CustomException(ErrorCode.STUDY_NOT_FOUND));
 
-        User owner = userService.findByEmail(userDetails.getUsername())
-                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+        User owner = userController.getCurrentUser();
 
         study.update(owner.getId(), studyRequest.mapToContent(), studyRequest.mapToRecruitPlan(), studyRequest.mapToRelatedFields(), studyRequest.mapToRecruitJobs());
     }

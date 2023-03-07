@@ -1,6 +1,8 @@
 package com.bevelop.devbevelop.domain.user.service;
 
+import com.bevelop.devbevelop.domain.auth.dto.UserUpdateDto;
 import com.bevelop.devbevelop.domain.user.domain.User;
+import com.bevelop.devbevelop.global.common.response.CommonResult;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,13 +37,11 @@ public interface UserService {
 
     /**
      * 유저 정보 수정
-     * @param user 수정활 User Entity
-     * @param newInfo
-     * @return 수정된 User
+     * @param user 수정할 User Entity
+     * @param userUpdateDto 수정할 정보
+     * @return 결과
      */
-    User updateUser(User user, String newInfo);
+    CommonResult updateUser(User user, UserUpdateDto userUpdateDto);
 
     Optional<User> findById(Long id);
-    Optional<User> findBySocialId(String id);
-    Optional<User> findBySocialIdOrEmail(String id);
 }

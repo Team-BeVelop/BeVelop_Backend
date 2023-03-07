@@ -32,7 +32,7 @@ public class CommentController {
     @PostMapping("{projectId}/comments")
     public CommentRes commentSave(@PathVariable Long projectId, @RequestBody CommentReq dto) throws CustomException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user =  userService.findBySocialIdOrEmail(authentication.getName()).orElseThrow(()-> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+        User user =  userService.findByEmail(authentication.getName()).orElseThrow(()-> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
         return commentService.commentSave(user.getId(), projectId, dto);
     }
 
