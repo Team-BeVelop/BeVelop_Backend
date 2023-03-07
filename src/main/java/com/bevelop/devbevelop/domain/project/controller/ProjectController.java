@@ -5,6 +5,7 @@ import com.bevelop.devbevelop.domain.project.dto.ProjectForm;
 import com.bevelop.devbevelop.domain.project.dto.ProjectRes;
 import com.bevelop.devbevelop.domain.project.dto.ProjectUpdate;
 import com.bevelop.devbevelop.domain.project.service.ProjectService;
+import com.bevelop.devbevelop.domain.user.controller.UserController;
 import com.bevelop.devbevelop.domain.user.domain.User;
 import com.bevelop.devbevelop.domain.user.service.UserService;
 import com.bevelop.devbevelop.global.error.exception.CustomException;
@@ -26,11 +27,7 @@ import java.util.List;
 public class ProjectController {
     private final ProjectService projectService;
     private final UserService userService;
-    
-    private User getCurrentUser() {
-    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    	return userService.findByEmail(authentication.getName()).orElseThrow(()->new CustomException(ErrorCode.MEMBER_NOT_FOUND));
-    }
+
     
     private boolean isTheOwner(Long projectId, User user) {
     	return user.getId() == projectService.findById(projectId).getUserId();
@@ -56,7 +53,7 @@ public class ProjectController {
         Project project = projectFormDto.toEntity();
 
         //현재 로그인 된 유저로 오너 유저 정보 받아와서 오너 설정
-        User owner = getCurrentUser();
+        User owner = UserController.getCurrentUser();
         project.setUserId(owner.getId());
 
         return projectService.save(project);
@@ -68,7 +65,7 @@ public class ProjectController {
         Project project = projectUpdateDto.toEntity();
 
         //현재 로그인 된 유저가 오너인지 확인
-        User owner = getCurrentUser();
+        User owner = UserController.getCurrentUser();
         if(!isTheOwner(id, owner)) throw new CustomException(ErrorCode.NOT_OWNER);
 
         project.setId(id);
@@ -81,7 +78,7 @@ public class ProjectController {
     @DeleteMapping(value = "/delete/{id}")
     public void deleteProject(@PathVariable("id") Long id) {
         //현재 로그인 된 유저가 오너인지 확인
-    	User owner = getCurrentUser();
+    	User owner = UserController.getCurrentUser();
         if(!isTheOwner(id, owner)) throw new CustomException(ErrorCode.NOT_OWNER);
 
         projectService.deleteProject(id);
