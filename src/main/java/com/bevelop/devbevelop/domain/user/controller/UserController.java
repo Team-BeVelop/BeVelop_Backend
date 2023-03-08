@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -23,15 +24,21 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
     private final UserServiceImpl userService;
+    private static UserServiceImpl staticUserService;
+    
+    @PostConstruct
+    private void initStatic() {
+    	this.staticUserService = this.userService;
+    }
 
     @GetMapping("/hello")
     public String hello() {
         return "testing Docker...";
     }
     
-    private User getCurrentUser() {
+    public static User getCurrentUser() {
     	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    	return userService.findByEmail(authentication.getName()).orElseThrow(()->new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+    	return staticUserService.findByEmail(authentication.getName()).orElseThrow(()->new CustomException(ErrorCode.MEMBER_NOT_FOUND));
     }
 
     @ApiOperation(value = "현재 유저 프로필", notes = "현재 로그인된 유저의 정보")
