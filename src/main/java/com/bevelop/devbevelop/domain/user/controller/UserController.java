@@ -10,12 +10,17 @@ import com.bevelop.devbevelop.global.error.ErrorCode;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
+
+import java.io.IOException;
 import java.util.List;
 
 @Api(tags = {"2. User Controller"})
@@ -70,5 +75,12 @@ public class UserController {
     public CommonResult updateUser(@Valid @RequestBody UserUpdateDto userUpdateDto) {
         User user = getCurrentUser();
         return userService.updateUser(user, userUpdateDto);
+    }
+    
+    @ApiOperation(value = "유저 사진 업로드", notes = "회원 수정")
+    @PutMapping(value = "/edit/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public CommonResult uploadImage(@RequestParam(value="image") MultipartFile image) throws IOException {
+        User user = getCurrentUser();
+        return userService.uploadImage(user, image);
     }
 }
