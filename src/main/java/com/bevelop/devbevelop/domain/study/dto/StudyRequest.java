@@ -1,6 +1,5 @@
 package com.bevelop.devbevelop.domain.study.dto;
 
-import com.bevelop.devbevelop.domain.project.domain.Division;
 import com.bevelop.devbevelop.domain.study.domain.*;
 import com.bevelop.devbevelop.domain.user.domain.RecruitJob;
 import com.bevelop.devbevelop.domain.user.domain.RecruitJobs;
