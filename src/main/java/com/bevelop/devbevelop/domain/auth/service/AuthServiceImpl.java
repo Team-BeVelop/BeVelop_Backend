@@ -190,17 +190,8 @@ public class AuthServiceImpl implements AuthService {
 	}
 
 	@Override
-	public CommonResult remove(UserDetails userDetails, UserWithdrawalDto userWithdrawalDto) {
-		// 1.비밀번호 체크
-		User userDetail = userRepository.findByEmail(userDetails.getUsername())
-				.orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
-
-		if (!userDetail.matchPassword(bCryptPasswordEncoder, userWithdrawalDto.getCheck_password())) {
-			throw new CustomException(ErrorCode.WRONG_PASSWORD);
-		}
-		// 2. DB에서 해당 아이디 정보 삭제
-		userRepository.delete(userDetail);
-		// 3. 로그아웃 처리
+	public CommonResult remove(User user) {
+		userRepository.delete(user);
 		return responseService.getSuccessResult();
 	}
 

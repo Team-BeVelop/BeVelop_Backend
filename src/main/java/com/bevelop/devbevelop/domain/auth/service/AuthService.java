@@ -31,7 +31,7 @@ public interface AuthService {
 
     CommonResult logout(UserLogOutDto userLogOutDto);
 
-    CommonResult remove(UserDetails userDetails, UserWithdrawalDto userWithdrawalDto);
+    CommonResult remove(User user);
 
     ResponseEntity<TokenDto> regenerateToken(RegenerateTokenDto refreshTokenDto);
 

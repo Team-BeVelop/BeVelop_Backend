@@ -3,6 +3,7 @@ package com.bevelop.devbevelop.domain.auth.controller;
 import com.bevelop.devbevelop.domain.auth.dto.*;
 import com.bevelop.devbevelop.domain.auth.service.GithubService;
 import com.bevelop.devbevelop.domain.auth.service.KakaoService;
+import com.bevelop.devbevelop.domain.user.controller.UserController;
 import com.bevelop.devbevelop.domain.user.domain.User;
 import com.bevelop.devbevelop.domain.user.repository.UserRepository;
 import com.bevelop.devbevelop.global.common.response.CommonResult;
@@ -68,7 +69,8 @@ public class AuthController {
 	@PostMapping("/remove")
 	public CommonResult remove(@AuthenticationPrincipal UserDetails userDetails,
 			@Valid @RequestBody UserWithdrawalDto withdrawalDto) {
-		return authService.remove(userDetails, withdrawalDto);
+		User currentUser = UserController.getCurrentUser();
+		return authService.remove(currentUser);
 	}
 
 	@ApiOperation(value = "소셜 카카오 계정 가입", notes = "소셜 계정(카카오)을(를) 이용하여 회원가입을 한다.")
