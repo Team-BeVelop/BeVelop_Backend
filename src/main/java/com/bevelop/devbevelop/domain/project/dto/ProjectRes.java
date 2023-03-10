@@ -19,12 +19,12 @@ public class ProjectRes {
     private int period;
 
     //기술스택
-    private Set<String> techniques;
+//    private List<String> techniques;
 
     //연관분야
     private String category;
 
-    private Set<Website> sites;
+    private List<Website> sites;
 
     private String detail;
     private List<ProjectResponseRes> likes;
@@ -38,7 +38,7 @@ public class ProjectRes {
         this.title = project.getTitle();
         this.userId = project.getUserId();
         this.period = project.getPeriod();
-        this.techniques = project.getTechniques();
+//        this.techniques = project.getTechniques();
         this.category = project.getCategory();
         this.sites = project.getSites();
         this.detail = project.getDetail();

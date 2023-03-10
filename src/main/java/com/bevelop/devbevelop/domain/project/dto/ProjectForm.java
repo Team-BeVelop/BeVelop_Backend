@@ -6,6 +6,7 @@ import com.bevelop.devbevelop.domain.project.domain.Website;
 import io.swagger.annotations.ApiParam;
 import lombok.*;
 
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -21,13 +22,13 @@ public class ProjectForm {
     private int period;
 
     @ApiParam(value = "기술스택")
-    private Set<String> techniques;
+    private List<String> techniques;
 
     @ApiParam(value = "연관분야")
     private String category;
 
     @ApiParam(value = "웹사이트 목록")
-    private Set<Website> sites;
+    private List<Website> sites;
 
     @ApiParam(value = "프로젝트 디테일")
     private String projectDetail;

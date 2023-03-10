@@ -35,16 +35,16 @@ public class Project {
     private int period;
 
     //기술스택
-    @Column(name = "techniques")
-    @NotNull
-    private Set<String> techniques;
+//    @Column(name = "techniques")
+//    @NotNull
+//    private List<String> techniques;
 
     //연관분야
     @NotNull
     private String category;
 
     @ElementCollection
-    private Set<Website> sites;
+    private List<Website> sites;
 
     @OneToMany(targetEntity=ProjectResponse.class, fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<ProjectResponse> responses;
@@ -62,12 +62,12 @@ public class Project {
     public String briefIntro;
 
     @Builder
-    public Project(Long userId, String title, String detail, int period, Set<String> techniques, String category, Set<Website> sites, String email, String kakaoLink, String briefIntro) {
+    public Project(Long userId, String title, String detail, int period, List<String> techniques, String category, List<Website> sites, String email, String kakaoLink, String briefIntro) {
         this.userId = userId;
         this.title = title;
         this.detail = detail;
         this.period = period;
-        this.techniques = techniques;
+//        this.techniques = techniques;
         this.category = category;
         this.sites = sites;
         this.email = email;

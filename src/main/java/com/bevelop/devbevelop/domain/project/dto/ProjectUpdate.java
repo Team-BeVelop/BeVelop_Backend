@@ -21,14 +21,14 @@ public class ProjectUpdate {
     @ApiParam(value = "기간")
     private int period;
 
-    @ApiParam(value = "기술스택")
-    private Set<String> techniques;
+//    @ApiParam(value = "기술스택")
+//    private List<String> techniques;
 
     @ApiParam(value = "연관분야")
     private String category;
 
     @ApiParam(value = "웹사이트 목록")
-    private Set<Website> sites;
+    private List<Website> sites;
     @ApiParam(value = "프로젝트 디테일")
     private String projectDetail;
 
@@ -45,7 +45,7 @@ public class ProjectUpdate {
         return Project.builder()
                 .title(title)
                 .period(period)
-                .techniques(techniques)
+//                .techniques(techniques)
                 .category(category)
                 .sites(sites)
                 .detail(projectDetail)

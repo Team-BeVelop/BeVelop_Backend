@@ -29,7 +29,6 @@ public class ProjectResponse extends BaseEntity {
 //    @JoinColumn(name="project_id")
     private Project project;
 
-    @Enumerated(EnumType.STRING)
     private String response;
 
     @Builder
