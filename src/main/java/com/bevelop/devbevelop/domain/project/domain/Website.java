@@ -10,12 +10,10 @@ import javax.persistence.Embeddable;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
 public class Website {
-    private Site siteType;
     private String host;
     private String domain;
 
-    public Website (Site siteType, String host, String domain) {
-        this.siteType = siteType;
+    public Website (String host, String domain) {
         this.host = host;
         this.domain = domain;
     }

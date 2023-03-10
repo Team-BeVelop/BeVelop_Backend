@@ -30,10 +30,10 @@ public class ProjectResponse extends BaseEntity {
     private Project project;
 
     @Enumerated(EnumType.STRING)
-    private Responses response;
+    private String response;
 
     @Builder
-    public ProjectResponse(User user, Project project, Responses response) {
+    public ProjectResponse(User user, Project project, String response) {
         this.user = user;
         this.project = project;
         this.response = response;

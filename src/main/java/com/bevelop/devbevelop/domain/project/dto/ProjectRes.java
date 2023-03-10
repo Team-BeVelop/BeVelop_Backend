@@ -1,13 +1,9 @@
 package com.bevelop.devbevelop.domain.project.dto;
 
-import com.bevelop.devbevelop.domain.project.domain.Comment;
 import com.bevelop.devbevelop.domain.project.domain.Project;
-import com.bevelop.devbevelop.domain.project.domain.Technique;
 import com.bevelop.devbevelop.domain.project.domain.Website;
 import lombok.*;
 
-import java.util.EnumSet;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -23,7 +19,7 @@ public class ProjectRes {
     private int period;
 
     //기술스택
-    private EnumSet<Technique> techniques;
+    private Set<String> techniques;
 
     //연관분야
     private String category;

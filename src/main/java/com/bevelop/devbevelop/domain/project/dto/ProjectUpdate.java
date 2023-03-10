@@ -1,7 +1,6 @@
 package com.bevelop.devbevelop.domain.project.dto;
 
 import com.bevelop.devbevelop.domain.project.domain.Project;
-import com.bevelop.devbevelop.domain.project.domain.Technique;
 import com.bevelop.devbevelop.domain.project.domain.Website;
 import io.swagger.annotations.ApiParam;
 import lombok.*;
@@ -23,7 +22,7 @@ public class ProjectUpdate {
     private int period;
 
     @ApiParam(value = "기술스택")
-    private EnumSet<Technique> techniques;
+    private Set<String> techniques;
 
     @ApiParam(value = "연관분야")
     private String category;

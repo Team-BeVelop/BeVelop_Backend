@@ -1,14 +1,9 @@
 package com.bevelop.devbevelop.domain.project.service;
 
-import com.bevelop.devbevelop.domain.project.domain.Comment;
 import com.bevelop.devbevelop.domain.project.domain.Project;
 import com.bevelop.devbevelop.domain.project.domain.ProjectResponse;
-import com.bevelop.devbevelop.domain.project.domain.Responses;
 import com.bevelop.devbevelop.domain.project.repository.ProjectLikeRepository;
-import com.bevelop.devbevelop.domain.project.repository.ProjectRepository;
 import com.bevelop.devbevelop.domain.user.domain.User;
-import com.bevelop.devbevelop.global.error.ErrorCode;
-import com.bevelop.devbevelop.global.error.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +16,7 @@ import java.util.List;
 public class ProjectResponseService {
     private final ProjectLikeRepository likeRepository;
 
-    public boolean addResponse(User user, Project project, Responses response) {
+    public boolean addResponse(User user, Project project, String response) {
 
         //중복 좋아요 방지
         if(isNotAlreadyLike(user, project)) {

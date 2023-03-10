@@ -1,7 +1,5 @@
 package com.bevelop.devbevelop.domain.project.domain;
 
-//import com.bevelop.devbevelop.domain.team.domain.Team;
-import com.bevelop.devbevelop.domain.user.domain.User;
 import com.sun.istack.NotNull;
 import lombok.*;
 
@@ -37,10 +35,9 @@ public class Project {
     private int period;
 
     //기술스택
-    @Convert(converter = SetTechniqueConverter.class)
     @Column(name = "techniques")
     @NotNull
-    private EnumSet<Technique> techniques;
+    private Set<String> techniques;
 
     //연관분야
     @NotNull
@@ -65,7 +62,7 @@ public class Project {
     public String briefIntro;
 
     @Builder
-    public Project(Long userId, String title, String detail, int period, EnumSet<Technique> techniques, String category, Set<Website> sites, String email, String kakaoLink, String briefIntro) {
+    public Project(Long userId, String title, String detail, int period, Set<String> techniques, String category, Set<Website> sites, String email, String kakaoLink, String briefIntro) {
         this.userId = userId;
         this.title = title;
         this.detail = detail;

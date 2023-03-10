@@ -3,7 +3,6 @@ package com.bevelop.devbevelop.domain.project.controller;
 import com.bevelop.devbevelop.domain.project.domain.Comment;
 import com.bevelop.devbevelop.domain.project.domain.Project;
 import com.bevelop.devbevelop.domain.project.domain.ProjectResponse;
-import com.bevelop.devbevelop.domain.project.domain.Responses;
 import com.bevelop.devbevelop.domain.project.repository.ProjectRepository;
 import com.bevelop.devbevelop.domain.project.service.ProjectResponseService;
 import com.bevelop.devbevelop.domain.project.service.ProjectService;
@@ -35,7 +34,7 @@ public class ProjectLikeController {
 
     @ApiOperation(value = "새로운 공감 추가")
     @PostMapping("response/new/{projectId}")
-    public CommonResult addLike(@PathVariable Long projectId, @RequestParam Responses response) throws CustomException {
+    public CommonResult addLike(@PathVariable Long projectId, @RequestParam String response) throws CustomException {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User signedInUser =  userService.findByEmail(authentication.getName()).orElseThrow(()-> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
@@ -47,7 +46,7 @@ public class ProjectLikeController {
     }
 
     @ApiOperation(value = "프로젝트 공감 모두 불러오기")
-    @GetMapping("responses/{projectId}")
+    @GetMapping("response/{projectId}")
     public List<ProjectResponse> responseList(@PathVariable Long projectId) throws CustomException {
         return likeService.findAll(projectId);
     }

@@ -29,7 +29,7 @@ public class CommentController {
 
     /* CREATE */
     @ApiOperation(value = "새로운 댓글 추가")
-    @PostMapping("{projectId}/comments")
+    @PostMapping("{projectId}/comment")
     public CommentRes commentSave(@PathVariable Long projectId, @RequestBody CommentReq dto) throws CustomException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user =  userService.findByEmail(authentication.getName()).orElseThrow(()-> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
@@ -37,7 +37,7 @@ public class CommentController {
     }
 
     @ApiOperation(value = "프로젝트 댓글 모두 불러오기")
-    @GetMapping("comments/{projectId}")
+    @GetMapping("comment/{projectId}")
     public List<Comment> commentList(@PathVariable Long projectId) throws CustomException {
         return commentService.findAll(projectId);
     }

@@ -1,7 +1,6 @@
 package com.bevelop.devbevelop.domain.project.dto;
 
 import com.bevelop.devbevelop.domain.project.domain.ProjectResponse;
-import com.bevelop.devbevelop.domain.project.domain.Responses;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +12,7 @@ public class ProjectResponseRes {
     private Long id;
     private Long userId;
     private Long projectId;
-    private Responses response;
+    private String response;
 
 
     /* Entity -> Dto*/
