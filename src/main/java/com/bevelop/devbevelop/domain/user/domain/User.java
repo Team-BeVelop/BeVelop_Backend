@@ -42,6 +42,9 @@ public class User extends BaseEntity {
     private String interests;
 
     private String url;
+    
+    @Column
+    private String imageUrl;
 
     @Embedded
     private AttachedStacks attachedStacks;
@@ -102,6 +105,10 @@ public class User extends BaseEntity {
         this.interests = interests;
         this.url = url;
         this.attachedStacks = attachedStacks;
+    }
+    
+    public void setImageUrl(String imageUrl) {
+    	this.imageUrl = imageUrl;
     }
 
 //	@Builder

@@ -4,8 +4,11 @@ import com.bevelop.devbevelop.domain.auth.dto.UserUpdateDto;
 import com.bevelop.devbevelop.domain.user.domain.User;
 import com.bevelop.devbevelop.global.common.response.CommonResult;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.web.multipart.MultipartFile;
 
 public interface UserService {
 
@@ -44,4 +47,6 @@ public interface UserService {
     CommonResult updateUser(User user, UserUpdateDto userUpdateDto);
 
     Optional<User> findById(Long id);
+    
+    CommonResult uploadImage(User user, MultipartFile image) throws IOException;
 }
