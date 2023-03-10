@@ -66,7 +66,7 @@ public class AuthController {
 	}
 
 	@ApiOperation(value = "회원탈퇴", notes = "회원 탈퇴")
-	@PostMapping("/remove")
+	@DeleteMapping("/remove")
 	public CommonResult remove(@AuthenticationPrincipal UserDetails userDetails,
 			@Valid @RequestBody UserWithdrawalDto withdrawalDto) {
 		User currentUser = UserController.getCurrentUser();
