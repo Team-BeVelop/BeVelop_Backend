@@ -13,15 +13,16 @@ public class SearchingTags {
 
     private final Map<UserCategoryName, String> tags = new HashMap<>();
 
-    public SearchingTags(final String job, final String interests) {
+    public SearchingTags(final String job, final String interests, final String stack) {
         tags.put(UserCategoryName.JOB, job);
         tags.put(UserCategoryName.INTERESTS, interests);
+        tags.put(UserCategoryName.STACK, stack);
     }
 
     public String getTagIdsBy(UserCategoryName name) { return tags.get(name);}
 
 
-    public static SearchingTags emptyTags() { return new SearchingTags("","");}
+    public static SearchingTags emptyTags() { return new SearchingTags("","", "");}
 
 
 }
