@@ -23,7 +23,7 @@ public class SearchingStudyController {
 
     @GetMapping
     public ResponseEntity<StudiesResponse> getStudies(
-            @PageableDefault(size = 5) final Pageable pageable
+            @PageableDefault(size = 12) final Pageable pageable
     ) {
         final StudiesResponse studiesResponse = searchingStudyService.getStudies(SearchingTags.emptyTags(), pageable);
         return ResponseEntity.ok().body(studiesResponse);
@@ -34,7 +34,7 @@ public class SearchingStudyController {
             @RequestParam(required = false, name = "DIVISION", defaultValue=  "") final String division,
             @RequestParam(required = false, name = "JOB", defaultValue = "") final String job,
             @RequestParam(required = false, name = "FIELD", defaultValue = "") final String field,
-            @PageableDefault(size = 5) final Pageable pageable
+            @PageableDefault(size = 12) final Pageable pageable
 
     ) {
         final SearchingTags searchingTags = new SearchingTags(division, job, field);
@@ -42,14 +42,10 @@ public class SearchingStudyController {
         return ResponseEntity.ok().body(studiesResponse);
     }
 
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "jwt", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
-    })
     @GetMapping("/{study-id}")
     public ResponseEntity<StudyDetailResponse> getStudyDetails(
             @PathVariable(name = "study-id") Long studyId) {
         final StudyDetailResponse response = searchingStudyService.getStudyDetails(studyId);
-        System.out.println(response);
         return ResponseEntity.ok().body(response);
     }
 
