@@ -50,9 +50,9 @@ cloud:
     region:
       static: ap-northeast-2
       auto: false
-    credentials:
-      accessKey: AKIAZV2665LTYNCTS4GG
-      secretKey: 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
+#    credentials:
+#      accessKey:
+#      secretKey:
     s3:
       bucket: image-s3-bucket-bevelop
     stack:
